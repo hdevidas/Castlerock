@@ -73,6 +73,8 @@ public class Main extends Application {
 			// MAIN LOOP
 			public void handle(long now) {
 				processInput(inputs, now);
+				
+				
 
 				// UPDATE SPRITES
 				player_castle.updateUI();
@@ -85,17 +87,22 @@ public class Main extends Application {
 				neutral_castles.forEach(castle -> castle.money_up());
 				
 				//update level
-				ia_castles.forEach(castle -> castle.is_enough_money_to_level_up());
-				neutral_castles.forEach(castle -> castle.is_enough_money_to_level_up());
+				ia_castles.forEach(castle -> castle.enough_money_to_level_up());
+				neutral_castles.forEach(castle -> castle.enough_money_to_level_up());
+				
+				//update bar
+				update_bar();
 			}
 
-			//A REVOIR
 			private void processInput(Inputs input, long now) {
 				if (input.isExit()) {
 					Platform.exit();
 					System.exit(0);
 				} else if (input.isLevelUp()) {
-					// rien pour l'instant
+					player_castle.enough_money_to_level_up();
+				}
+				else if(input.isBuilding()) {
+					player_castle.build_troupe();
 				}
 
 			}
@@ -171,21 +178,27 @@ public class Main extends Application {
 		castle_clicked.getView().setOnMousePressed(e -> {
 			castle_On_Click = castle_clicked;
 			e.consume();
-			String attaquer;
+		});
+	}
+	
+	private void update_bar() {
+		if (castle_On_Click != null) {
+				String attaquer;
 			String levelup;
 			String fairetroupe;
-			if (castle_clicked.is_player()) {
-				levelup = "   LEVEL_UP";
-				fairetroupe = "   FAIRE TROUPE";
+			if (castle_On_Click.is_player()) {
+				levelup = "   MONTER DE NIVEAU (Haut)";
+				fairetroupe = "   CONSTRUIRE TROUPE (Droite)";
 				attaquer = "";
 			}
 			else {
 				levelup = "";
 				fairetroupe = "";
-				attaquer = "   ATTAQUER";
+				attaquer = "   ATTAQUER CE CHATEAU (Bas)";
 			}
-			Message.setText("CHATEAU          Nom :"+ castle_On_Click.getName()+"          Florins :" + castle_On_Click.getMoney() + "          Niveau : " + castle_On_Click.getLevel()+"          Troupes : " + castle_On_Click.getArmy_life()[0]+"/"+castle_On_Click.getArmy_life()[1]+"/"+castle_On_Click.getArmy_life()[2]+levelup+fairetroupe+attaquer);                   
-		});
+			Message.setText("Nom :"+ castle_On_Click.getName()+"          Florins :" + castle_On_Click.getMoney() + "          Niveau : " + castle_On_Click.getLevel()+"          Troupes : " + castle_On_Click.getArmy_life()[0]+"/"+castle_On_Click.getArmy_life()[1]+"/"+castle_On_Click.getArmy_life()[2]+"     |     "+levelup+fairetroupe+attaquer);                   
+		}
+		
 	}
 	
 	

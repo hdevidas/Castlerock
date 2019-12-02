@@ -63,16 +63,18 @@ public class Inputs {
 	// direction isn't handled.
 	// -------------------------------------------------
 
-	public boolean isLevelUp() { //DETECTION DU LEVEL UP SUR TOUCHE ESPACE
-		return is(SPACE);
-	}
-
 	public boolean isExit() { //DETECTION SORTIE DE JEU SUR TOUCHE ECHAP
 		return is(ESCAPE);
 	}
 	
-	public boolean isAttacks() { //DETECTION SORTIE DE JEU SUR TOUCHE ECHAP
+	public boolean isLevelUp() { 
 		return is(UP);
+	}
+	public boolean isAttacks() { 
+		return is(DOWN);
+	}
+	public boolean isBuilding() { 
+		return is(RIGHT);
 	}
 	
 }
