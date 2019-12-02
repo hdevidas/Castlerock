@@ -25,7 +25,11 @@ public class Castle extends Sprite {
 		this.money = money;
 		this.level = level;
 		this.name = name;
-		this.army_life = army_life;
+		
+		this.army_life[0] = army_life[0];
+		this.army_life[1] = army_life[1];
+		this.army_life[2] = army_life[2];
+		
 		this.owner = owner;
 	}
 
