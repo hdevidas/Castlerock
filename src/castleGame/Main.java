@@ -175,16 +175,16 @@ public class Main extends Application {
 			String levelup;
 			String fairetroupe;
 			if (castle_clicked.is_player()) {
-				levelup = "LEVEL_UP";
-				fairetroupe = "FAIRE TROUPE";
+				levelup = "   LEVEL_UP";
+				fairetroupe = "   FAIRE TROUPE";
 				attaquer = "";
 			}
 			else {
 				levelup = "";
 				fairetroupe = "";
-				attaquer = "ATTAQUER";
+				attaquer = "   ATTAQUER";
 			}
-			Message.setText("CHATEAU          Nom :"+ castle_On_Click.getName()+"          Florins :" + castle_On_Click.getMoney() + "          Niveau : " + castle_On_Click.getLevel()+"          Troupes : " + castle_On_Click.getArmy_life()[0]+"/"+castle_On_Click.getArmy_life()[1]+"/"+castle_On_Click.getArmy_life()[2]+"   +1 NIVEAU   +1 TROUPE   ATTAQUER");                   
+			Message.setText("CHATEAU          Nom :"+ castle_On_Click.getName()+"          Florins :" + castle_On_Click.getMoney() + "          Niveau : " + castle_On_Click.getLevel()+"          Troupes : " + castle_On_Click.getArmy_life()[0]+"/"+castle_On_Click.getArmy_life()[1]+"/"+castle_On_Click.getArmy_life()[2]+levelup+fairetroupe+attaquer);                   
 		});
 	}
 	
