@@ -35,7 +35,6 @@ public class Main extends Application {
 	
 	private boolean[] chosen_name = new boolean[Settings.LIST_CASTLE_NAME.length];
 	
-
 	private Castle player_castle;
 	private List<Castle> ia_castles = new ArrayList<>();
 	private List<Castle> neutral_castles = new ArrayList<>();
@@ -128,7 +127,7 @@ public class Main extends Application {
 		double x = rnd.nextDouble() * (Settings.SCENE_WIDTH - playerCastleImage.getWidth());
 		double y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - playerCastleImage.getHeight());
 		int level = 1;
-		player_castle = new Castle(playfieldLayer, playerCastleImage, x, y, inputs,"Player", 1, level);
+		player_castle = new Castle(playfieldLayer, playerCastleImage, x, y, inputs,"Player", 1, level, Settings.ARMY_LIFE_INIT,"player" );
 		SetCastleOnClick(player_castle);
 		listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
 		
@@ -140,7 +139,7 @@ public class Main extends Application {
 				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - iaCastleImage.getHeight());
 				
 				if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_MIN_DISTANCE)) {
-					Castle iaCastle = new Castle(playfieldLayer, iaCastleImage, x, y,inputs,generate_castle_name(), 1, level);
+					Castle iaCastle = new Castle(playfieldLayer, iaCastleImage, x, y,inputs,generate_castle_name(), 1, level, Settings.ARMY_LIFE_INIT,"ai");
 					SetCastleOnClick(iaCastle);
 					ia_castles.add(iaCastle);
 					listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
@@ -156,7 +155,7 @@ public class Main extends Application {
 				x = rnd.nextDouble() * (Settings.SCENE_WIDTH - neutralCastleImage.getWidth());
 				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - neutralCastleImage.getHeight());
 				if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_MIN_DISTANCE)) {
-					Castle neutralCastle = new Castle(playfieldLayer, neutralCastleImage, x, y,inputs, generate_castle_name(), 1, level);
+					Castle neutralCastle = new Castle(playfieldLayer, neutralCastleImage, x, y,inputs, generate_castle_name(), 1, level, Settings.ARMY_LIFE_INIT, "neutral");
 					SetCastleOnClick(neutralCastle);
 					neutral_castles.add(neutralCastle);
 					listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
@@ -172,7 +171,20 @@ public class Main extends Application {
 		castle_clicked.getView().setOnMousePressed(e -> {
 			castle_On_Click = castle_clicked;
 			e.consume();
-			Message.setText("Chateau cliqué          Nom :"+ castle_On_Click.getName()+"          Florins :" + castle_On_Click.getMoney() + "          Niveau : " + castle_On_Click.getLevel());
+			String attaquer;
+			String levelup;
+			String fairetroupe;
+			if (castle_clicked.is_player()) {
+				levelup = "LEVEL_UP";
+				fairetroupe = "FAIRE TROUPE";
+				attaquer = "";
+			}
+			else {
+				levelup = "";
+				fairetroupe = "";
+				attaquer = "ATTAQUER";
+			}
+			Message.setText("CHATEAU          Nom :"+ castle_On_Click.getName()+"          Florins :" + castle_On_Click.getMoney() + "          Niveau : " + castle_On_Click.getLevel()+"          Troupes : " + castle_On_Click.getArmy_life()[0]+"/"+castle_On_Click.getArmy_life()[1]+"/"+castle_On_Click.getArmy_life()[2]+"   +1 NIVEAU   +1 TROUPE   ATTAQUER");                   
 		});
 	}
 	
@@ -203,7 +215,7 @@ public class Main extends Application {
 	
 	public void createStatusBar() {
 		HBox statusBar = new HBox();
-		Message.setText("Chateau cliqué          Nom :"+ player_castle.getName()+"          Florins :" + player_castle.getMoney() + "          Niveau : " + player_castle.getLevel());
+		//Message.setText("Chateau cliqué          Nom :"+ player_castle.getName()+"          Florins :" + player_castle.getMoney() + "          Niveau : " + player_castle.getLevel());
 		statusBar.getChildren().addAll(Message);
 		statusBar.getStyleClass().add("statusBar");
 		statusBar.relocate(0, Settings.SCENE_HEIGHT);

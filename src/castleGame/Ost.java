@@ -17,7 +17,7 @@ public class Ost extends Sprite {
 	
 	
 	public Ost(Pane layer, Image image, double x, double y, Inputs inputs,String name, int money, int level) {
-		super(layer, image, x, y, name, money, level);
+		super(layer, image, x, y);
 		init();
 	}
 	

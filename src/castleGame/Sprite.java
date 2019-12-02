@@ -17,22 +17,14 @@ public abstract class Sprite {
     protected double dx;
     protected double dy;
 
-    private int level;
-    private int money;
-    private String name;
-
 	private double w;
     private double h;
 
-    public Sprite(Pane layer, Image image, double x, double y, String name, int money, int level) {
+    public Sprite(Pane layer, Image image, double x, double y) {
 
         this.layer = layer;
         this.x = x;
         this.y = y;
-
-        this.name = name;
-        this.money = money;
-        this.level = level;
 
         this.imageView = new ImageView(image);
         this.imageView.relocate(x, y);
@@ -112,28 +104,4 @@ public abstract class Sprite {
     public double getCenterY() {
         return y + h * 0.5;
     }
-
-	public int getLevel() {
-		return level;
-	}
-
-	public void setLevel(int level) {
-		this.level = level;
-	}
-
-	public int getMoney() {
-		return money;
-	}
-
-	public void setMoney(int money) {
-		this.money = money;
-	}
-	
-    public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 }
