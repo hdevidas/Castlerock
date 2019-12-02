@@ -6,7 +6,7 @@ import castleGame.Inputs;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
-public class Ost extends Sprite {
+public class Ost extends Sprite implements TroopsManager, SpriteRender{
 
 	private double minX;
 	private double maxX;

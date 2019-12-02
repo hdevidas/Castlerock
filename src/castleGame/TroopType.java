@@ -1,6 +1,6 @@
 package castleGame;
 
-public enum TroupeType
+public enum TroopType
 {
 	Piquier ("Piquier", 100, 5, 2, 1, 1),
 	Knight ("Chevalier", 500, 20, 6, 3, 5),
@@ -15,7 +15,7 @@ public enum TroupeType
 	private int attack;
 
 	// constructor
-	private TroupeType(String name, int productionCost, int productionTime, int speed, int healthPoint, int attack)
+	private TroopType(String name, int productionCost, int productionTime, int speed, int healthPoint, int attack)
 	{
 		this.name = name;
 		this.productionCost = productionCost;

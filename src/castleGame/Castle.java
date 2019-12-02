@@ -10,17 +10,26 @@ import castleGame.Inputs;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
-public class Castle extends Sprite {
+public class Castle implements TroopsManager, MouseEventReceiver, SpriteRender{
 
+	// VARIABLES
+	// game variable
 	private Inputs inputs;
+	private Sprite sprite;
+	
+	// this object variable
+	static public Castle clicked;
 	private String name;
 	private int level;
 	private int money;
-	private int army_life[] = new int[3];
+	private int army_life[] = new int[Settings.NB_TROOP_TYPES];
 	private String owner;
 	
+	
+	// CONSTRUCTOR
+	
 	public Castle(Pane layer, Image image, double x, double y, Inputs inputs, String name, int money, int level, int[] army_life, String owner) {
-		super(layer, image, x, y);
+		this.sprite = new Sprite(layer, image, x, y);
 		this.inputs = inputs;
 		this.money = money;
 		this.level = level;
@@ -31,36 +40,13 @@ public class Castle extends Sprite {
 		this.army_life[2] = army_life[2];
 		
 		this.owner = owner;
-	}
-
-	public void enough_money_to_level_up() { //MONTE D'UN NIVEAU LE CHATEAU
-		if (getMoney() >= (getLevel()*1000)) {
-			setMoney(getMoney()-getLevel()*1000);
-			setLevel(getLevel()+1);
-		}
-	}
-
-	public void build_troupe() { //CONSTRUIS UN PIQUIER
-		if (  getMoney() >= TroupeType.Piquier.getProductionCost() ) {
-			setMoney( getMoney()-TroupeType.Piquier.getProductionCost());
-			//this.army_life[TroupeType.Piquier.ordinal()]=army_life[TroupeType.Piquier.ordinal()] + TroupeType.Piquier.getHealthPoint();
-			//setArmy_life(TroupeType.Piquier.ordinal(), army_life[TroupeType.Piquier.ordinal()] + TroupeType.Piquier.getHealthPoint());
-			change_army_life(TroupeType.Piquier.ordinal(),army_life[TroupeType.Piquier.ordinal()] + TroupeType.Piquier.getHealthPoint());
-
-		}
-	}
-
-	
-	public void money_up() { //GENERATION FLORINS
-		setMoney(getMoney() + getLevel());
+		
+		setMouseEventResponse();
 	}
 	
-	public boolean is_the_same_name(String name) {
-		if (this.getName() == name) {
-			return true;
-		}
-		return false;
-	}
+	
+	
+	// GETTERS AND SETTERS
 	
 	public int getLevel() {
 		return level;
@@ -94,6 +80,57 @@ public class Castle extends Sprite {
 		return army_life;
 	}
 
+	// INTERFACE METHODS
+	// troopsManager
+	
+	// MouseEventReceiver
+	public void setMouseEventResponse()
+	{
+		sprite.getView().setOnMousePressed(e -> {
+			clicked = this;
+			e.consume();
+		});
+	}
+	
+	// Sprite
+	public void updateUI()
+	{
+		sprite.updateUI();		
+	}
+
+
+	
+	
+	
+	// OBJECT METHODS
+
+	public void enough_money_to_level_up() { //MONTE D'UN NIVEAU LE CHATEAU
+		if (getMoney() >= (getLevel()*1000)) {
+			setMoney(getMoney()-getLevel()*1000);
+			setLevel(getLevel()+1);
+		}
+	}
+
+	public void build_troupe() { //CONSTRUIS UN PIQUIER
+		if (  getMoney() >= TroopType.Piquier.getProductionCost() ) {
+			setMoney( getMoney()-TroopType.Piquier.getProductionCost());
+			//this.army_life[TroupeType.Piquier.ordinal()]=army_life[TroupeType.Piquier.ordinal()] + TroupeType.Piquier.getHealthPoint();
+			//setArmy_life(TroupeType.Piquier.ordinal(), army_life[TroupeType.Piquier.ordinal()] + TroupeType.Piquier.getHealthPoint());
+			change_army_life(TroopType.Piquier.ordinal(),army_life[TroopType.Piquier.ordinal()] + TroopType.Piquier.getHealthPoint());
+
+		}
+	}
+	
+	public void money_up() { //GENERATION FLORINS
+		setMoney(getMoney() + getLevel());
+	}
+	
+	public boolean is_the_same_name(String name) {
+		if (this.getName() == name) {
+			return true;
+		}
+		return false;
+	}
 	public void change_army_life(int index, int new_number) {
 		this.army_life[index] = new_number;
 	}
@@ -104,4 +141,9 @@ public class Castle extends Sprite {
 		}
 		return false;
 	}
+
+
+
+
+
 }

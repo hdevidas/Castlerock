@@ -5,7 +5,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 
-public abstract class Sprite {
+public class Sprite {
 
     private ImageView imageView;
 
