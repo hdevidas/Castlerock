@@ -1,15 +1,12 @@
 package castleGame;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import com.sun.javafx.geom.Point2D;
-
-import castleGame.Castle;
-import castleGame.Ost;
-import castleGame.Inputs;
-import castleGame.Settings;
+import castleGame.base.Inputs;
+import castleGame.base.KeyboardInputsReceiver;
+import castleGame.gameObjects.Castle;
+import castleGame.gameObjects.Map;
+import castleGame.gameObjects.Ost;
+import castleGame.infoObjects.Settings;
+import castleGame.infoObjects.TroopType;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -23,7 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-public class Main extends Application {
+public class Main extends Application implements KeyboardInputsReceiver {
 
 	private Map map;
 
@@ -59,7 +56,7 @@ public class Main extends Application {
 		gameLoop = new AnimationTimer() {
 			// MAIN LOOP
 			public void handle(long now) {
-				processInput(inputs, now);
+				processInputs(inputs);
 				
 				map.updateCastle();
 				
@@ -67,26 +64,20 @@ public class Main extends Application {
 				update_bar();
 			}
 
-			private void processInput(Inputs input, long now) {
-				if (input.isExit()) {
-					Platform.exit();
-					System.exit(0);
-				} else if (input.isLevelUp()) {
-					map.player_castle.enough_money_to_level_up();
-				}
-				else if(input.isBuilding()) {
-					map.player_castle.build_troupe();
-				}
-
-			}
-
 		};
 		gameLoop.start();
 	}
-
+	
+	public void processInputs(Inputs inputs) {
+		if (inputs.isExit()) {
+			Platform.exit();
+			System.exit(0);
+		}
+		map.processInputs(inputs);
+	}
 	private void loadGame() { 
 		
-		map = new Map(inputs, playfieldLayer);
+		map = new Map(playfieldLayer);
 
 		inputs = new Inputs(scene);
 		inputs.addListeners();
@@ -110,7 +101,10 @@ public class Main extends Application {
 				fairetroupe = "";
 				attaquer = "   ATTAQUER CE CHATEAU (Bas)";
 			}
-			Message.setText("Nom :"+ Castle.clicked.getName()+"          Florins :" + Castle.clicked.getMoney() + "          Niveau : " + Castle.clicked.getLevel()+"          Troupes : " + Castle.clicked.getArmy_life()[0]+"/"+Castle.clicked.getArmy_life()[1]+"/"+Castle.clicked.getArmy_life()[2]+"     |     "+levelup+fairetroupe+attaquer);                   
+			Message.setText("Nom :"+ Castle.clicked.getName()+"          Florins :" + Castle.clicked.getMoney() + 
+					"          Niveau : " + Castle.clicked.getLevel()+"          Troupes : " + 
+					Castle.clicked.getNbTroop(TroopType.Piquier)+"/"+Castle.clicked.getNbTroop(TroopType.Knight)+"/"+Castle.clicked.getNbTroop(TroopType.Onager) +
+					"     |     "+levelup+fairetroupe+attaquer);                   
 		}
 		
 	}

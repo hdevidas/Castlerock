@@ -1,4 +1,4 @@
-package castleGame;
+package castleGame.base;
 
 import java.util.BitSet;
 

@@ -1,20 +1,21 @@
-package castleGame;
+package castleGame.gameObjects;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import castleGame.base.Inputs;
+import castleGame.base.KeyboardInputsReceiver;
+import castleGame.base.Sprite;
+import castleGame.infoObjects.Owner;
+import castleGame.infoObjects.Settings;
 import javafx.scene.layout.Pane;
 
-import javafx.scene.image.Image;
 
-public class Map
+public class Map implements KeyboardInputsReceiver
 {
 
-	private Inputs inputs;
 	private Pane playfieldLayer;
-	private Image iaCastleImage;
-	private Image neutralCastleImage;
-	private Image playerCastleImage;
 
 	//Liste contenant les coordonnées des chateaux (coo au centre du chateau)
 	private List<javafx.geometry.Point2D> listXY = new ArrayList<javafx.geometry.Point2D>();
@@ -22,25 +23,16 @@ public class Map
 	private boolean[] chosen_name = new boolean[Settings.LIST_CASTLE_NAME.length];
 	
 	public Castle player_castle;
-	private List<Castle> ia_castles = new ArrayList<>();
+	private List<Castle> ai_castles = new ArrayList<>();
 	private List<Castle> neutral_castles = new ArrayList<>();
 
 	private Random rnd = new Random();
 	
-	public Map(Inputs inputs, Pane playfieldLayer)
+	public Map(Pane playfieldLayer)
 	{
-		this.inputs = inputs;
 		this.playfieldLayer = playfieldLayer;
 		
 		// chargement de la map
-		
-		//Définition des sprites
-		playerCastleImage = new Image(getClass().getResource("/images/playerCastle.png").toExternalForm(), Settings.CASTLE_SIZE, Settings.CASTLE_SIZE,
-				true, true);
-		iaCastleImage = new Image(getClass().getResource("/images/iaCastle.png").toExternalForm(), Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true,
-				true);
-		neutralCastleImage = new Image(getClass().getResource("/images/neutralCastle.png").toExternalForm(), Settings.CASTLE_SIZE, Settings.CASTLE_SIZE,
-				true, true);
 		
 		//Création des chateaux
 		spawnCastles();
@@ -49,22 +41,23 @@ public class Map
 
 	private void spawnCastles() { // Création chateaux
 		//Création chateau joueur
-		double x = rnd.nextDouble() * (Settings.SCENE_WIDTH - playerCastleImage.getWidth());
-		double y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - playerCastleImage.getHeight());
+		double x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.playerCastleImage.getWidth());
+		double y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.playerCastleImage.getHeight());
+		Sprite sprite = new Sprite(playfieldLayer, Castle.playerCastleImage, x, y);
 		int level = 1;
-		player_castle = new Castle(playfieldLayer, playerCastleImage, x, y, inputs,"Player", 1, level, Settings.ARMY_LIFE_INIT,"player" );
+		player_castle = new Castle(sprite ,"Player", Owner.Player, 1, level, Settings.ARMY_LIFE_INIT);
 		listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
 		
 		//Création chateaux IA
 		for (int i=0; i<Settings.IA_CASTLE_NUMBER; i++) {
 			level = rnd.nextInt(Settings.IA_NEUTRAL_CASTLE_MAX_LEVEL-1) + 1;
 			while(true) {
-				x = rnd.nextDouble() * (Settings.SCENE_WIDTH - iaCastleImage.getWidth());
-				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - iaCastleImage.getHeight());
-				
+				x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.iaCastleImage.getWidth());
+				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.iaCastleImage.getHeight());
 				if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_MIN_DISTANCE)) {
-					Castle iaCastle = new Castle(playfieldLayer, iaCastleImage, x, y,inputs,generate_castle_name(), 1, level, Settings.ARMY_LIFE_INIT,"ai");
-					ia_castles.add(iaCastle);
+					sprite = new Sprite(playfieldLayer, Castle.iaCastleImage, x, y);
+					Castle iaCastle = new Castle(sprite, generate_castle_name(), Owner.Computer, 1, level, Settings.ARMY_LIFE_INIT);
+					ai_castles.add(iaCastle);
 					listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
 					break;
 				}
@@ -75,10 +68,11 @@ public class Map
 		for (int i=0; i<Settings.NEUTRAL_CASTLE_NUMBER; i++) {
 			level = rnd.nextInt(Settings.IA_NEUTRAL_CASTLE_MAX_LEVEL-1) + 1;
 			while(true) {
-				x = rnd.nextDouble() * (Settings.SCENE_WIDTH - neutralCastleImage.getWidth());
-				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - neutralCastleImage.getHeight());
+				x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.neutralCastleImage.getWidth());
+				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.neutralCastleImage.getHeight());
 				if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_MIN_DISTANCE)) {
-					Castle neutralCastle = new Castle(playfieldLayer, neutralCastleImage, x, y,inputs, generate_castle_name(), 1, level, Settings.ARMY_LIFE_INIT, "neutral");
+					sprite = new Sprite(playfieldLayer, Castle.neutralCastleImage, x, y);
+					Castle neutralCastle = new Castle(sprite, generate_castle_name(), Owner.Neutral, 1, level, Settings.ARMY_LIFE_INIT);
 					neutral_castles.add(neutralCastle);
 					listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
 					break;
@@ -110,20 +104,31 @@ public class Map
 		return true;
 	}
 	
+
+	public void processInputs(Inputs inputs)
+	{
+
+		player_castle.processInputs(inputs);
+		ai_castles.forEach(castle -> castle.processInputs(inputs));
+		neutral_castles.forEach(castle -> castle.processInputs(inputs));
+		// les deux commande suivantes seraient mieux définies dans la classe chateaux TODO
+	}
+	
 	public void updateCastle()
 	{
 		// UPDATE SPRITES
 		player_castle.updateUI();
-		ia_castles.forEach(castle -> castle.updateUI());
+		ai_castles.forEach(castle -> castle.updateUI());
 		neutral_castles.forEach(castle -> castle.updateUI());
 		
 		//update money
 		player_castle.money_up();
-		ia_castles.forEach(castle -> castle.money_up());
+		ai_castles.forEach(castle -> castle.money_up());
 		neutral_castles.forEach(castle -> castle.money_up());
 		
 		//update level
-		ia_castles.forEach(castle -> castle.enough_money_to_level_up());
-		neutral_castles.forEach(castle -> castle.enough_money_to_level_up());
+		ai_castles.forEach(castle -> castle.level_up());
+		neutral_castles.forEach(castle -> castle.level_up());
 	}
+
 }

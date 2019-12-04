@@ -1,4 +1,4 @@
-package castleGame;
+package castleGame.base;
 
 // This interface contain the methods to manage events comming from the mouse.
 // a sprite is needed to use them thus spriteRender is extended.

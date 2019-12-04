@@ -1,4 +1,4 @@
-package castleGame;
+package castleGame.base;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -81,7 +81,7 @@ public class Sprite {
         y += dy;
     }
 
-    protected ImageView getView() {
+    public ImageView getView() {
         return imageView;
     }
 

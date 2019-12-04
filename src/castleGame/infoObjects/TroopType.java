@@ -1,4 +1,4 @@
-package castleGame;
+package castleGame.infoObjects;
 
 public enum TroopType
 {

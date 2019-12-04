@@ -1,4 +1,4 @@
-package castleGame;
+package castleGame.infoObjects;
 
 public class Settings
 {
@@ -19,4 +19,5 @@ public class Settings
 	/* SUITE DE LA LISTE : Barnoin, Barral, Baudri, Bérard, Bérenger, Bernon, Bettolin, Betton, Brunon, Burchard, Caribert, Centule, Childebert, Chilpéric, Cillien, Clodomir, Clotaire, Cloud, Colomban, Conan, Conrad, Cybard, Dacien, Dadon, Dalmace, Dambert, Dioclétien, Doat, Drogon, Durand, Eadwin, Ebbon, Ebehard, Eddo, Edwin, Egfroi, Égilon, Eilbert, Einold, Éon, Ermenfred, Ermengaud, Ernée, Ernold, Ernoul, Eumène, Eunuce, Euric, Eustaise, Euverte, Evroult, Fleuret, Flocel, Flodoard, Flouard, Flour, Floxel, Folquet, Fortunat, Foulque, Frajou, Frambault, Frambourg, Frameric, Francaire, Fulbert, Gailhart, Gaillon, Garréjade, Gaubert, Gerbert, Giboin, Gildric, Gislebert, Godomer, Gossuin, Guéthenoc, Guibin, Guiscard, Hatton, Haynhard, Héribert, Herlebald, Herlebauld, Herlemond, Hildebald, Hildebrand, Hilduin, Hoel, Honfroi, Hugon, Humbaud, Isembert, Ithier, Jacquemin, Jacut, Lagier, Lambert, Lancelin, Léothéric, Lidoire, Lisiard, Lothaire, Lubin, Maïeul, Malulf, Marcuard, Maric, Materne, Matfrid, Matifas, Maur, Mauront, Mesmin, Milon, Odo, Oldaric, Orderic, Oricle, Premon, Rachio, Radoald, Radulf, Raginard, Raimbaut, Raimbert, Rainier, Rainon, Ramnulf, Ranulfe, Rataud, Rodron, Romary, Roscelin, Rostang, Salvin, Savaric, Savary, Sébaste, Senoc, Sicard, Siegebert, Sifard, Sigebert, Taillefer, Taurin, Théodebert, Théodemar, Theoderich, Théodran, Thérouanne, Thiégaud, Ursicin, Ursion, Vantelme, Volusien, Warin, Wigeric, Willibert, Wulfoald, Wulgrin*/
 	
 	public static final int NB_TROOP_TYPES = TroopType.values().length;
+	
 }
