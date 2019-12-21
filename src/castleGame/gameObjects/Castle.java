@@ -85,14 +85,21 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	// INTERFACE METHODS
 	// KeyboardInputsReceiver
 	public void processInputs(Inputs inputs)
-	{
+	{	
+		//actions possibles du joueur :
 		if (owner == Owner.Player)
 		{
+			// monter d'un niveau
 			if (inputs.isLevelUp()) {
 				level_up();
 			}
+			// construire un piquier
 			if (inputs.isBuilding()) {
 				build_troop(TroopType.Piquier);
+			}
+			// attaquer un chateau x
+			if (inputs.isAttacks()) {
+				this.attack(clicked);
 			}
 		}
 		
@@ -151,7 +158,6 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	public boolean is_player() {
 		return (this.owner == Owner.Player);
 	}
-
 
 
 

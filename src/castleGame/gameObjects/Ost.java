@@ -17,6 +17,9 @@ public class Ost extends TroopsManager implements SpriteRender{
 	private Sprite sprite;
 	private Castle castleTarget;
 	
+	static Image piquierImage		= new Image("/images/ost.png",  Settings.OST_SIZE, Settings.OST_SIZE, true, true);
+	
+	
 	public Ost(Sprite sprite) 
 	{
 		this(sprite, new int[Settings.NB_TROOP_TYPES]);

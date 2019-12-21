@@ -20,11 +20,15 @@ public class Map implements KeyboardInputsReceiver
 	//Liste contenant les coordonnées des chateaux (coo au centre du chateau)
 	private List<javafx.geometry.Point2D> listXY = new ArrayList<javafx.geometry.Point2D>();
 	
+	private List<javafx.geometry.Point2D> listXY_ost_player = new ArrayList<javafx.geometry.Point2D>();
+	
 	private boolean[] chosen_name = new boolean[Settings.LIST_CASTLE_NAME.length];
 	
 	public Castle player_castle;
 	private List<Castle> ai_castles = new ArrayList<>();
 	private List<Castle> neutral_castles = new ArrayList<>();
+	
+	public List<Ost> player_ost = new ArrayList<>();
 
 	private Random rnd = new Random();
 	
@@ -36,6 +40,7 @@ public class Map implements KeyboardInputsReceiver
 		
 		//Création des chateaux
 		spawnCastles();
+		//spawnTroops();
 	}
 	
 
@@ -47,6 +52,29 @@ public class Map implements KeyboardInputsReceiver
 		int level = 1;
 		player_castle = new Castle(sprite ,"Player", Owner.Player, 1, level, Settings.ARMY_LIFE_INIT);
 		listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
+		
+		
+		//Création ost joueur
+		double x2 = x - Settings.OST_MIN_DISTANCE_FROM_CASTLE + rnd.nextDouble() * ((x + Settings.OST_MIN_DISTANCE_FROM_CASTLE) - (x - Settings.OST_MIN_DISTANCE_FROM_CASTLE));
+		double y2 = y - Settings.OST_MIN_DISTANCE_FROM_CASTLE + rnd.nextDouble() * ((y + Settings.OST_MIN_DISTANCE_FROM_CASTLE) - (y - Settings.OST_MIN_DISTANCE_FROM_CASTLE));
+		sprite = new Sprite(playfieldLayer, Ost.piquierImage, x2, y2);
+		Ost ost = new Ost(sprite);
+		player_ost.add(ost);
+		listXY_ost_player.add(new javafx.geometry.Point2D(x2+Settings.OST_SIZE/2, y2+Settings.OST_SIZE/2));
+		
+		while(true) {
+			x2 = x - Settings.OST_MIN_DISTANCE_FROM_CASTLE + rnd.nextDouble() * ((x + Settings.OST_MIN_DISTANCE_FROM_CASTLE) - (x - Settings.OST_MIN_DISTANCE_FROM_CASTLE));
+			y2 = y - Settings.OST_MIN_DISTANCE_FROM_CASTLE + rnd.nextDouble() * ((y + Settings.OST_MIN_DISTANCE_FROM_CASTLE) - (y - Settings.OST_MIN_DISTANCE_FROM_CASTLE));
+			if(checkLocation(new javafx.geometry.Point2D(x2, y2),Settings.OST_MIN_DISTANCE)) {
+				sprite = new Sprite(playfieldLayer, Ost.piquierImage, x2, y2);
+				ost= new Ost(sprite);
+				player_ost.add(ost);
+				listXY_ost_player.add(new javafx.geometry.Point2D(x2+Settings.OST_SIZE/2, y2+Settings.OST_SIZE/2));
+				break;
+			}
+		}
+		
+		
 		
 		//Création chateaux IA
 		for (int i=0; i<Settings.IA_CASTLE_NUMBER; i++) {
@@ -81,6 +109,30 @@ public class Map implements KeyboardInputsReceiver
 		}
 	}
 
+	private void spawnTroops() {
+		//Création ost joueur
+				double x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.playerCastleImage.getWidth());
+				double y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.playerCastleImage.getHeight());
+				Sprite sprite = new Sprite(playfieldLayer, Ost.piquierImage, x, y);
+				Ost ost = new Ost(sprite);
+				player_ost.add(ost);
+				listXY_ost_player.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
+				
+				while(true) {
+					x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.iaCastleImage.getWidth());
+					y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.iaCastleImage.getHeight());
+					if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_MIN_DISTANCE)) {
+						sprite = new Sprite(playfieldLayer, Ost.piquierImage, x, y);
+						Ost ost2= new Ost(sprite);
+						player_ost.add(ost2);
+						listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
+						break;
+					}
+				}
+				
+	}
+	
+	
 	//Selection d'un nom (different) dans une liste pour spawn chateaux
 	private String generate_castle_name() {
 		String name;

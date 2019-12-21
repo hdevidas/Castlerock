@@ -9,6 +9,10 @@ public class Settings
 	public static final double CASTLE_MIN_DISTANCE = 200;
 	public static final double CASTLE_SIZE = 100;
 	
+	public static final double OST_MIN_DISTANCE_FROM_CASTLE = 30;
+	public static final double OST_MIN_DISTANCE = 10;
+	public static final double OST_SIZE = 10;
+	
 	public static final double IA_CASTLE_NUMBER = 5;
 	public static final double NEUTRAL_CASTLE_NUMBER = 12;
 	public static final int IA_NEUTRAL_CASTLE_MAX_LEVEL = 5;

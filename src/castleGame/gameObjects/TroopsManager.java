@@ -53,14 +53,31 @@ public abstract class TroopsManager
 		}
 	}
 	
-	void removeTroop()
+	//Fonction pour supprimer une unité d'un type précisé
+	// TODO a generaliser
+	void removeTroop(TroopType troopType)
 	{
-		
+		if ( this.has_got_troops(troopType) ) {
+			this.troops.get(troopType.ordinal()).remove(0);
+		}
 	}
 	
+	// Fonction pour résoudre une attaque
+	//	TODO Fonction a retravailler
+	//	TODO a generaliser avec tous les types de troupes
 	void attack(TroopsManager foe)
 	{
-		
+		while ( this.has_got_troops(TroopType.Piquier) && foe.has_got_troops(TroopType.Piquier)) {
+			this.removeTroop(TroopType.Piquier);
+			foe.removeTroop(TroopType.Piquier);
+		}
+	}
+	
+	boolean has_got_troops(TroopType troopType) {
+		if (getNbTroop(troopType) > 0 ) {
+			return true;
+		}
+		return false;
 	}
 	
 	void takeDamage(int damage)
