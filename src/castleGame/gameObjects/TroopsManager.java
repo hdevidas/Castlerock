@@ -24,6 +24,15 @@ public abstract class TroopsManager
 		setTroops(troops);
 	}
 	
+	public TroopsManager(int troops[],double x, double y)
+	{
+		for (TroopType troopType : TroopType.values())
+		{
+			this.troops.add(troopType.ordinal(), new ArrayList<Troop>());
+		}
+		setTroops(troops, x, y);
+	}
+	
 	public TroopsManager()
 	{
 		this(new int [Settings.NB_TROOP_TYPES]);
@@ -40,9 +49,25 @@ public abstract class TroopsManager
 		}
 	}
 	
+	void setTroops(int troops[], double x, double y)
+	{
+		if (troops.length == Settings.NB_TROOP_TYPES)
+		{
+			for (TroopType troopType : TroopType.values())
+			{
+				addTroops(troopType, troops[troopType.ordinal()],x,y);
+			}
+		}
+	}
+	
 	void addTroop(TroopType troopType)
 	{
 		this.troops.get(troopType.ordinal()).add(new Troop(troopType));
+	}
+	
+	void addTroop(TroopType troopType, double x, double y)
+	{
+		this.troops.get(troopType.ordinal()).add(new Troop(troopType, x , y));
 	}
 	
 	void addTroops(TroopType troopType, int nbTroop)
@@ -50,6 +75,15 @@ public abstract class TroopsManager
 		for (int i = 0; i < nbTroop; i++)
 		{
 			addTroop(troopType);
+		}
+	}
+	
+	void addTroops(TroopType troopType, int nbTroop, double x, double y)
+	{
+		for (int i = 0; i < nbTroop; i++)
+		{
+			addTroop(troopType,x,y);
+			y=y+10;
 		}
 	}
 	
