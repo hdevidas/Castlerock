@@ -34,8 +34,8 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	private int money;
 	
 	
-	// CONSTRUCTOR
 	
+	// CONSTRUCTORS
 	public Castle(Sprite sprite, String name, Owner owner, int money, int level, int[] army_life) {
 		super(army_life);
 		
@@ -82,7 +82,9 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		return owner;
 	}
 
-	// INTERFACE METHODS
+	
+	
+	// INHERITED METHODS
 	// KeyboardInputsReceiver
 	public void processInputs(Inputs inputs)
 	{	
@@ -123,12 +125,17 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	// troopsManager
 
+	protected void updateThis() 
+	{
+		
+	}
+	protected void updateChilds() 
+	{
+		super.updateChilds();
+	}
 
 	
-	
-	
-	// OBJECT METHODS
-
+	// METHODS
 	public void level_up() { //MONTE D'UN NIVEAU LE CHATEAU
 		if (getMoney() >= (getLevel()*1000)) {
 			setMoney(getMoney()-getLevel()*1000);
@@ -153,14 +160,9 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		}
 		return false;
 	}
-
 	
 	public boolean is_player() {
 		return (this.owner == Owner.Player);
 	}
-
-
-
-
 
 }

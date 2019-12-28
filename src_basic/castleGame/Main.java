@@ -20,8 +20,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-public class Main extends Application implements KeyboardInputsReceiver {
-
+public class Main extends Application implements KeyboardInputsReceiver
+{
+	// VARIABLES
 	private Map map;
 
 	private Pane playfieldLayer;
@@ -35,7 +36,32 @@ public class Main extends Application implements KeyboardInputsReceiver {
 	private Text Message = new Text();
 	
 	Group root;
+	
+	
+	
+	// CONSTRUCTORS
+	public static void main(String[] args) 
+	{
+		launch(args);
+	}
+	
 
+	
+	// GETTERS AND SETTERS
+	
+	
+	
+	// INHERITED METHODS
+	public void processInputs(Inputs inputs) {
+		if (inputs.isExit()) {
+			Platform.exit();
+			System.exit(0);
+		}
+		map.processInputs(inputs);
+	}
+	
+	
+	// METHODS
 	public void start(Stage primaryStage) {
 
 		// Préparation de la scene
@@ -58,7 +84,7 @@ public class Main extends Application implements KeyboardInputsReceiver {
 			public void handle(long now) {
 				processInputs(inputs);
 				
-				map.updateCastle();
+				map.update();
 				
 				//update bar
 				update_bar();
@@ -68,13 +94,6 @@ public class Main extends Application implements KeyboardInputsReceiver {
 		gameLoop.start();
 	}
 	
-	public void processInputs(Inputs inputs) {
-		if (inputs.isExit()) {
-			Platform.exit();
-			System.exit(0);
-		}
-		map.processInputs(inputs);
-	}
 	private void loadGame() { 
 		
 		map = new Map(playfieldLayer);
@@ -118,10 +137,6 @@ public class Main extends Application implements KeyboardInputsReceiver {
 		statusBar.relocate(0, Settings.SCENE_HEIGHT);
 		statusBar.setPrefSize(Settings.SCENE_WIDTH, Settings.STATUS_BAR_HEIGHT);
 		root.getChildren().add(statusBar);
-	}
-
-	public static void main(String[] args) {
-		launch(args);
 	}
 
 }

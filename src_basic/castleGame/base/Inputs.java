@@ -9,14 +9,31 @@ import static javafx.scene.input.KeyCode.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-public class Inputs {
+public class Inputs 
+{
+	// VARIABLES
 	private BitSet keyboardBitSet = new BitSet();
 
 	private Scene scene = null;
 
+	
+	
+	// CONSTRUCTORS
 	public Inputs(Scene scene) {
 		this.scene = scene;
 	}
+	
+	
+	
+	// GETTERS AND SETTERS
+	
+	
+	
+	// INHERITED METHODS
+	
+	
+	
+	// METHODS
 
 	//??
 	public void addListeners() {

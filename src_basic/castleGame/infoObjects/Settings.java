@@ -2,8 +2,9 @@ package castleGame.infoObjects;
 
 public class Settings
 {
-	public static final double SCENE_WIDTH = 1600;
-    public static final double SCENE_HEIGHT = 900;
+	// VARIABLES
+	public static final double SCENE_WIDTH = 1300; // Caution : modifying the size of the windows does not reduce the
+    public static final double SCENE_HEIGHT = 600; // number of castle to display nor their size : if not enough place -> infinite loop
 	public static final double STATUS_BAR_HEIGHT = 50;
 	
 	public static final double CASTLE_MIN_DISTANCE = 200;
@@ -14,7 +15,7 @@ public class Settings
 	public static final double OST_SIZE = 10;
 	
 	public static final double IA_CASTLE_NUMBER = 5;
-	public static final double NEUTRAL_CASTLE_NUMBER = 12;
+	public static final double NEUTRAL_CASTLE_NUMBER = 8;
 	public static final int IA_NEUTRAL_CASTLE_MAX_LEVEL = 5;
 	
 	public static final int ARMY_LIFE_INIT[] = {2,0,0};

@@ -6,7 +6,7 @@ public enum TroopType
 	Knight ("Chevalier", 500, 20, 6, 3, 5),
 	Onager ("Onagre", 1000, 50, 1, 5, 10);
 	
-
+	// VARIABLES
 	private String name;
 	private int productionCost;
 	private int productionTime;
@@ -14,7 +14,7 @@ public enum TroopType
 	private int healthPoint;
 	private int attack;
 
-	// constructor
+	// CONSTRUCTORS
 	private TroopType(String name, int productionCost, int productionTime, int speed, int healthPoint, int attack)
 	{
 		this.name = name;
@@ -25,7 +25,9 @@ public enum TroopType
 		this.attack = attack;
 	}
 
-	// getters
+	
+	
+	// GETTERS AND SETTERS
 	public String getName()
 	{
 		return name;
@@ -55,4 +57,12 @@ public enum TroopType
 	{
 		return attack;
 	}
+	
+	
+	
+	// INHERITED METHODS
+	
+	
+	
+	// METHODS
 }

@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 
 public class Sprite {
 
+	// VARIABLES
     private ImageView imageView;
 
     private Pane layer;
@@ -20,6 +21,9 @@ public class Sprite {
 	private double w;
     private double h;
 
+    
+	    
+	// CONSTRUCTORS
     public Sprite(Pane layer, Image image, double x, double y) {
 
         this.layer = layer;
@@ -36,14 +40,9 @@ public class Sprite {
 
     }
 
-    public void addToLayer() {
-        this.layer.getChildren().add(this.imageView);
-    }
-
-    public void removeFromLayer() {
-        this.layer.getChildren().remove(this.imageView);
-    }
-
+    
+    
+    // GETTERS AND SETTERS
     public double getX() {
         return x;
     }
@@ -76,19 +75,6 @@ public class Sprite {
         this.dy = dy;
     }
 
-    public void move() {
-        x += dx;
-        y += dy;
-    }
-
-    public ImageView getView() {
-        return imageView;
-    }
-
-    public void updateUI() {
-        imageView.relocate(x, y);
-    }
-
     public double getWidth() {
         return w;
     }
@@ -103,5 +89,33 @@ public class Sprite {
 
     public double getCenterY() {
         return y + h * 0.5;
+    }
+
+    public ImageView getView() {
+        return imageView;
+    }
+    
+    
+    
+	// INHERITED METHODS
+		
+		
+		
+	// METHODS
+    public void addToLayer() {
+        this.layer.getChildren().add(this.imageView);
+    }
+
+    public void removeFromLayer() {
+        this.layer.getChildren().remove(this.imageView);
+    }
+
+    public void move() {
+        x += dx;
+        y += dy;
+    }
+
+    public void updateUI() {
+        imageView.relocate(x, y);
     }
 }

@@ -2,19 +2,22 @@ package castleGame.gameObjects;
 
 import java.util.ArrayList;
 
+import castleGame.base.GameObject;
 import castleGame.infoObjects.Owner;
 import castleGame.infoObjects.Settings;
 import castleGame.infoObjects.TroopType;
 
 // this class contains all the methods to manage troops and their combined health as int arrays
 // It is used in the following classes : Castle, Ost
-public abstract class TroopsManager
+public abstract class TroopsManager extends GameObject
 {
-	
+	// VARIABLES
 	ArrayList<ArrayList<Troop>> troops = new ArrayList<ArrayList<Troop>>(Settings.NB_TROOP_TYPES);
 	protected Owner owner;
 	
-
+	
+	
+	// CONSTRUCTORS
 	public TroopsManager(int troops[])
 	{
 		for (TroopType troopType : TroopType.values())
@@ -28,7 +31,10 @@ public abstract class TroopsManager
 	{
 		this(new int [Settings.NB_TROOP_TYPES]);
 	}
-
+	
+	
+	
+	// GETTERS AND SETTERS
 	void setTroops(int troops[])
 	{
 		if (troops.length == Settings.NB_TROOP_TYPES)
@@ -40,6 +46,13 @@ public abstract class TroopsManager
 		}
 	}
 	
+	
+	
+	// INHERITED METHODS
+	
+	
+	
+	// METHODS
 	void addTroop(TroopType troopType)
 	{
 		this.troops.get(troopType.ordinal()).add(new Troop(troopType));
@@ -61,6 +74,12 @@ public abstract class TroopsManager
 			this.troops.get(troopType.ordinal()).remove(0);
 		}
 	}
+
+	protected void updateChilds()
+	{
+		this.troops.forEach(troopTypeList -> troopTypeList.forEach(troop -> troop.update()));
+	}
+	
 	
 	// Fonction pour résoudre une attaque
 	//	TODO Fonction a retravailler
