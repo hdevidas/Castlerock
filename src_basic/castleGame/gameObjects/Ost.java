@@ -1,5 +1,7 @@
 package castleGame.gameObjects;
 
+import java.util.ArrayList;
+
 import castleGame.base.Inputs;
 import castleGame.base.Sprite;
 import castleGame.base.SpriteRender;
@@ -11,8 +13,6 @@ public class Ost extends TroopsManager
 {
 	// VARIABLES	
 	private Castle castleTarget;
-	
-	static Image piquierImage = new Image("/images/ost.png",  Settings.OST_SIZE, Settings.OST_SIZE, true, true);
 	
 	
 	

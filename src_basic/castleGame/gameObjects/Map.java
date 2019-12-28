@@ -158,7 +158,6 @@ public class Map extends GameObject implements KeyboardInputsReceiver
 		//Création ost joueur
 				double x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.playerCastleImage.getWidth());
 				double y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.playerCastleImage.getHeight());
-				Sprite sprite = new Sprite(playfieldLayer, Ost.piquierImage, x, y);
 				Ost ost = new Ost();
 				player_ost.add(ost);
 				listXY_ost_player.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
@@ -167,7 +166,6 @@ public class Map extends GameObject implements KeyboardInputsReceiver
 					x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.iaCastleImage.getWidth());
 					y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.iaCastleImage.getHeight());
 					if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_MIN_DISTANCE)) {
-						sprite = new Sprite(playfieldLayer, Ost.piquierImage, x, y);
 						Ost ost2= new Ost();
 						player_ost.add(ost2);
 						listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));

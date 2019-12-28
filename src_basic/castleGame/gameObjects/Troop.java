@@ -3,7 +3,9 @@ package castleGame.gameObjects;
 import castleGame.base.GameObject;
 import castleGame.base.Sprite;
 import castleGame.base.SpriteRender;
+import castleGame.infoObjects.Settings;
 import castleGame.infoObjects.TroopType;
+import javafx.scene.image.Image;
 
 public class Troop extends GameObject implements SpriteRender
 {
@@ -17,6 +19,11 @@ public class Troop extends GameObject implements SpriteRender
 	
 	Sprite sprite;
 	
+	static Image image[] = new Image[]{
+			new Image("/images/ost.png",  Settings.OST_SIZE, Settings.OST_SIZE, true, true),
+			new Image("/images/ost.png",  Settings.OST_SIZE, Settings.OST_SIZE, true, true),
+			new Image("/images/ost.png",  Settings.OST_SIZE, Settings.OST_SIZE, true, true)};
+	
 	
 	
 	// CONSTRUCTORS
@@ -28,6 +35,7 @@ public class Troop extends GameObject implements SpriteRender
 		this.attack = troopType.getAttack();
 		this.x = x;
 		this.y = y;
+		this.sprite = new Sprite(Map.playfieldLayer, image[troopType.ordinal()], x, y);
 	}
 	
 	
