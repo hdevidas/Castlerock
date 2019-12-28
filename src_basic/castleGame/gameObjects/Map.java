@@ -16,7 +16,7 @@ import javafx.scene.layout.Pane;
 public class Map extends GameObject implements KeyboardInputsReceiver
 {
 	// VARIABLES
-	private Pane playfieldLayer;
+	public static Pane playfieldLayer;
 
 	//Liste contenant les coordonnées des chateaux (coo au centre du chateau)
 	private List<javafx.geometry.Point2D> listXY = new ArrayList<javafx.geometry.Point2D>();
@@ -94,10 +94,10 @@ public class Map extends GameObject implements KeyboardInputsReceiver
 		double y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.playerCastleImage.getHeight());
 		Sprite sprite = new Sprite(playfieldLayer, Castle.playerCastleImage, x, y);
 		int level = 1;
-		player_castle = new Castle(sprite ,"Player", Owner.Player, 1, level, Settings.ARMY_LIFE_INIT);
+		player_castle = new Castle(sprite ,"Player", Owner.Player, 1, level, Settings.ARMY_INIT,x,y);
 		listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
 		
-		
+		/*
 		//Création ost joueur
 		double x2 = x - Settings.OST_MIN_DISTANCE_FROM_CASTLE + rnd.nextDouble() * ((x + Settings.OST_MIN_DISTANCE_FROM_CASTLE) - (x - Settings.OST_MIN_DISTANCE_FROM_CASTLE));
 		double y2 = y - Settings.OST_MIN_DISTANCE_FROM_CASTLE + rnd.nextDouble() * ((y + Settings.OST_MIN_DISTANCE_FROM_CASTLE) - (y - Settings.OST_MIN_DISTANCE_FROM_CASTLE));
@@ -117,6 +117,7 @@ public class Map extends GameObject implements KeyboardInputsReceiver
 				break;
 			}
 		}
+		*/
 		
 		
 		
@@ -128,7 +129,7 @@ public class Map extends GameObject implements KeyboardInputsReceiver
 				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.iaCastleImage.getHeight());
 				if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_MIN_DISTANCE)) {
 					sprite = new Sprite(playfieldLayer, Castle.iaCastleImage, x, y);
-					Castle iaCastle = new Castle(sprite, generate_castle_name(), Owner.Computer, 1, level, Settings.ARMY_LIFE_INIT);
+					Castle iaCastle = new Castle(sprite, generate_castle_name(), Owner.Computer, 1, level, Settings.ARMY_INIT,x,y);
 					ai_castles.add(iaCastle);
 					listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
 					break;
@@ -144,7 +145,7 @@ public class Map extends GameObject implements KeyboardInputsReceiver
 				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.neutralCastleImage.getHeight());
 				if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_MIN_DISTANCE)) {
 					sprite = new Sprite(playfieldLayer, Castle.neutralCastleImage, x, y);
-					Castle neutralCastle = new Castle(sprite, generate_castle_name(), Owner.Neutral, 1, level, Settings.ARMY_LIFE_INIT);
+					Castle neutralCastle = new Castle(sprite, generate_castle_name(), Owner.Neutral, 1, level, Settings.ARMY_INIT,x,y);
 					neutral_castles.add(neutralCastle);
 					listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
 					break;

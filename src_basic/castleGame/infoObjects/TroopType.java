@@ -1,5 +1,7 @@
 package castleGame.infoObjects;
 
+import castleGame.base.Sprite;
+
 public enum TroopType
 {
 	Piquier ("Piquier", 100, 5, 2, 1, 1),
@@ -8,6 +10,7 @@ public enum TroopType
 	
 	// VARIABLES
 	private String name;
+	private Sprite sprite;
 	private int productionCost;
 	private int productionTime;
 	private int speed;
@@ -33,6 +36,11 @@ public enum TroopType
 		return name;
 	}
 
+	public Sprite getSprite()
+	{
+		return sprite;
+	}
+	
 	public int getProductionCost()
 	{
 		return productionCost;

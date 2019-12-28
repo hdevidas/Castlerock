@@ -32,19 +32,24 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	private String name;
 	private int level;
 	private int money;
+	private double x;
+	private double y;
 	
 	
-	
+
 	// CONSTRUCTORS
-	public Castle(Sprite sprite, String name, Owner owner, int money, int level, int[] army_life) {
-		super(army_life);
-		
+	public Castle(Sprite sprite, String name, Owner owner, int money, int level, int[] init_army, double x, double y) {
+		super(init_army, x,y);
+		System.out.println(x);
 		this.sprite = sprite;
-		
 		this.money = money;
 		this.level = level;
 		this.name = name;
 		this.owner = owner;
+		this.x = x;
+		this.y = y;
+		
+		
 		
 		
 		setMouseEventResponse();
@@ -58,6 +63,14 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		return level;
 	}
 
+	public double getX() {
+		return x;
+	}
+
+	public double getY() {
+		return y;
+	}
+	
 	public void setLevel(int level) {
 		this.level = level;
 	}
@@ -146,7 +159,9 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	public void build_troop(TroopType troopType) { //CONSTRUIS UNE TROUPE
 		if (money >= troopType.getProductionCost() ) {
 			money -= troopType.getProductionCost() ;
-			this.addTroop(troopType);
+			int nbp = getNbTroop(troopType);
+			double ny = y + nbp*10;
+			this.addTroop(troopType,x,ny);
 		}
 	}
 	

@@ -19,12 +19,12 @@ public class Ost extends TroopsManager
 	// CONSTRUCTORS
 	public Ost() 
 	{
-		this(new int[Settings.NB_TROOP_TYPES]);
+		this(new int[Settings.NB_TROOP_TYPES], 1, 1);
 	}
 	
-	public Ost(int initialArmy[]) 
+	public Ost(int initialArmy[], double x, double y) 
 	{
-		super(initialArmy);
+		super(initialArmy, x, y);
 	}
 
 	

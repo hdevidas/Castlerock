@@ -17,52 +17,51 @@ public abstract class TroopsManager extends GameObject
 	
 	
 	
-	// CONSTRUCTORS
-	public TroopsManager(int troops[])
+	// CONSTRUCTORS	
+	public TroopsManager(int troops[],double x, double y)
 	{
 		for (TroopType troopType : TroopType.values())
 		{
 			this.troops.add(troopType.ordinal(), new ArrayList<Troop>());
 		}
-		setTroops(troops);
+		setTroops(troops, x, y);
 	}
 	
 	public TroopsManager()
 	{
-		this(new int [Settings.NB_TROOP_TYPES]);
+		this(new int [Settings.NB_TROOP_TYPES], 1, 1);
 	}
 	
 	
 	
 	// GETTERS AND SETTERS
-	void setTroops(int troops[])
+	void setTroops(int troops[], double x, double y)
 	{
 		if (troops.length == Settings.NB_TROOP_TYPES)
 		{
 			for (TroopType troopType : TroopType.values())
 			{
-				addTroops(troopType, troops[troopType.ordinal()]);
+				addTroops(troopType, troops[troopType.ordinal()],x,y);
 			}
 		}
 	}
-	
-	
 	
 	// INHERITED METHODS
 	
 	
 	
-	// METHODS
-	void addTroop(TroopType troopType)
+	// METHODS	
+	void addTroop(TroopType troopType, double x, double y)
 	{
-		this.troops.get(troopType.ordinal()).add(new Troop(troopType));
+		this.troops.get(troopType.ordinal()).add(new Troop(troopType, x , y));
 	}
 	
-	void addTroops(TroopType troopType, int nbTroop)
+	void addTroops(TroopType troopType, int nbTroop, double x, double y)
 	{
 		for (int i = 0; i < nbTroop; i++)
 		{
-			addTroop(troopType);
+			addTroop(troopType,x,y);
+			y=y+10;
 		}
 	}
 	
