@@ -85,17 +85,26 @@ public abstract class TroopsManager extends GameObject
 	//	TODO a generaliser avec tous les types de troupes
 	void attack(TroopsManager foe)
 	{
-		while ( this.has_got_troops(TroopType.Piquier) && foe.has_got_troops(TroopType.Piquier)) {
+		while ( this.has_got_troops() && foe.has_got_troops()) {
 			this.removeTroop(TroopType.Piquier);
 			foe.removeTroop(TroopType.Piquier);
 		}
 	}
+	
+
 	
 	boolean has_got_troops(TroopType troopType) {
 		if (getNbTroop(troopType) > 0 ) {
 			return true;
 		}
 		return false;
+	}
+	
+	boolean has_got_troops() {
+		if (has_got_troops(TroopType.Piquier) == false && has_got_troops(TroopType.Onager) == false && has_got_troops(TroopType.Knight) == false) {
+			return false;
+		}
+		return true;
 	}
 	
 	void takeDamage(int damage)

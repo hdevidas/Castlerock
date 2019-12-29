@@ -36,7 +36,7 @@ public class Main extends Application implements KeyboardInputsReceiver
 	//Bar d'info
 	private Text Message = new Text();
 	
-	Group root;
+	public static Group root;
 	
 	
 	
@@ -141,7 +141,6 @@ public class Main extends Application implements KeyboardInputsReceiver
 	
 	public void createStatusBar() {
 		HBox statusBar = new HBox();
-		//Message.setText("Chateau cliqué          Nom :"+ player_castle.getName()+"          Florins :" + player_castle.getMoney() + "          Niveau : " + player_castle.getLevel());
 		statusBar.getChildren().addAll(Message);
 		statusBar.getStyleClass().add("statusBar");
 		statusBar.relocate(0, Settings.SCENE_HEIGHT);

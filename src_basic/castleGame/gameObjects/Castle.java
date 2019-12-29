@@ -5,6 +5,7 @@ import java.util.List;
 
 import castleGame.Main;
 import castleGame.base.Inputs;
+import castleGame.gameObjects.Map;
 import castleGame.base.KeyboardInputsReceiver;
 import castleGame.base.MouseEventReceiver;
 import castleGame.base.Sprite;
@@ -13,7 +14,9 @@ import castleGame.infoObjects.Owner;
 import castleGame.infoObjects.Settings;
 import castleGame.infoObjects.TroopType;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.scene.image.Image;
 
 public class Castle extends TroopsManager implements MouseEventReceiver, KeyboardInputsReceiver, SpriteRender{
@@ -35,8 +38,9 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	private double x;
 	private double y;
 	
+	private Text piquierTxt = new Text();
 	
-
+	
 	// CONSTRUCTORS
 	public Castle(Sprite sprite, String name, Owner owner, int money, int level, int[] init_army, double x, double y) {
 		super(init_army, x,y);
@@ -49,7 +53,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		this.x = x;
 		this.y = y;
 		
-		
+		create_piquier_bar();
 		
 		
 		setMouseEventResponse();
@@ -95,6 +99,17 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		return owner;
 	}
 
+	public void setOwner(Owner owner) {
+		this.owner = owner;
+	}
+
+	public Sprite getSprite() {
+		return sprite;
+	}
+	
+	public void setSprite(Sprite sprite) {
+		this.sprite = sprite;
+	}
 	
 	
 	// INHERITED METHODS
@@ -115,6 +130,25 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 			// attaquer un chateau x
 			if (Main.inputs.isAttacks()) {
 				this.attack(clicked);
+				
+				if (this.has_got_troops() == false) {
+					if (this.player_is_alive(this.getName())) {
+						System.out.println("un de vos chateau n'a plus d'unités, il est vulnérable.");
+					}
+					else {
+						System.out.println("Vous avez perdus.");
+					}
+				}
+				else {
+					System.out.println("Vous avez détruis un chateau.");
+					System.out.println("Ce chateau porte maintenant votre nom.");
+					clicked.setName(this.getName());
+					System.out.println("Ce chateau peut maintenant être utilisé comme si c'était le votre.");
+					clicked.setOwner(Owner.Player);
+					
+					clicked.setMouseEventResponse();
+				}
+				
 			}
 		}
 		
@@ -146,7 +180,16 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 			this.level_up();
 		}
 		updateUI();
+		
+		// manque le changement des sprites neutral et computer (a faire plus tard)
+		if ( this.owner == Owner.Player && this.getSprite().getImage() != playerCastleImage ) {
+			this.change_castle_sprite(playerCastleImage);
+		}
+		
+		update_piquier_bar();
+		
 	}
+	
 	protected void updateChilds() 
 	{
 		super.updateChilds();
@@ -170,6 +213,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 			this.addTroop(troopType,x,ny);
 		}
 	}
+
 	
 	public void money_up() { //GENERATION FLORINS
 		setMoney(getMoney() + getLevel());
@@ -185,5 +229,41 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	public boolean is_player() {
 		return (this.owner == Owner.Player);
 	}
-
+	
+	public boolean player_is_alive(String name) {
+		int counter = 0;
+	    for(Castle castle:Map.all_castles) {
+	    	if ((castle.getName() == name) && (castle.has_got_troops())){
+	    		counter = counter +1 ;
+	    	}
+	    }
+	    if (counter == 0) {
+	    	return false;
+	    }
+	    return true;
+	}
+	
+	
+	void change_castle_sprite(Image img) {
+		Sprite sprite = new Sprite(Map.playfieldLayer,img, this.getX(), this.getY());
+		this.setSprite(sprite);
+		setMouseEventResponse();
+	}
+	
+	
+	public void create_piquier_bar() {
+		String nbPiquier = "Piq: " + Integer.toString(getNbTroop(TroopType.Piquier));
+		HBox piquierBar = new HBox();
+		piquierTxt.setText(nbPiquier);
+		piquierBar.getChildren().addAll(piquierTxt);
+		piquierBar.getStyleClass().add("piquier");
+		piquierBar.relocate(x, y);
+		//piquierBar.setPrefSize(Settings.SCENE_WIDTH, Settings.STATUS_BAR_HEIGHT); // inutile ?
+		Main.root.getChildren().add(piquierBar);
+	}
+	
+	private void update_piquier_bar() {
+		piquierTxt.setText("Piq: "+Integer.toString(getNbTroop(TroopType.Piquier)));                 
+	}
+	
 }

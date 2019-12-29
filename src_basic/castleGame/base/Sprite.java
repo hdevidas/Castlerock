@@ -21,6 +21,7 @@ public class Sprite {
 	private double w;
     private double h;
 
+    private Image image;
     
 	    
 	// CONSTRUCTORS
@@ -36,6 +37,7 @@ public class Sprite {
         this.w = image.getWidth(); 
         this.h = image.getHeight(); 
 
+        this.image = image;
         addToLayer();
 
     }
@@ -95,6 +97,9 @@ public class Sprite {
         return imageView;
     }
     
+    public Image getImage() {
+        return image;
+    }
     
     
 	// INHERITED METHODS

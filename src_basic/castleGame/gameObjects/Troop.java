@@ -19,6 +19,8 @@ public class Troop extends GameObject implements SpriteRender
 	
 	Sprite sprite;
 	
+	
+	//plus utilisé
 	static Image image[] = new Image[]{
 			new Image("/images/ost.png",  Settings.OST_SIZE, Settings.OST_SIZE, true, true),
 			new Image("/images/ost.png",  Settings.OST_SIZE, Settings.OST_SIZE, true, true),
@@ -35,7 +37,7 @@ public class Troop extends GameObject implements SpriteRender
 		this.attack = troopType.getAttack();
 		this.x = x;
 		this.y = y;
-		this.sprite = new Sprite(Map.playfieldLayer, image[troopType.ordinal()], x, y);
+		//this.sprite = new Sprite(Map.playfieldLayer, image[troopType.ordinal()], x, y); //plus utilisé
 	}
 	
 	
@@ -57,7 +59,7 @@ public class Troop extends GameObject implements SpriteRender
 
 	public void updateUI() 
 	{
-		sprite.updateUI();
+		//sprite.updateUI(); //plus utilisé car plus de sprite de troop a update
 	}
 	
 	

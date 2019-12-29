@@ -28,4 +28,5 @@ public class Settings
 	
 	public static final int NB_TROOP_TYPES = TroopType.values().length;
 	
+	public static final String PLAYER_NAME = "Player";
 }
