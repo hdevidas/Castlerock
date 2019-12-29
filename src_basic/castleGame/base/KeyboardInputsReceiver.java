@@ -19,5 +19,5 @@ public interface KeyboardInputsReceiver
 	
 	
 	// METHODS
-	void processInputs(Inputs inputs);
+	void processInputs();
 }

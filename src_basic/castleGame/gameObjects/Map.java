@@ -13,7 +13,7 @@ import castleGame.infoObjects.Settings;
 import javafx.scene.layout.Pane;
 
 
-public class Map extends GameObject implements KeyboardInputsReceiver
+public class Map extends GameObject
 {
 	// VARIABLES
 	public static Pane playfieldLayer;
@@ -54,14 +54,6 @@ public class Map extends GameObject implements KeyboardInputsReceiver
 	
 	
 	// INHERITED METHODS
-	public void processInputs(Inputs inputs)
-	{
-		player_castle.processInputs(inputs);
-		ai_castles.forEach(castle -> castle.processInputs(inputs));
-		neutral_castles.forEach(castle -> castle.processInputs(inputs));
-		// les deux commande suivantes seraient mieux définies dans la classe chateaux TODO
-	}
-	
 	protected void updateThis()
 	{
 		
@@ -70,19 +62,12 @@ public class Map extends GameObject implements KeyboardInputsReceiver
 	protected void updateChilds()
 	{
 		// Update Castles
-		// update sprite
-		player_castle.updateUI();
-		ai_castles.forEach(castle -> castle.updateUI());
-		neutral_castles.forEach(castle -> castle.updateUI());
+		player_castle.update();
+		ai_castles.forEach(castle -> castle.update());
+		neutral_castles.forEach(castle -> castle.update());
 		
-		//update money
-		player_castle.money_up();
-		ai_castles.forEach(castle -> castle.money_up());
-		neutral_castles.forEach(castle -> castle.money_up());
-		
-		//update level
-		ai_castles.forEach(castle -> castle.level_up());
-		neutral_castles.forEach(castle -> castle.level_up());
+		// Update Osts
+		//TODO
 	}
 	
 	

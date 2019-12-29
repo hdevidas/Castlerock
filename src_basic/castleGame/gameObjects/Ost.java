@@ -42,7 +42,7 @@ public class Ost extends TroopsManager
 	protected void updateChilds()
 	{
 		super.updateChilds();
-		
+		// specific ost variable to update can be put here
 	}
 	
 	

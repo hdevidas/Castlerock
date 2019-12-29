@@ -40,7 +40,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	// CONSTRUCTORS
 	public Castle(Sprite sprite, String name, Owner owner, int money, int level, int[] init_army, double x, double y) {
 		super(init_army, x,y);
-		System.out.println(x);
+		//System.out.println(x);
 		this.sprite = sprite;
 		this.money = money;
 		this.level = level;
@@ -99,21 +99,21 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	// INHERITED METHODS
 	// KeyboardInputsReceiver
-	public void processInputs(Inputs inputs)
+	public void processInputs()
 	{	
 		//actions possibles du joueur :
 		if (owner == Owner.Player)
 		{
 			// monter d'un niveau
-			if (inputs.isLevelUp()) {
+			if (Main.inputs.isLevelUp()) {
 				level_up();
 			}
 			// construire un piquier
-			if (inputs.isBuilding()) {
+			if (Main.inputs.isBuilding()) {
 				build_troop(TroopType.Piquier);
 			}
 			// attaquer un chateau x
-			if (inputs.isAttacks()) {
+			if (Main.inputs.isAttacks()) {
 				this.attack(clicked);
 			}
 		}
@@ -137,14 +137,20 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	}
 	
 	// troopsManager
-
 	protected void updateThis() 
 	{
-		
+		processInputs();
+		this.money_up();
+		if (this.owner == Owner.Computer || this.owner == Owner.Neutral)
+		{
+			this.level_up();
+		}
+		updateUI();
 	}
 	protected void updateChilds() 
 	{
 		super.updateChilds();
+		// specific castle variable to update can be put here
 	}
 
 	

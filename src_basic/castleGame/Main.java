@@ -28,9 +28,10 @@ public class Main extends Application implements KeyboardInputsReceiver
 	private Pane playfieldLayer;
 
 	
-	private Scene scene;
-	private Inputs inputs;
+	private static Scene scene;
+	public static Inputs inputs;
 	private AnimationTimer gameLoop;
+	private long lastTurnTime = 0;
 
 	//Bar d'info
 	private Text Message = new Text();
@@ -52,17 +53,45 @@ public class Main extends Application implements KeyboardInputsReceiver
 	
 	
 	// INHERITED METHODS
-	public void processInputs(Inputs inputs) {
+	public void processInputs() 
+	{
 		if (inputs.isExit()) {
 			Platform.exit();
 			System.exit(0);
 		}
-		map.processInputs(inputs);
 	}
 	
 	
 	// METHODS
 	public void start(Stage primaryStage) {
+
+		loadGame(primaryStage);
+
+		// Lancement du jeu
+
+		gameLoop = new AnimationTimer() {
+			// MAIN LOOP
+			public void handle(long now) {
+
+				processInputs();
+				
+				if (lastTurnTime + Settings.SECONDS_PER_TURN <= now)
+				{
+					lastTurnTime = now;
+					
+					map.update();
+					
+					//update bar
+					update_bar();
+				}
+			}
+
+		};
+		gameLoop.start();
+	}
+	
+	private void loadGame(Stage primaryStage) 
+	{ 
 
 		// Préparation de la scene
 		root = new Group();
@@ -75,29 +104,10 @@ public class Main extends Application implements KeyboardInputsReceiver
 		// create layers
 		playfieldLayer = new Pane();
 		root.getChildren().add(playfieldLayer);
-
-		// Lancement du jeu
-		loadGame();
-
-		gameLoop = new AnimationTimer() {
-			// MAIN LOOP
-			public void handle(long now) {
-				processInputs(inputs);
-				
-				map.update();
-				
-				//update bar
-				update_bar();
-			}
-
-		};
-		gameLoop.start();
-	}
-	
-	private void loadGame() { 
 		
 		map = new Map(playfieldLayer);
 
+		// create inputs instance
 		inputs = new Inputs(scene);
 		inputs.addListeners();
 

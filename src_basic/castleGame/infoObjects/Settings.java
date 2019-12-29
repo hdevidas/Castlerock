@@ -7,6 +7,9 @@ public class Settings
     public static final double SCENE_HEIGHT = 600; // number of castle to display nor their size : if not enough place -> infinite loop
 	public static final double STATUS_BAR_HEIGHT = 50;
 	
+	public static final double TURNS_PER_SECOND = 10;
+	public static final long SECONDS_PER_TURN = (long) (1/TURNS_PER_SECOND * 1000000000);
+	
 	public static final double CASTLE_MIN_DISTANCE = 200;
 	public static final double CASTLE_SIZE = 100;
 	

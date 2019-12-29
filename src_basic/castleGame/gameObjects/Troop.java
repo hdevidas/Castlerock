@@ -47,12 +47,12 @@ public class Troop extends GameObject implements SpriteRender
 	// INHERITED METHODS
 	protected void updateThis() 
 	{
-			
+		this.updateUI();
 	}
 	
 	protected void updateChilds()
 	{
-		
+		// no variable of this object is a gameObject to update
 	}
 
 	public void updateUI() 
