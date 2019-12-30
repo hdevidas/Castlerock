@@ -39,6 +39,8 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	// this object variable
 	static public Castle clicked;
 	static public Castle lastPlayerClicked;
+	static public Castle launchingOstFrom;
+	static public Boolean isLaunchingOst;
 	private String name;
 	private int level;
 	private int money;
@@ -152,33 +154,15 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 				build_troop(TroopType.Piquier);
 			}
 			// attaquer un chateau x
-			if (Main.inputs.isAttacks()) {
+			if (Main.inputs.isAttacks() && clicked != lastPlayerClicked && this == lastPlayerClicked) {
 				this.attack(clicked);
 				
-				if (this.has_got_troops() == false) {
-					if (this.player_is_alive(this.getName())) {
-						System.out.println("un de vos chateau n'a plus d'unités, il est vulnérable.");
-					}
-					else {
-						System.out.println("Vous avez perdus.");
-					}
-				}
-				else {
-					System.out.println("Vous avez détruis un chateau.");
-					System.out.println("Ce chateau porte maintenant votre nom.");
-					clicked.setName(this.getName());
-					System.out.println("Ce chateau peut maintenant être utilisé comme si c'était le votre.");
-					clicked.setOwner(Owner.Player);
-					
-					clicked.setMouseEventResponse();
-				}
-				
+				this.postAttackManagement();
 			}
 		}
 		
 	}
 
-	
 	// MouseEventReceiver
 	public void setMouseEventResponse()
 	{
@@ -188,6 +172,10 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 			{
 				lastPlayerClicked = this;
 			}
+			if (isLaunchingOst && this != launchingOstFrom)
+			{
+				this.receiveOst();
+			}
 			e.consume();
 		});
 		
@@ -196,11 +184,14 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		MenuItem createOstFrom = new MenuItem("Launch ost");
 		MenuItem levelUp = new MenuItem("Level up");
 		Menu newTroop = new Menu("Create new Troop");
-		MenuItem troop = new MenuItem ("piquier"); // TODO automatic menuItem creation for each troop type.
-		//createOstFrom.setOnAction(evt -> this.launchOst());
+		for (TroopType troop : TroopType.values())
+		{
+			MenuItem troopItem = new MenuItem(troop.getName());
+			troopItem.setOnAction(evt -> this.build_troop(troop));
+			newTroop.getItems().addAll(troopItem);
+		}
+		createOstFrom.setOnAction(evt -> this.launchOst());
 		levelUp.setOnAction(evt -> this.level_up());
-		//newTroop.setOnAction(evt -> ());
-		newTroop.getItems().addAll(troop);
 		contextMenu.getItems().addAll(createOstFrom, levelUp, newTroop);
 		
 		if (this.owner == Owner.Player)
@@ -211,7 +202,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 			});
 		}
 	}
-	
+
 	// Sprite
 	public void updateUI()
 	{
@@ -248,7 +239,47 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	}
 
 	
+	
 	// METHODS
+	private void launchOst() 
+	{	
+		launchingOstFrom = this;
+		isLaunchingOst = true;
+		//Display : "Click on the castle to launch the ost to..."
+	}
+
+	private void receiveOst() 
+	{
+		createOst(launchingOstFrom, this);
+		isLaunchingOst = false;
+	}
+
+	private void createOst(Castle castleFrom, Castle castleTo) 
+	{
+		castleFrom.attack(castleTo);
+		castleFrom.postAttackManagement();
+	}
+	
+	private void postAttackManagement() {
+		if (this.has_got_troops() == false) {
+			if (this.player_is_alive(this.getName())) {
+				System.out.println("un de vos chateau n'a plus d'unités, il est vulnérable.");
+			}
+			else {
+				System.out.println("Vous avez perdus.");
+			}
+		}
+		else {
+			System.out.println("Vous avez détruis un chateau.");
+			System.out.println("Ce chateau porte maintenant votre nom.");
+			clicked.setName(this.getName());
+			System.out.println("Ce chateau peut maintenant être utilisé comme si c'était le votre.");
+			clicked.setOwner(Owner.Player);
+			
+			clicked.setMouseEventResponse();
+		}
+	}
+
 	public void level_up() { //MONTE D'UN NIVEAU LE CHATEAU
 		if (getMoney() >= (getLevel()*1000)) {
 			setMoney(getMoney()-getLevel()*1000);
