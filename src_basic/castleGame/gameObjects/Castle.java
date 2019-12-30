@@ -13,6 +13,9 @@ import castleGame.base.SpriteRender;
 import castleGame.infoObjects.Owner;
 import castleGame.infoObjects.Settings;
 import castleGame.infoObjects.TroopType;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -32,6 +35,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	// this object variable
 	static public Castle clicked;
+	static public Castle lastPlayerClicked;
 	private String name;
 	private int level;
 	private int money;
@@ -133,17 +137,17 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 				
 				if (this.has_got_troops() == false) {
 					if (this.player_is_alive(this.getName())) {
-						System.out.println("un de vos chateau n'a plus d'unités, il est vulnérable.");
+						System.out.println("un de vos chateau n'a plus d'unitÃ©s, il est vulnÃ©rable.");
 					}
 					else {
 						System.out.println("Vous avez perdus.");
 					}
 				}
 				else {
-					System.out.println("Vous avez détruis un chateau.");
+					System.out.println("Vous avez dÃ©truis un chateau.");
 					System.out.println("Ce chateau porte maintenant votre nom.");
 					clicked.setName(this.getName());
-					System.out.println("Ce chateau peut maintenant être utilisé comme si c'était le votre.");
+					System.out.println("Ce chateau peut maintenant Ãªtre utilisÃ© comme si c'Ã©tait le votre.");
 					clicked.setOwner(Owner.Player);
 					
 					clicked.setMouseEventResponse();
@@ -160,8 +164,32 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	{
 		sprite.getView().setOnMousePressed(e -> {
 			clicked = this;
+			if (this.owner == Owner.Player)
+			{
+				lastPlayerClicked = this;
+			}
 			e.consume();
 		});
+		
+		// creating the context menu
+		ContextMenu contextMenu = new ContextMenu();
+		MenuItem createOstFrom = new MenuItem("Launch ost");
+		MenuItem levelUp = new MenuItem("Level up");
+		Menu newTroop = new Menu("Create new Troop");
+		MenuItem troop = new MenuItem ("piquier"); // TODO automatic menuItem creation for each troop type.
+		//createOstFrom.setOnAction(evt -> this.launchOst());
+		levelUp.setOnAction(evt -> this.level_up());
+		//newTroop.setOnAction(evt -> ());
+		newTroop.getItems().addAll(troop);
+		contextMenu.getItems().addAll(createOstFrom, levelUp, newTroop);
+		
+		if (this.owner == Owner.Player)
+		{
+			sprite.getView().setOnContextMenuRequested(e -> 
+			{
+				contextMenu.show(sprite.getView(), e.getScreenX(), e.getScreenY());
+			});
+		}
 	}
 	
 	// Sprite
