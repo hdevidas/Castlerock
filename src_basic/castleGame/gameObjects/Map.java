@@ -94,7 +94,7 @@ public class Map extends GameObject
 			while(true) {
 				x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.iaCastleImage.getWidth());
 				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.iaCastleImage.getHeight());
-				if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_MIN_DISTANCE)) {
+				if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_SIZE*2)) {
 					sprite = new Sprite(playfieldLayer, Castle.iaCastleImage, x, y);
 					Castle iaCastle = new Castle(sprite, generate_castle_name(), Owner.Computer, 1, level, Settings.ARMY_INIT,x,y);
 					all_castles.add(iaCastle);
@@ -110,7 +110,7 @@ public class Map extends GameObject
 			while(true) {
 				x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.neutralCastleImage.getWidth());
 				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.neutralCastleImage.getHeight());
-				if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_MIN_DISTANCE)) {
+				if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_SIZE*2)) {
 					sprite = new Sprite(playfieldLayer, Castle.neutralCastleImage, x, y);
 					Castle neutralCastle = new Castle(sprite, generate_castle_name(), Owner.Neutral, 1, level, Settings.ARMY_INIT,x,y);
 					all_castles.add(neutralCastle);

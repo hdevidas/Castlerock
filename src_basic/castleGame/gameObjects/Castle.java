@@ -1,6 +1,7 @@
 package castleGame.gameObjects;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.List;
 
 import castleGame.Main;
@@ -27,11 +28,13 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	// VARIABLES
 	// game variable
 	private Sprite sprite;
+	private Random rnd = new Random();
 	
 	// Sprites TODO peut-être pas leur place définitive...
-	static Image iaCastleImage		= new Image("/images/playerCastle.png",  Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
-	static Image neutralCastleImage	= new Image("/images/iaCastle.png", 	 Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
-	static Image playerCastleImage	= new Image("/images/neutralCastle.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
+	static Image iaCastleImage		= new Image("/images/red.png",  Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
+	static Image neutralCastleImage	= new Image("/images/blue.png", 	 Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
+	static Image playerCastleImage	= new Image("/images/green.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
+	static Image doorImage	= new Image("/images/door.png", Settings.CASTLE_SIZE/5, Settings.CASTLE_SIZE/5, true, true);
 	
 	// this object variable
 	static public Castle clicked;
@@ -41,8 +44,11 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	private int money;
 	private double x;
 	private double y;
+	private int gate; // 1:Nord, 2:Est, 3:Sud, 4:Ouest 
 	
 	private Text piquierTxt = new Text();
+	private Text moneyTxt = new Text();
+	private Text levelTxt = new Text();
 	
 	
 	// CONSTRUCTORS
@@ -57,7 +63,13 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		this.x = x;
 		this.y = y;
 		
+		// Dessin de la Porte
+		int gate = rnd.nextInt(4 - 1 + 1) + 1;
+		createDoor(gate);
+		
 		create_piquier_bar();
+		create_money_bar();
+		create_level_bar();
 		
 		
 		setMouseEventResponse();
@@ -113,6 +125,14 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	public void setSprite(Sprite sprite) {
 		this.sprite = sprite;
+	}
+	
+	public int getGate() {
+		return gate;
+	}
+	
+	public void setGate(int gate) {
+		this.gate = gate;
 	}
 	
 	
@@ -212,9 +232,12 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		// manque le changement des sprites neutral et computer (a faire plus tard)
 		if ( this.owner == Owner.Player && this.getSprite().getImage() != playerCastleImage ) {
 			this.change_castle_sprite(playerCastleImage);
+			this.createDoor(this.getGate());
 		}
 		
 		update_piquier_bar();
+		update_money_bar();
+		update_level_bar();
 		
 	}
 	
@@ -280,18 +303,62 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	
 	public void create_piquier_bar() {
-		String nbPiquier = "Piq: " + Integer.toString(getNbTroop(TroopType.Piquier));
+		String nbPiquier = "Piquiers: " + Integer.toString(getNbTroop(TroopType.Piquier));
 		HBox piquierBar = new HBox();
 		piquierTxt.setText(nbPiquier);
 		piquierBar.getChildren().addAll(piquierTxt);
 		piquierBar.getStyleClass().add("piquier");
-		piquierBar.relocate(x, y);
+		piquierBar.relocate(x+Settings.CASTLE_SIZE *2/7, y+Settings.CASTLE_SIZE *2/10);
 		//piquierBar.setPrefSize(Settings.SCENE_WIDTH, Settings.STATUS_BAR_HEIGHT); // inutile ?
 		Main.root.getChildren().add(piquierBar);
 	}
 	
 	private void update_piquier_bar() {
-		piquierTxt.setText("Piq: "+Integer.toString(getNbTroop(TroopType.Piquier)));                 
+		piquierTxt.setText("Piquiers: "+Integer.toString(getNbTroop(TroopType.Piquier)));                 
 	}
 	
+	public void create_money_bar() {
+		String nbMoney = "Florins: " + Integer.toString(this.getMoney());
+		HBox moneyBar = new HBox();
+		moneyTxt.setText(nbMoney);
+		moneyBar.getChildren().addAll(moneyTxt);
+		moneyBar.getStyleClass().add("money");
+		moneyBar.relocate(x+Settings.CASTLE_SIZE *2/7, y+Settings.CASTLE_SIZE *7/10);
+		Main.root.getChildren().add(moneyBar);
+	}
+	
+	private void update_money_bar() {
+		moneyTxt.setText("Florins: "+Integer.toString(this.getMoney()));                 
+	}
+	
+	public void create_level_bar() {
+		String nbLevel = "Niveau: " + Integer.toString(this.getLevel());
+		HBox levelBar = new HBox();
+		levelTxt.setText(nbLevel);
+		levelBar.getChildren().addAll(levelTxt);
+		levelBar.getStyleClass().add("level");
+		levelBar.relocate(x+Settings.CASTLE_SIZE *2/7, y+Settings.CASTLE_SIZE *6/10);
+
+		Main.root.getChildren().add(levelBar);
+	}
+	
+	private void update_level_bar() {
+		levelTxt.setText("Niveau: "+Integer.toString(this.getLevel()));                 
+	}
+	
+	
+	void createDoor(int gate) {
+		if (gate == 1) {
+			Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, x+(Settings.CASTLE_SIZE/5)*2, y);
+		}
+		else if (gate ==2) {
+			Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, x+(Settings.CASTLE_SIZE/5)*4, y+(Settings.CASTLE_SIZE/5)*2);
+		}
+		else if (gate ==3) {
+			Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, x+(Settings.CASTLE_SIZE/5)*2, y+(Settings.CASTLE_SIZE/5)*4);
+		}
+		else if (gate ==4) {
+			Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, x, y+(Settings.CASTLE_SIZE/5)*2);
+		}
+	}
 }
