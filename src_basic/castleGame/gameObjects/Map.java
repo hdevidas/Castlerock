@@ -10,6 +10,7 @@ import castleGame.base.KeyboardInputsReceiver;
 import castleGame.base.Sprite;
 import castleGame.infoObjects.Owner;
 import castleGame.infoObjects.Settings;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
 
@@ -17,6 +18,7 @@ public class Map extends GameObject
 {
 	// VARIABLES
 	public static Pane playfieldLayer;
+	static Image oceanImage	= new Image("/images/water.png", Settings.SCENE_WIDTH/50, Settings.SCENE_WIDTH/50, true, true);
 
 	//Liste contenant les coordonnées des chateaux (coo au centre du chateau)
 	private List<javafx.geometry.Point2D> listXY = new ArrayList<javafx.geometry.Point2D>();
@@ -43,7 +45,7 @@ public class Map extends GameObject
 		this.playfieldLayer = playfieldLayer;
 		
 		// chargement de la map
-		
+		spawnOcean();
 		//Création des chateaux
 		spawnCastles();
 		//spawnTroops();
@@ -74,6 +76,23 @@ public class Map extends GameObject
 		//TODO
 	}
 	
+	private void spawnOcean() {
+		
+		for (int x =0; x< Settings.SCENE_WIDTH ; x= x + (int)oceanImage.getWidth()) {
+			Sprite sprite = new Sprite(playfieldLayer, oceanImage, x, 0);
+		}
+		for (int x =0; x< Settings.SCENE_WIDTH ; x= x + (int)oceanImage.getWidth()) {
+			Sprite sprite = new Sprite(playfieldLayer, oceanImage, x, Settings.SCENE_HEIGHT - (int)oceanImage.getHeight());
+		}
+		for (int y =0; y< Settings.SCENE_HEIGHT ; y= y + (int)oceanImage.getHeight()) {
+			Sprite sprite = new Sprite(playfieldLayer, oceanImage, 0, y);
+		}
+		for (int y =0; y< Settings.SCENE_HEIGHT ; y= y + (int)oceanImage.getHeight()) {
+			Sprite sprite = new Sprite(playfieldLayer, oceanImage, Settings.SCENE_WIDTH - (int)oceanImage.getWidth(), y);
+		}
+		
+		
+	}
 	
 	
 	// METHODS
@@ -92,10 +111,34 @@ public class Map extends GameObject
 		for (int i=0; i<Settings.IA_CASTLE_NUMBER; i++) {
 			level = rnd.nextInt(Settings.IA_NEUTRAL_CASTLE_MAX_LEVEL-1) + 1;
 			while(true) {
-				x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.iaCastleImage.getWidth());
-				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.iaCastleImage.getHeight());
+				x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.ordi1CastleImage.getWidth()); //utilisé ici que pour les dimensions
+				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.ordi1CastleImage.getHeight()); //ici aussi
 				if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_SIZE*2)) {
-					sprite = new Sprite(playfieldLayer, Castle.iaCastleImage, x, y);
+					
+					switch (i+1)
+					{
+					  case 1:
+						  sprite = new Sprite(playfieldLayer, Castle.ordi1CastleImage, x, y);
+					    break;
+					  case 2:
+						  sprite = new Sprite(playfieldLayer, Castle.ordi2CastleImage, x, y);
+					    break;
+					  case 3:
+						  sprite = new Sprite(playfieldLayer, Castle.ordi3CastleImage, x, y);
+					    break;
+					  case 4:
+						  sprite = new Sprite(playfieldLayer, Castle.ordi4CastleImage, x, y);
+					    break;
+					  case 5:
+						  sprite = new Sprite(playfieldLayer, Castle.ordi5CastleImage, x, y);
+					    break;
+					  case 6:
+						  sprite = new Sprite(playfieldLayer, Castle.ordi6CastleImage, x, y);
+					    break;
+					  default:
+					    System.out.println("error");
+					}
+					
 					Castle iaCastle = new Castle(sprite, generate_castle_name(), Owner.Computer, 1, level, Settings.ARMY_INIT,x,y);
 					all_castles.add(iaCastle);
 					listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
@@ -103,6 +146,8 @@ public class Map extends GameObject
 				}
 			}
 		}
+		
+		
 		
 		//Création chateaux neutres
 		for (int i=0; i<Settings.NEUTRAL_CASTLE_NUMBER; i++) {

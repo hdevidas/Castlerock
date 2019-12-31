@@ -1,5 +1,7 @@
 package castleGame;
 
+import com.sun.prism.paint.Color;
+
 import castleGame.base.Inputs;
 import castleGame.base.KeyboardInputsReceiver;
 import castleGame.gameObjects.Castle;
@@ -16,6 +18,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -95,6 +99,7 @@ public class Main extends Application implements KeyboardInputsReceiver
 
 		// Préparation de la scene
 		root = new Group();
+		root.setId("pane");
 		scene = new Scene(root, Settings.SCENE_WIDTH, Settings.SCENE_HEIGHT + Settings.STATUS_BAR_HEIGHT);
 		scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 		primaryStage.setScene(scene);
@@ -111,6 +116,7 @@ public class Main extends Application implements KeyboardInputsReceiver
 		inputs = new Inputs(scene);
 		inputs.addListeners();
 
+		
 		createStatusBar();
 	}
 

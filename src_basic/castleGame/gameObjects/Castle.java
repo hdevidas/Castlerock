@@ -30,10 +30,16 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	private Sprite sprite;
 	private Random rnd = new Random();
 	
-	// Sprites TODO peut-être pas leur place définitive...
-	static Image iaCastleImage		= new Image("/images/red.png",  Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
-	static Image neutralCastleImage	= new Image("/images/blue.png", 	 Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
-	static Image playerCastleImage	= new Image("/images/green.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
+	// Sprites TODO peut-être pas leur place définitive...	
+	static Image playerCastleImage	= new Image("/images/black.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
+	static Image neutralCastleImage	= new Image("/images/white.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
+	static Image ordi1CastleImage	= new Image("/images/green.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
+	static Image ordi2CastleImage	= new Image("/images/red.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
+	static Image ordi3CastleImage	= new Image("/images/yellow.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
+	static Image ordi4CastleImage	= new Image("/images/blue.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
+	static Image ordi5CastleImage	= new Image("/images/pink.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
+	static Image ordi6CastleImage	= new Image("/images/marine.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
+	
 	static Image doorImage	= new Image("/images/door.png", Settings.CASTLE_SIZE/5, Settings.CASTLE_SIZE/5, true, true);
 	
 	// this object variable
@@ -49,6 +55,8 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	private int gate; // 1:Nord, 2:Est, 3:Sud, 4:Ouest 
 	
 	private Text piquierTxt = new Text();
+	private Text onagreTxt = new Text();
+	private Text chevalierTxt = new Text();
 	private Text moneyTxt = new Text();
 	private Text levelTxt = new Text();
 	
@@ -70,6 +78,8 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		createDoor(gate);
 		
 		create_piquier_bar();
+		create_chevalier_bar();
+		create_onagre_bar();
 		create_money_bar();
 		create_level_bar();
 		
@@ -227,6 +237,8 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		}
 		
 		update_piquier_bar();
+		update_chevalier_bar();
+		update_onagre_bar();
 		update_money_bar();
 		update_level_bar();
 		
@@ -346,6 +358,34 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	private void update_piquier_bar() {
 		piquierTxt.setText("Piquiers: "+Integer.toString(getNbTroop(TroopType.Piquier)));                 
+	}
+	
+	public void create_chevalier_bar() {
+		String nbChevalier = "Chevaliers: " + Integer.toString(getNbTroop(TroopType.Knight));
+		HBox chevalierBar = new HBox();
+		chevalierTxt.setText(nbChevalier);
+		chevalierBar.getChildren().addAll(chevalierTxt);
+		chevalierBar.getStyleClass().add("chevalier");
+		chevalierBar.relocate(x+Settings.CASTLE_SIZE *2/7, y+Settings.CASTLE_SIZE *3/10);
+		Main.root.getChildren().add(chevalierBar);
+	}
+	
+	private void update_chevalier_bar() {
+		chevalierTxt.setText("Chevaliers: "+Integer.toString(getNbTroop(TroopType.Knight)));                 
+	}
+	
+	public void create_onagre_bar() {
+		String nbOnagre = "Onagres: " + Integer.toString(getNbTroop(TroopType.Onager));
+		HBox onagreBar = new HBox();
+		onagreTxt.setText(nbOnagre);
+		onagreBar.getChildren().addAll(onagreTxt);
+		onagreBar.getStyleClass().add("onagre");
+		onagreBar.relocate(x+Settings.CASTLE_SIZE *2/7, y+Settings.CASTLE_SIZE *4/10);
+		Main.root.getChildren().add(onagreBar);
+	}
+	
+	private void update_onagre_bar() {
+		onagreTxt.setText("Onagres: "+Integer.toString(getNbTroop(TroopType.Onager)));                 
 	}
 	
 	public void create_money_bar() {

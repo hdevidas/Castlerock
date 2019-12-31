@@ -1,9 +1,7 @@
 .statusBar {
     -fx-background-color: #efefef;
-    -fx-padding: 10px 50px;
     -fx-border-color: black;
     -fx-border-style: solid;
-    -fx-border-width: 2px 0 0 0;  
 	-fx-font-weight: bold;
 	-fx-font-size: 20px;
 }
@@ -15,3 +13,8 @@
 	-fx-fill: red;
 	-fx-stroke: black;
 }
+
+#pane{
+-fx-background-color: green;
+}
+
