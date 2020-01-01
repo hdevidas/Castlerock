@@ -16,9 +16,11 @@ public class Settings
 	public static final double OST_MIN_DISTANCE = 10;
 	public static final double OST_SIZE = 10;
 	
-	public static final double IA_CASTLE_NUMBER = 3; //implémenté pour 6 maximum
+	public static final int IA_CASTLE_NUMBER = 3; //implémenté pour 6 maximum
 	public static final double NEUTRAL_CASTLE_NUMBER = 6;
 	public static final int IA_NEUTRAL_CASTLE_MAX_LEVEL = 5;
+	
+	public static final int NB_TRIES_TO_SPAWN = 1000;
 	
 	public static final int ARMY_INIT[] = {2,0,0};
 	public static final String[] LIST_CASTLE_NAME = {"Aalongue", "Abbaud", "Abbon", "Abelène", "Abran", "Abzal", "Acelin", "Achaire", "Achard", "Acheric", "Adalard", "Adalbaud", "Adalbéron", "Adalbert", "Adalelme", "Adalgaire", "Adalgise", "Adalicaire", "Adalman", "Adalric", "Adebran", "Adélard", "Adelbert", "Adelin", "Adenet", "Adhémar", "Adier", "Adinot", "Adolbert", "Adon", "Adoul", "Adrier", "Adson", "Agambert", "Aganon", "Agebert", "Agelmar", "Agelric", "Agenulf", "Agerad", "Ageran", "Agilbert", "Agilmar", "Aglebert", "Agmer", "Agnebert", "Agrestin", "Agrève", "Aibert", "Aicard", "Aimbaud", "Aimin", "Aimoin", "Airard", "Airy", "Alard", "Albalde", "Albaud", "Albéron", "Alboin", "Albuson", "Alchaire", "Alchas", "Alcuin", "Alleaume", "Amanieu", "Amat", "Amblard", "Anaclet", "Ansbert", "Anselin", "Ansoald", "Archambaud", "Arembert", "Arnat", "Artaud", "Aubry", "Authaire", "Avold", "Ayoul"};

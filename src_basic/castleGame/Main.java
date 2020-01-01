@@ -7,6 +7,7 @@ import com.sun.prism.paint.Color;
 import castleGame.base.Inputs;
 import castleGame.base.KeyboardInputsReceiver;
 import castleGame.gameObjects.Castle;
+import castleGame.gameObjects.InfoBar;
 import castleGame.gameObjects.Map;
 import castleGame.gameObjects.Ost;
 import castleGame.infoObjects.Settings;
@@ -46,7 +47,7 @@ public class Main extends Application implements KeyboardInputsReceiver
 	private long lastTurnTime = 0;
 
 	//Bar d'info
-	private Text Message = new Text();
+	InfoBar infoBar;
 	
 	public static Group root;
 	
@@ -92,9 +93,7 @@ public class Main extends Application implements KeyboardInputsReceiver
 					lastTurnTime = now;
 					
 					map.update();
-					
-					//update bar
-					update_bar();
+					infoBar.update();
 				}
 			}
 
@@ -104,7 +103,6 @@ public class Main extends Application implements KeyboardInputsReceiver
 	
 	private void loadGame(Stage primaryStage) 
 	{ 
-
 		// Préparation de la scene
 		Image sandImage	= new Image("/images/sand.png", Settings.SCENE_WIDTH, Settings.SCENE_HEIGHT, true, true);
 		ImageView mv = new ImageView(sandImage);
@@ -129,42 +127,6 @@ public class Main extends Application implements KeyboardInputsReceiver
 		inputs = new Inputs(scene);
 		inputs.addListeners();
 
-		
-		createStatusBar();
+		infoBar = new InfoBar(root);
 	}
-
-
-	private void update_bar() {
-		if (Castle.clicked != null) {
-				String attaquer;
-			String levelup;
-			String fairetroupe;
-			if (Castle.clicked.is_player()) {
-				levelup = "   MONTER DE NIVEAU (Haut)";
-				fairetroupe = "   CONSTRUIRE TROUPE (Droite)";
-				attaquer = "";
-			}
-			else {
-				levelup = "";
-				fairetroupe = "";
-				attaquer = "   ATTAQUER CE CHATEAU (Bas)";
-			}
-			Message.setText("Nom :"+ Castle.clicked.getName()+"          Florins :" + Castle.clicked.getMoney() + 
-					"          Niveau : " + Castle.clicked.getLevel()+"          Troupes : " + 
-					Castle.clicked.getNbTroop(TroopType.Piquier)+"/"+Castle.clicked.getNbTroop(TroopType.Knight)+"/"+Castle.clicked.getNbTroop(TroopType.Onager) +
-					"     |     "+levelup+fairetroupe+attaquer);                   
-		}
-		
-	}
-	
-	
-	public void createStatusBar() {
-		HBox statusBar = new HBox();
-		statusBar.getChildren().addAll(Message);
-		statusBar.getStyleClass().add("statusBar");
-		statusBar.relocate(0, Settings.SCENE_HEIGHT);
-		statusBar.setPrefSize(Settings.SCENE_WIDTH, Settings.STATUS_BAR_HEIGHT);
-		root.getChildren().add(statusBar);
-	}
-
 }

@@ -27,11 +27,8 @@ public class Map extends GameObject
 	
 	private boolean[] chosen_name = new boolean[Settings.LIST_CASTLE_NAME.length];
 	
-	//public Castle player_castle;
-	//private List<Castle> ai_castles = new ArrayList<>();
-	//private List<Castle> neutral_castles = new ArrayList<>();
-	
-	public static List<Castle> all_castles = new ArrayList<>();
+	// Castles
+	ArrayList<ArrayList<Castle>> castles = new ArrayList<ArrayList<Castle>>(1 + 1 + Settings.IA_CASTLE_NUMBER);
 	
 	public List<Ost> player_ost = new ArrayList<>();
 
@@ -67,12 +64,8 @@ public class Map extends GameObject
 	protected void updateChilds()
 	{
 		// Update Castles
-		//player_castle.update();
-		//ai_castles.forEach(castle -> castle.update());
-		//neutral_castles.forEach(castle -> castle.update());
-		all_castles.forEach(castle -> castle.update());
+		castles.forEach(castleList -> castleList.forEach(castle -> castle.update()));
 
-		
 		// Update Osts
 		//TODO
 	}
@@ -98,83 +91,67 @@ public class Map extends GameObject
 	
 	// METHODS
 	private void spawnCastles() { // Création chateaux
-		//Création chateau joueur
-		double x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.playerCastleImage.getWidth() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getWidth() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getWidth(); 
-		double y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.playerCastleImage.getHeight() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getHeight() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getHeight(); 
-		//double y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.playerCastleImage.getHeight());
-		Sprite sprite = new Sprite(playfieldLayer, Castle.playerCastleImage, x, y);
-		int level = 1;
-		Castle player_castle = new Castle(sprite ,Settings.PLAYER_NAME, Owner.Player, 1, level, Settings.ARMY_INIT,x,y);
-		listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
-		all_castles.add(player_castle);
 		
+		//creation des listes de Châteaux (player + neutral + IAs )
+		for (int i = 0; i < Settings.IA_CASTLE_NUMBER + 2; i++)
+		{
+			this.castles.add(i, new ArrayList<Castle>());
+		}		
 		
-		//Création chateaux IA
-		for (int i=0; i<Settings.IA_CASTLE_NUMBER; i++) {
-			level = rnd.nextInt(Settings.IA_NEUTRAL_CASTLE_MAX_LEVEL-1) + 1;
-			while(true) {
-				System.out.println("Cherche position pour les chateaux neutres...");
-				x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.playerCastleImage.getWidth() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getWidth() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getWidth(); 
-				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.playerCastleImage.getHeight() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getHeight() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getHeight(); 
-			
-				
-				if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_SIZE*2)) {
-					
-					switch (i+1)
-					{
-					  case 1:
-						  sprite = new Sprite(playfieldLayer, Castle.ordi1CastleImage, x, y);
-					    break;
-					  case 2:
-						  sprite = new Sprite(playfieldLayer, Castle.ordi2CastleImage, x, y);
-					    break;
-					  case 3:
-						  sprite = new Sprite(playfieldLayer, Castle.ordi3CastleImage, x, y);
-					    break;
-					  case 4:
-						  sprite = new Sprite(playfieldLayer, Castle.ordi4CastleImage, x, y);
-					    break;
-					  case 5:
-						  sprite = new Sprite(playfieldLayer, Castle.ordi5CastleImage, x, y);
-					    break;
-					  case 6:
-						  sprite = new Sprite(playfieldLayer, Castle.ordi6CastleImage, x, y);
-					    break;
-					  default:
-					    System.out.println("error");
-					}
-					
-					Castle iaCastle = new Castle(sprite, generate_castle_name(), Owner.Computer, 1, level, Settings.ARMY_INIT,x,y);
-					all_castles.add(iaCastle);
-					listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
-					break;
-				}
+		int errors = 0;
+		
+		//Création chateaux
+		if (!createCastle(Owner.Player, 1))
+		{
+			errors ++;
+		}
+		
+		for (int i = 0; i < Settings.NEUTRAL_CASTLE_NUMBER; i++)
+		{
+			if (!createCastle(Owner.Neutral, rnd.nextInt(Settings.IA_NEUTRAL_CASTLE_MAX_LEVEL-1) + 1))
+			{
+				errors ++;
 			}
 		}
 		
-		
-		
-		//Création chateaux neutres
-		for (int i=0; i<Settings.NEUTRAL_CASTLE_NUMBER; i++) {
-			level = rnd.nextInt(Settings.IA_NEUTRAL_CASTLE_MAX_LEVEL-1) + 1;
-			while(true) {
-				System.out.println("Cherche position pour les chateaux neutres...");
-				
-				x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.playerCastleImage.getWidth() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getWidth() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getWidth(); 
-				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.playerCastleImage.getHeight() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getHeight() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getHeight(); 
-			
-				
-				if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_SIZE*2)) {
-					sprite = new Sprite(playfieldLayer, Castle.neutralCastleImage, x, y);
-					Castle neutralCastle = new Castle(sprite, generate_castle_name(), Owner.Neutral, 1, level, Settings.ARMY_INIT,x,y);
-					all_castles.add(neutralCastle);
-					listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
-					break;
-				}
+		for (int i = 0; i < Settings.IA_CASTLE_NUMBER; i++)
+		{
+			if (!createCastle(Owner.valueOf("IA" + i), rnd.nextInt(Settings.IA_NEUTRAL_CASTLE_MAX_LEVEL-1) + 1 ))
+			{
+				errors ++;
 			}
+		}
+		
+		if (errors >= 1)
+		{
+			System.out.println("Error when spawning Castles : missing " + errors + " castle(s)... Try to tweak the number of castles to spawn in the settings and relaunch the game!");
 		}
 	}
 				
+	private Boolean createCastle(Owner owner, int level)
+	{
+		for (int i = 0; i < Settings.NB_TRIES_TO_SPAWN; i++)
+		{
+			double x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Owner.Player.castleImage.getWidth() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getWidth() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getWidth(); 
+			double y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Owner.Player.castleImage.getHeight() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getHeight() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getHeight(); 
+			
+			if (checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_SIZE*2))
+			{
+				Sprite sprite = new Sprite(playfieldLayer, owner.castleImage, x, y);
+				
+				String name = owner == Owner.Player ? owner.getName() : generate_castle_name();
+				
+				Castle newCastle = new Castle(sprite, this, name, owner, 1, level, Settings.ARMY_INIT, x, y);
+				
+				listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
+				
+				castles.get(owner.ordinal()).add(newCastle);
+	
+				return true;
+			}
+		}
+		return false; // TODO Raise an error instead of just returning false.
+	}
 
 	//Selection d'un nom (different) dans une liste pour spawn chateaux
 	private String generate_castle_name() {
@@ -199,5 +176,19 @@ public class Map extends GameObject
 		return true;
 	}
 
+	public boolean player_is_alive(String name) {
+		int counter = 0;
+	    for(ArrayList<Castle> castleList : castles) {
+	    	for (Castle castle : castleList) {
+		    	if ((castle.getName() == name) && (castle.has_got_troops())){
+		    		counter = counter +1 ;
+		    	}
+	    	}
+	    }
+	    if (counter == 0) {
+	    	return false;
+	    }
+	    return true;
+	}
 	
 }

@@ -21,7 +21,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.scene.image.Image;
 
 public class Castle extends TroopsManager implements MouseEventReceiver, KeyboardInputsReceiver, SpriteRender{
 
@@ -30,23 +29,15 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	private Sprite sprite;
 	private Random rnd = new Random();
 	
-	// Sprites TODO peut-être pas leur place définitive...	
-	static Image playerCastleImage	= new Image("/images/black.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
-	static Image neutralCastleImage	= new Image("/images/white.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
-	static Image ordi1CastleImage	= new Image("/images/green.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
-	static Image ordi2CastleImage	= new Image("/images/red.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
-	static Image ordi3CastleImage	= new Image("/images/yellow.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
-	static Image ordi4CastleImage	= new Image("/images/blue.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
-	static Image ordi5CastleImage	= new Image("/images/pink.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
-	static Image ordi6CastleImage	= new Image("/images/marine.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true);
-	
+	// Sprites TODO peut-être pas leur place définitive...
 	static Image doorImage	= new Image("/images/door.png", Settings.CASTLE_SIZE/5, Settings.CASTLE_SIZE/5, true, true);
 	
 	// this object variable
 	static public Castle clicked;
 	static public Castle lastPlayerClicked;
 	static public Castle launchingOstFrom;
-	static public Boolean isLaunchingOst;
+	static public Boolean isLaunchingOst = false;
+	private Map map;
 	private String name;
 	private int level;
 	private int money;
@@ -62,9 +53,10 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	
 	// CONSTRUCTORS
-	public Castle(Sprite sprite, String name, Owner owner, int money, int level, int[] init_army, double x, double y) {
+	public Castle(Sprite sprite, Map map, String name, Owner owner, int money, int level, int[] init_army, double x, double y) {
 		super(init_army, x,y);
 		//System.out.println(x);
+		this.map = map;
 		this.sprite = sprite;
 		this.money = money;
 		this.level = level;
@@ -224,17 +216,17 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	{
 		processInputs();
 		this.money_up();
-		if (this.owner == Owner.Computer || this.owner == Owner.Neutral)
+		if (this.owner != Owner.Player)
 		{
 			this.level_up();
 		}
 		updateUI();
 		
-		// manque le changement des sprites neutral et computer (a faire plus tard)
+		/*// manque le changement des sprites neutral et computer (a faire plus tard)
 		if ( this.owner == Owner.Player && this.getSprite().getImage() != playerCastleImage ) {
 			this.change_castle_sprite(playerCastleImage);
 			this.createDoor(this.getGate());
-		}
+		}*/
 		
 		update_piquier_bar();
 		update_chevalier_bar();
@@ -274,7 +266,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	private void postAttackManagement() {
 		if (this.has_got_troops() == false) {
-			if (this.player_is_alive(this.getName())) {
+			if (map.player_is_alive(this.getName())) {
 				System.out.println("un de vos chateau n'a plus d'unités, il est vulnérable.");
 			}
 			else {
@@ -322,21 +314,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	public boolean is_player() {
 		return (this.owner == Owner.Player);
-	}
-	
-	public boolean player_is_alive(String name) {
-		int counter = 0;
-	    for(Castle castle:Map.all_castles) {
-	    	if ((castle.getName() == name) && (castle.has_got_troops())){
-	    		counter = counter +1 ;
-	    	}
-	    }
-	    if (counter == 0) {
-	    	return false;
-	    }
-	    return true;
-	}
-	
+	}	
 	
 	void change_castle_sprite(Image img) {
 		Sprite sprite = new Sprite(Map.playfieldLayer,img, this.getX(), this.getY());
