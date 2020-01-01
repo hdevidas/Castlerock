@@ -49,6 +49,7 @@ public class Map extends GameObject
 		//Création des chateaux
 		spawnCastles();
 		//spawnTroops();
+		
 	}
 	
 
@@ -98,8 +99,9 @@ public class Map extends GameObject
 	// METHODS
 	private void spawnCastles() { // Création chateaux
 		//Création chateau joueur
-		double x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.playerCastleImage.getWidth());
-		double y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.playerCastleImage.getHeight());
+		double x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.playerCastleImage.getWidth() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getWidth() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getWidth(); 
+		double y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.playerCastleImage.getHeight() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getHeight() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getHeight(); 
+		//double y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.playerCastleImage.getHeight());
 		Sprite sprite = new Sprite(playfieldLayer, Castle.playerCastleImage, x, y);
 		int level = 1;
 		Castle player_castle = new Castle(sprite ,Settings.PLAYER_NAME, Owner.Player, 1, level, Settings.ARMY_INIT,x,y);
@@ -111,8 +113,11 @@ public class Map extends GameObject
 		for (int i=0; i<Settings.IA_CASTLE_NUMBER; i++) {
 			level = rnd.nextInt(Settings.IA_NEUTRAL_CASTLE_MAX_LEVEL-1) + 1;
 			while(true) {
-				x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.ordi1CastleImage.getWidth()); //utilisé ici que pour les dimensions
-				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.ordi1CastleImage.getHeight()); //ici aussi
+				System.out.println("Cherche position pour les chateaux neutres...");
+				x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.playerCastleImage.getWidth() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getWidth() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getWidth(); 
+				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.playerCastleImage.getHeight() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getHeight() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getHeight(); 
+			
+				
 				if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_SIZE*2)) {
 					
 					switch (i+1)
@@ -153,8 +158,12 @@ public class Map extends GameObject
 		for (int i=0; i<Settings.NEUTRAL_CASTLE_NUMBER; i++) {
 			level = rnd.nextInt(Settings.IA_NEUTRAL_CASTLE_MAX_LEVEL-1) + 1;
 			while(true) {
-				x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.neutralCastleImage.getWidth());
-				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.neutralCastleImage.getHeight());
+				System.out.println("Cherche position pour les chateaux neutres...");
+				
+				x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Castle.playerCastleImage.getWidth() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getWidth() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getWidth(); 
+				y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Castle.playerCastleImage.getHeight() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getHeight() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Castle.playerCastleImage.getHeight(); 
+			
+				
 				if(checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_SIZE*2)) {
 					sprite = new Sprite(playfieldLayer, Castle.neutralCastleImage, x, y);
 					Castle neutralCastle = new Castle(sprite, generate_castle_name(), Owner.Neutral, 1, level, Settings.ARMY_INIT,x,y);

@@ -15,6 +15,7 @@
 }
 
 #pane{
--fx-background-color: green;
+   -fx-background-image: url('image/grass.png');
+   -fx-background-repeat: stretch;   
+   -fx-background-position: center center;
 }
-

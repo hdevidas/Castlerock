@@ -1,5 +1,7 @@
 package castleGame;
 
+import java.awt.Insets;
+
 import com.sun.prism.paint.Color;
 
 import castleGame.base.Inputs;
@@ -18,8 +20,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -98,6 +106,10 @@ public class Main extends Application implements KeyboardInputsReceiver
 	{ 
 
 		// Préparation de la scene
+		Image sandImage	= new Image("/images/sand.png", Settings.SCENE_WIDTH, Settings.SCENE_HEIGHT, true, true);
+		ImageView mv = new ImageView(sandImage);
+		mv.setFitWidth(Settings.SCENE_WIDTH); 
+        mv.setFitHeight(Settings.SCENE_HEIGHT);
 		root = new Group();
 		root.setId("pane");
 		scene = new Scene(root, Settings.SCENE_WIDTH, Settings.SCENE_HEIGHT + Settings.STATUS_BAR_HEIGHT);
@@ -105,10 +117,11 @@ public class Main extends Application implements KeyboardInputsReceiver
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
 		primaryStage.show();
-
 		// create layers
 		playfieldLayer = new Pane();
+		root.getChildren().add(mv);
 		root.getChildren().add(playfieldLayer);
+
 		
 		map = new Map(playfieldLayer);
 
