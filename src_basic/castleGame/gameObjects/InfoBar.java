@@ -11,14 +11,14 @@ public class InfoBar extends GameObject
 {
 	// VARIABLES
 	private HBox statusBar; 
-	private Text Message = new Text();
+	private Text infoText = new Text();
 	
 	
 	// CONSTRUCTORS
 	public InfoBar(Group root)
 	{
 		statusBar = new HBox();
-		statusBar.getChildren().addAll(Message);
+		statusBar.getChildren().addAll(infoText);
 		statusBar.getStyleClass().add("statusBar");
 		statusBar.relocate(0, Settings.SCENE_HEIGHT);
 		statusBar.setPrefSize(Settings.SCENE_WIDTH, Settings.STATUS_BAR_HEIGHT);
@@ -35,26 +35,14 @@ public class InfoBar extends GameObject
 	// from GameObject :
 	protected void updateThis() 
 	{
-		if (Castle.clicked != null) {
-			String attaquer;
-		String levelup;
-		String fairetroupe;
-		if (Castle.clicked.is_player()) {
-			levelup = "   MONTER DE NIVEAU (Haut)";
-			fairetroupe = "   CONSTRUIRE TROUPE (Droite)";
-			attaquer = "";
+		if (Castle.isLaunchingOst)
+		{
+			displayCustomMessage("Cliquez sur le chateau vers lequel lancer l'ost");
 		}
-		else {
-			levelup = "";
-			fairetroupe = "";
-			attaquer = "   ATTAQUER CE CHATEAU (Bas)";
-		}
-		Message.setText("Nom :"+ Castle.clicked.getName()+"          Florins :" + Castle.clicked.getMoney() + 
-				"          Niveau : " + Castle.clicked.getLevel()+"          Troupes : " + 
-				Castle.clicked.getNbTroop(TroopType.Piquier)+"/"+Castle.clicked.getNbTroop(TroopType.Knight)+"/"+Castle.clicked.getNbTroop(TroopType.Onager) +
-				"     |     "+levelup+fairetroupe+attaquer);                   
-	}
-	
+		else if (Castle.clicked != null)
+		{
+			displayCastleInfo(Castle.clicked);
+		}	
 	}
 
 	protected void updateChilds() 
@@ -65,4 +53,29 @@ public class InfoBar extends GameObject
 	
 		
 	// METHODS
+	private void displayCastleInfo(Castle castle)
+	{
+		String attaquer;
+		String levelup;
+		String fairetroupe;
+		if (castle.is_player()) {
+			levelup = "   MONTER DE NIVEAU (Haut)";
+			fairetroupe = "   CONSTRUIRE TROUPE (Droite)";
+			attaquer = "";
+		}
+		else {
+			levelup = "";
+			fairetroupe = "";
+			attaquer = "   ATTAQUER CE CHATEAU (Bas)";
+		}
+		infoText.setText("Nom :"+ castle.getName()+"          Florins :" + castle.getMoney() + 
+				"          Niveau : " + castle.getLevel()+"          Troupes : " + 
+				castle.getNbTroop(TroopType.Piquier)+"/"+castle.getNbTroop(TroopType.Knight)+"/"+castle.getNbTroop(TroopType.Onager) +
+				"     |     "+levelup+fairetroupe+attaquer);                   
+	}
+	
+	private void displayCustomMessage(String message)
+	{
+		infoText.setText(message);
+	}
 }

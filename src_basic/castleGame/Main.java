@@ -66,6 +66,7 @@ public class Main extends Application implements KeyboardInputsReceiver
 	
 	
 	// INHERITED METHODS
+	// from KeyboardInputsReceiver :
 	public void processInputs() 
 	{
 		if (inputs.isExit()) {
@@ -88,7 +89,7 @@ public class Main extends Application implements KeyboardInputsReceiver
 
 				processInputs();
 				
-				if (lastTurnTime + Settings.SECONDS_PER_TURN <= now)
+				if (lastTurnTime + Settings.NANOSECONDS_PER_TURN <= now)
 				{
 					lastTurnTime = now;
 					

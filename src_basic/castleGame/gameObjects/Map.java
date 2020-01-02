@@ -101,14 +101,14 @@ public class Map extends GameObject
 		int errors = 0;
 		
 		//Création chateaux
-		if (!createCastle(Owner.Player, 1))
+		if (!createCastle(Owner.Player, 1, 100000))
 		{
 			errors ++;
 		}
 		
 		for (int i = 0; i < Settings.NEUTRAL_CASTLE_NUMBER; i++)
 		{
-			if (!createCastle(Owner.Neutral, rnd.nextInt(Settings.IA_NEUTRAL_CASTLE_MAX_LEVEL-1) + 1))
+			if (!createCastle(Owner.Neutral, rnd.nextInt(Settings.IA_NEUTRAL_CASTLE_MAX_LEVEL-1) + 1, 100))
 			{
 				errors ++;
 			}
@@ -116,7 +116,7 @@ public class Map extends GameObject
 		
 		for (int i = 0; i < Settings.IA_CASTLE_NUMBER; i++)
 		{
-			if (!createCastle(Owner.valueOf("IA" + i), rnd.nextInt(Settings.IA_NEUTRAL_CASTLE_MAX_LEVEL-1) + 1 ))
+			if (!createCastle(Owner.valueOf("IA" + i), rnd.nextInt(Settings.IA_NEUTRAL_CASTLE_MAX_LEVEL-1) + 1 , 100))
 			{
 				errors ++;
 			}
@@ -128,7 +128,7 @@ public class Map extends GameObject
 		}
 	}
 				
-	private Boolean createCastle(Owner owner, int level)
+	private Boolean createCastle(Owner owner, int level, int money)
 	{
 		for (int i = 0; i < Settings.NB_TRIES_TO_SPAWN; i++)
 		{
@@ -141,7 +141,7 @@ public class Map extends GameObject
 				
 				String name = owner == Owner.Player ? owner.getName() : generate_castle_name();
 				
-				Castle newCastle = new Castle(sprite, this, name, owner, 1, level, Settings.ARMY_INIT, x, y);
+				Castle newCastle = new Castle(sprite, this, name, owner, money, level, Settings.ARMY_INIT, x, y);
 				
 				listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
 				
@@ -180,8 +180,8 @@ public class Map extends GameObject
 		int counter = 0;
 	    for(ArrayList<Castle> castleList : castles) {
 	    	for (Castle castle : castleList) {
-		    	if ((castle.getName() == name) && (castle.has_got_troops())){
-		    		counter = counter +1 ;
+		    	if ((castle.getName() == name)/* && (castle.has_got_troops())*/){ // même si il n'as plus de troupe dans un chateau ce joueur posède encore ce chateua(et pourra refaire des troupes) et est donc vivant
+		    		counter ++;
 		    	}
 	    	}
 	    }

@@ -4,11 +4,11 @@ public class Settings
 {
 	// VARIABLES
 	public static final double SCENE_WIDTH = 1600; // Caution : modifying the size of the windows does not reduce the
-    public static final double SCENE_HEIGHT = 900; // number of castle to display nor their size : if not enough place -> infinite loop
+    public static final double SCENE_HEIGHT = 900; // number of castle to display nor their size
 	public static final double STATUS_BAR_HEIGHT = 50;
 	
 	public static final double TURNS_PER_SECOND = 10;
-	public static final long SECONDS_PER_TURN = (long) (1/TURNS_PER_SECOND * 1000000000);
+	public static final long NANOSECONDS_PER_TURN = (long) (1/TURNS_PER_SECOND * 1000000000);
 	
 	public static final double CASTLE_SIZE = 125;
 	public static final double OST_MIN_DISTANCE_FROM_CASTLE = 30; //utilisé egalement pour distance minimale entre eau et chateau

@@ -157,9 +157,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 			}
 			// attaquer un chateau x
 			if (Main.inputs.isAttacks() && clicked != lastPlayerClicked && this == lastPlayerClicked) {
-				this.attack(clicked);
-				
-				this.postAttackManagement();
+				this.fakeAttackPlaceHolder(lastPlayerClicked, clicked);
 			}
 		}
 		
@@ -220,13 +218,15 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		{
 			this.level_up();
 		}
-		updateUI();
-		
-		/*// manque le changement des sprites neutral et computer (a faire plus tard)
-		if ( this.owner == Owner.Player && this.getSprite().getImage() != playerCastleImage ) {
-			this.change_castle_sprite(playerCastleImage);
-			this.createDoor(this.getGate());
-		}*/
+		updateUI();		
+
+		if (!this.has_got_troops()) {
+			System.out.println("un de vos chateau n'a plus d'unités, il est vulnérable.");
+		}
+
+		if (!map.player_is_alive(Settings.PLAYER_NAME)){
+			System.out.println("Vous avez perdus.");
+		}
 		
 		update_piquier_bar();
 		update_chevalier_bar();
@@ -239,7 +239,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	protected void updateChilds() 
 	{
 		super.updateChilds();
-		// specific castle variable to update can be put here
+		// specific castle variables to update can be put here
 	}
 
 	
@@ -260,28 +260,44 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 
 	private void createOst(Castle castleFrom, Castle castleTo) 
 	{
-		castleFrom.attack(castleTo);
-		castleFrom.postAttackManagement();
+		// TODO : modify to actually create an ost and not simulate a direct attack between castles
+		castleFrom.fakeAttackPlaceHolder(castleFrom, castleTo);
 	}
 	
-	private void postAttackManagement() {
-		if (this.has_got_troops() == false) {
-			if (map.player_is_alive(this.getName())) {
-				System.out.println("un de vos chateau n'a plus d'unités, il est vulnérable.");
-			}
-			else {
-				System.out.println("Vous avez perdus.");
+	private void fakeAttackPlaceHolder(Castle castleFrom, Castle castleTo)
+	{
+		//this only works if castleFrom has more troops than castleTo for every troopType... (good enough for a placeholder)
+		for (TroopType troopType : TroopType.values()) 
+		{
+			while (castleFrom.has_got_troops(troopType) && castleTo.has_got_troops(troopType)) {
+				castleFrom.removeTroop(troopType);
+				castleTo.removeTroop(troopType);
 			}
 		}
-		else {
+		
+		// The attacking castle is always the winner if it has some troops left (good enough for a placeholder)
+		if (castleFrom.has_got_troops()) 
+		{
 			System.out.println("Vous avez détruis un chateau.");
-			System.out.println("Ce chateau porte maintenant votre nom.");
-			clicked.setName(this.getName());
-			System.out.println("Ce chateau peut maintenant être utilisé comme si c'était le votre.");
-			clicked.setOwner(Owner.Player);
 			
-			clicked.setMouseEventResponse();
+			castleTo.changeOwner(castleFrom.owner);
+			
+			System.out.println("Ce chateau porte maintenant votre nom.");
+			System.out.println("Ce chateau peut maintenant être utilisé comme si c'était le votre.");
 		}
+		else
+		{
+			System.out.println("Vous avez perdus cette attaque... reformez des troupes et relancez-vous!");
+		}
+	}
+	
+	void changeOwner(Owner newOwner) 
+	{
+		this.setOwner(Owner.Player);
+		Sprite sprite = new Sprite(Map.playfieldLayer, newOwner.castleImage, this.getX(), this.getY());
+		this.setSprite(sprite);
+		this.createDoor(this.getGate());
+		setMouseEventResponse();
 	}
 
 	public void level_up() { //MONTE D'UN NIVEAU LE CHATEAU
@@ -306,22 +322,12 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	}
 	
 	public boolean is_the_same_name(String name) {
-		if (this.getName() == name) {
-			return true;
-		}
-		return false;
+		return this.name.equals(name);
 	}
 	
 	public boolean is_player() {
 		return (this.owner == Owner.Player);
 	}	
-	
-	void change_castle_sprite(Image img) {
-		Sprite sprite = new Sprite(Map.playfieldLayer,img, this.getX(), this.getY());
-		this.setSprite(sprite);
-		setMouseEventResponse();
-	}
-	
 	
 	public void create_piquier_bar() {
 		String nbPiquier = "Piquiers: " + Integer.toString(getNbTroop(TroopType.Piquier));
