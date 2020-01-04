@@ -37,6 +37,10 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	static public Castle lastPlayerClicked;
 	static public Castle launchingOstFrom;
 	static public Boolean isLaunchingOst = false;
+	
+	public List<Ost> castle_ost = new ArrayList<>();
+	
+	
 	private Map map;
 	private String name;
 	private int level;
@@ -44,6 +48,8 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	private double x;
 	private double y;
 	private int gate; // 1:Nord, 2:Est, 3:Sud, 4:Ouest 
+	private double gate_x;
+	private double gate_y;
 	
 	private Text piquierTxt = new Text();
 	private Text onagreTxt = new Text();
@@ -138,6 +144,15 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	public void setGate(int gate) {
 		this.gate = gate;
 	}
+	
+	public double getGate_x() {
+		return gate_x;
+	}
+
+	public double getGate_y() {
+		return gate_y;
+	}
+
 	
 	
 	// INHERITED METHODS
@@ -261,12 +276,21 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	private void createOst(Castle castleFrom, Castle castleTo) 
 	{
 		// TODO : modify to actually create an ost and not simulate a direct attack between castles
-		castleFrom.fakeAttackPlaceHolder(castleFrom, castleTo);
+		//castleFrom.fakeAttackPlaceHolder(castleFrom, castleTo);
+		
+		//test hugo
+		Ost ost = new Ost(castleFrom.getNbTroops(), castleFrom.getGate_x(), castleFrom.getGate_y(), castleTo);
+		castle_ost.add(ost);
+		castleFrom.removeAllTroops();
+		
 	}
+	
+	
 	
 	private void fakeAttackPlaceHolder(Castle castleFrom, Castle castleTo)
 	{
 		//this only works if castleFrom has more troops than castleTo for every troopType... (good enough for a placeholder)
+		System.out.println("vous etes ici !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		for (TroopType troopType : TroopType.values()) 
 		{
 			while (castleFrom.has_got_troops(troopType) && castleTo.has_got_troops(troopType)) {
@@ -295,8 +319,9 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	{
 		this.setOwner(Owner.Player);
 		Sprite sprite = new Sprite(Map.playfieldLayer, newOwner.castleImage, this.getX(), this.getY());
-		this.setSprite(sprite);
-		this.createDoor(this.getGate());
+		Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, gate_x, gate_y);
+		//this.setSprite(sprite);
+		//this.createDoor(gate);
 		setMouseEventResponse();
 	}
 
@@ -404,16 +429,28 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	void createDoor(int gate) {
 		if (gate == 1) {
-			Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, x+(Settings.CASTLE_SIZE/5)*2, y);
+			this.gate_x = x+(Settings.CASTLE_SIZE/5)*2;
+			this.gate_y = y;
+			Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, gate_x, gate_y);
+			//this.setSprite(doorSprite);
 		}
 		else if (gate ==2) {
-			Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, x+(Settings.CASTLE_SIZE/5)*4, y+(Settings.CASTLE_SIZE/5)*2);
+			this.gate_x = x+(Settings.CASTLE_SIZE/5)*4;
+			this.gate_y = y+(Settings.CASTLE_SIZE/5)*2;
+			Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, gate_x, gate_y);
+			//this.setSprite(doorSprite);
 		}
 		else if (gate ==3) {
-			Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, x+(Settings.CASTLE_SIZE/5)*2, y+(Settings.CASTLE_SIZE/5)*4);
+			this.gate_x = x+(Settings.CASTLE_SIZE/5)*2;
+			this.gate_y = y+(Settings.CASTLE_SIZE/5)*4;
+			Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, gate_x, gate_y);
+			//this.setSprite(doorSprite);
 		}
 		else if (gate ==4) {
-			Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, x, y+(Settings.CASTLE_SIZE/5)*2);
+			this.gate_x = x;
+			this.gate_y = y+(Settings.CASTLE_SIZE/5)*2;
+			Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, gate_x,gate_y);
+			//this.setSprite(doorSprite);
 		}
 	}
 }

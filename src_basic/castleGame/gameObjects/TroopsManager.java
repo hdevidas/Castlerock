@@ -67,6 +67,17 @@ public abstract class TroopsManager extends GameObject
 	
 	//Fonction pour supprimer une unité d'un type précisé
 	// TODO a generaliser
+	//supprimer toutes les troupes d'une armée
+	void removeAllTroops(){
+			for (TroopType troopType : TroopType.values()) {
+				while (has_got_troops(troopType)) {
+					removeTroop(troopType);
+				}
+			}
+
+	}
+	
+	//supprime une SEULE troupe d'un type d'armée
 	void removeTroop(TroopType troopType)
 	{
 		if ( this.has_got_troops(troopType) ) {
