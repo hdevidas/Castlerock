@@ -43,6 +43,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	private Map map;
 	private String name;
+	private OrderManager order;
 	private int level;
 	private int money;
 	private double x;
@@ -172,7 +173,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 			}
 			// attaquer un chateau x
 			if (Main.inputs.isAttacks() && clicked != lastPlayerClicked && this == lastPlayerClicked) {
-				this.fakeAttackPlaceHolder(lastPlayerClicked, clicked);
+				this.createOst(lastPlayerClicked, clicked);
 			}
 		}
 		
