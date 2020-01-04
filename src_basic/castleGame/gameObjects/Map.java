@@ -30,7 +30,7 @@ public class Map extends GameObject
 	// Castles
 	ArrayList<ArrayList<Castle>> castles = new ArrayList<ArrayList<Castle>>(1 + 1 + Settings.IA_CASTLE_NUMBER);
 	
-	public List<Ost> player_ost = new ArrayList<>();
+	public ArrayList<Ost> osts = new ArrayList<Ost>();
 
 	private Random rnd = new Random();
 	
@@ -67,7 +67,7 @@ public class Map extends GameObject
 		castles.forEach(castleList -> castleList.forEach(castle -> castle.update()));
 
 		// Update Osts
-		//TODO
+		osts.forEach(ost -> ost.update());
 	}
 	
 	private void spawnOcean() {
@@ -174,6 +174,16 @@ public class Map extends GameObject
 				return false;
 		}
 		return true;
+	}
+	
+	public void addOst (Ost ost)
+	{
+		osts.add(ost);
+	}
+	
+	public void removeOst (Ost ost)
+	{
+		osts.remove(ost);
 	}
 
 	public boolean player_is_alive(String name) {

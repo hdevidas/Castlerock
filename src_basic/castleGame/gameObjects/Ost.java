@@ -12,23 +12,25 @@ import javafx.scene.layout.Pane;
 
 public class Ost extends TroopsManager
 {
-	// VARIABLES	
+	// VARIABLES
+	private Map map;
+	private Castle castleFrom;
 	private Castle castleTarget;
-	public int compteur = 0;
+	boolean isComplete;
+	
 	
 	
 	// CONSTRUCTORS
-	/*Je ne comprends pas 
-	 * public Ost() 
-	{
-		this(new int[Settings.NB_TROOP_TYPES], 1, 1);
-	}
-	*/
 	
-	public Ost(int initialArmy[], double x, double y, Castle castleTarget) 
+	public Ost( Map map, Castle castleFrom, Castle castleTarget) 
 	{
-		super(initialArmy, x, y);
+		this.map = map;
+		this.castleFrom = castleFrom;
 		this.castleTarget = castleTarget;
+
+		isComplete = false;
+		
+		this.map.addOst(this);
 	}
 
 	
@@ -40,21 +42,29 @@ public class Ost extends TroopsManager
 	// INHERITED METHODS
 	protected void updateThis() 
 	{
-		System.out.println("VOUS ETES ICICICICICICIICICICICIICICIIC");
-		System.out.println(compteur);
-		compteur = compteur +1;
+		if (isDead())
+		{
+			map.removeOst(this);
+		}
 	}
 	
 	protected void updateChilds()
 	{
 		super.updateChilds();
-		System.out.println("VOUS ETES LALALALALALLALAALAAAAAAAAAAALALALAL");
-		System.out.println(compteur);
-		compteur = compteur +1;
 		// specific ost variable to update can be put here
 	}
 	
 	
 	
 	// METHODS
+	
+	boolean isDead()
+	{
+		boolean isDead = isComplete;
+		for (TroopType troopType : TroopType.values())
+		{
+			isDead = isDead && (troops.get(troopType.ordinal()).size() == 0);
+		}
+		return isDead;
+	}
 }

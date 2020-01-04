@@ -237,7 +237,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		updateUI();		
 
 		if (!this.has_got_troops()) {
-			System.out.println("un de vos chateau n'a plus d'unités, il est vulnérable.");
+			//System.out.println("un de vos chateau n'a plus d'unités, il est vulnérable.");
 		}
 
 		if (!map.player_is_alive(Settings.PLAYER_NAME)){
@@ -277,13 +277,13 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	private void createOst(Castle castleFrom, Castle castleTo) 
 	{
 		// TODO : modify to actually create an ost and not simulate a direct attack between castles
-		//castleFrom.fakeAttackPlaceHolder(castleFrom, castleTo);
+		castleFrom.fakeAttackPlaceHolder(castleFrom, castleTo);
 		
-		//test hugo
+		/*//test hugo
 		Ost ost = new Ost(castleFrom.getNbTroops(), castleFrom.getGate_x(), castleFrom.getGate_y(), castleTo);
 		castle_ost.add(ost);
 		castleFrom.removeAllTroops();
-		
+		*/
 	}
 	
 	
@@ -327,18 +327,13 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	}
 
 	public void level_up() { //MONTE D'UN NIVEAU LE CHATEAU
-		if (getMoney() >= (getLevel()*1000)) {
-			setMoney(getMoney()-getLevel()*1000);
-			setLevel(getLevel()+1);
-		}
+		setLevel(getLevel()+1);
 	}
 
 	public void build_troop(TroopType troopType) { //CONSTRUIS UNE TROUPE
 		if (money >= troopType.getProductionCost() ) {
-			money -= troopType.getProductionCost() ;
-			int nbp = getNbTroop(troopType);
-			double ny = y + nbp*10;
-			this.addTroop(troopType,x,ny);
+			money -= troopType.getProductionCost();
+			this.addNewTroop(troopType);
 		}
 	}
 
@@ -453,5 +448,15 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 			Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, gate_x,gate_y);
 			//this.setSprite(doorSprite);
 		}
+	}
+
+	public int getLevelUpTime() 
+	{
+		return ((this.getLevel() + 1) * 50) + 100;
+	}
+	
+	public int getLevelUpCost()
+	{
+		return ((this.getLevel() + 1) * 1000);
 	}
 }

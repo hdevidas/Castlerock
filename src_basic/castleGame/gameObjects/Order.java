@@ -14,7 +14,22 @@ public class Order
 	
 	
 	// CONSTRUCTORS
+	public Order (OrderManager manager, TroopType troopToBuild)
+	{
+		this.myManager = manager;
+		this.isBuildTroop = (troopToBuild != null);
+		this.troopToBuild = troopToBuild;
+		
+		this.turnLeftToComplete = this.computeTotalTurnsToComplete();
+		this.cost = this.computeCost();
+		
+		this.isBeingBuild = false;
+	}
 	
+	public Order (OrderManager manager)
+	{
+		this(manager, null);
+	}
 	
 	
 	// GETTERS AND SETTERS
@@ -25,15 +40,34 @@ public class Order
 
 	
 	
-	// METHODS
+	// METHODS	
 	int computeTotalTurnsToComplete()
 	{
-		return 0;
+		if (isBuildTroop)
+		{
+			return troopToBuild.getProductionTime();
+		}
+		else
+		{
+			return myManager.castle.getLevelUpTime();
+		}
+	}
+	
+	int computeCost()
+	{
+		if (isBuildTroop)
+		{
+			return troopToBuild.getProductionCost();
+		}
+		else
+		{
+			return myManager.castle.getLevelUpCost();
+		}
 	}
 
 	public boolean isComplete() 
 	{
-		return false;
+		return (this.turnLeftToComplete <= 0);
 	}
 	
 	void build()
@@ -43,15 +77,30 @@ public class Order
 	
 	boolean startNewOrder(Castle castle)
 	{
-		// TODO deduct the cost from the castle money
-		isBeingBuild = true;
-		return false;
+		if (myManager.castle.getMoney() >= this.cost && !this.isBeingBuild)
+		{
+			myManager.castle.setMoney( myManager.castle.getMoney() - this.cost );
+			isBeingBuild = true;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
 	boolean finishOrder(Castle castle)
 	{
-		//TODO execute this order (add troop or level)
-		return false;
+		if (isBuildTroop)
+		{
+			myManager.castle.addNewTroop(troopToBuild);
+		}
+		else
+		{
+			myManager.castle.level_up();
+		}
+		isBeingBuild = false;
+		return true;
 	}
 	
 	

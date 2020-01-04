@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 public class Troop extends GameObject implements SpriteRender
 {
 	// VARIABLES
+	private TroopType type; 
 	private String name;
 	private int speed;
 	private int healthPoint;
@@ -20,7 +21,7 @@ public class Troop extends GameObject implements SpriteRender
 	Sprite sprite;
 	
 	
-	//plus utilisé
+	//plus utilisï¿½
 	static Image image[] = new Image[]{
 			new Image("/images/ost.png",  Settings.OST_SIZE, Settings.OST_SIZE, true, true),
 			new Image("/images/ost.png",  Settings.OST_SIZE, Settings.OST_SIZE, true, true),
@@ -31,19 +32,28 @@ public class Troop extends GameObject implements SpriteRender
 	// CONSTRUCTORS
 	public Troop(TroopType troopType, double x, double y)
 	{
+		this.type = troopType;
 		this.name = troopType.getName();
 		this.speed = troopType.getSpeed();
 		this.healthPoint = troopType.getHealthPoint();
 		this.attack = troopType.getAttack();
 		this.x = x;
 		this.y = y;
-		//this.sprite = new Sprite(Map.playfieldLayer, image[troopType.ordinal()], x, y); //plus utilisé
+		//this.sprite = new Sprite(Map.playfieldLayer, image[troopType.ordinal()], x, y); //plus utilisï¿½
 	}
 	
 	
 	
 	// GETTERS AND SETTERS
+	public int getSpeed()
+	{
+		return speed;
+	}
 	
+	public TroopType getType()
+	{
+		return type;
+	}
 	
 	
 	// INHERITED METHODS
@@ -59,7 +69,7 @@ public class Troop extends GameObject implements SpriteRender
 
 	public void updateUI() 
 	{
-		//sprite.updateUI(); //plus utilisé car plus de sprite de troop a update
+		//sprite.updateUI(); //plus utilisï¿½ car plus de sprite de troop a update
 	}
 	
 	

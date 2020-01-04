@@ -24,7 +24,7 @@ public abstract class TroopsManager extends GameObject
 		{
 			this.troops.add(troopType.ordinal(), new ArrayList<Troop>());
 		}
-		setTroops(troops, x, y);
+		setTroops(troops);
 	}
 	
 	public TroopsManager()
@@ -35,13 +35,13 @@ public abstract class TroopsManager extends GameObject
 	
 	
 	// GETTERS AND SETTERS
-	void setTroops(int troops[], double x, double y)
+	void setTroops(int troops[])
 	{
 		if (troops.length == Settings.NB_TROOP_TYPES)
 		{
 			for (TroopType troopType : TroopType.values())
 			{
-				addTroops(troopType, troops[troopType.ordinal()],x,y);
+				addNewTroops(troopType, troops[troopType.ordinal()]);
 			}
 		}
 	}
@@ -51,17 +51,30 @@ public abstract class TroopsManager extends GameObject
 	
 	
 	// METHODS	
-	void addTroop(TroopType troopType, double x, double y)
+	void addNewTroop(TroopType troopType)
 	{
-		this.troops.get(troopType.ordinal()).add(new Troop(troopType, x , y));
+		this.troops.get(troopType.ordinal()).add(new Troop(troopType, 0, 0)); 
+		//TODO change X, Y coordinate needed in troops Constructor
 	}
 	
-	void addTroops(TroopType troopType, int nbTroop, double x, double y)
+	void addNewTroops(TroopType troopType, int nbTroop)
 	{
 		for (int i = 0; i < nbTroop; i++)
 		{
-			addTroop(troopType,x,y);
-			y=y+10;
+			addNewTroop(troopType);
+		}
+	}
+	
+	void addTroop(Troop troop)
+	{
+		this.troops.get(troop.getType().ordinal()).add(troop); 
+	}
+	
+	void addTroops(Troop troops[])
+	{
+		for (Troop troop : troops)
+		{
+			addTroop(troop);
 		}
 	}
 	
