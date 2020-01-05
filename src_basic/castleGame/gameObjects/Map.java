@@ -1,6 +1,7 @@
 package castleGame.gameObjects;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -59,7 +60,15 @@ public class Map extends GameObject
 	// INHERITED METHODS
 	protected void updateThis()
 	{
-
+		Ost ost;
+		for (Iterator<Ost> iterator = osts.iterator(); iterator.hasNext();)
+		{
+			ost = iterator.next();
+			if (ost.isDead())
+			{
+				iterator.remove();
+			}
+		}
 	}
 	
 	protected void updateChilds()

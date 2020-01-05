@@ -1,6 +1,7 @@
 package castleGame.gameObjects;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import castleGame.base.GameObject;
 import castleGame.infoObjects.Owner;
@@ -60,10 +61,37 @@ public abstract class TroopsManager extends GameObject
 	
 	
 	// INHERITED METHODS
+	//GameObject :
+	protected void updateThis()
+	{
+		Troop troop;
+		for (ArrayList<Troop> troopsByType : troops)
+		{
+			for (Iterator<Troop> iterator = troopsByType.iterator(); iterator.hasNext();)
+			{
+				troop = iterator.next();
+				if (troop.isDead())
+				{
+					if (troop.ost != null)
+					{
+						troop.endJourney();
+					}
+					iterator.remove();
+				}
+			}
+		}
+	}
+	
+	protected void updateChilds()
+	{
+		this.troops.forEach(troopTypeList -> troopTypeList.forEach(troop -> troop.update()));
+	}
 	
 	
 	
 	// METHODS	
+	
+	
 	void addNewTroop(TroopType troopType)
 	{
 		this.troops.get(troopType.ordinal()).add(new Troop(this, troopType));
@@ -134,13 +162,7 @@ public abstract class TroopsManager extends GameObject
 		{
 			return false;
 		}
-	}
-
-	protected void updateChilds()
-	{
-		this.troops.forEach(troopTypeList -> troopTypeList.forEach(troop -> troop.update()));
-	}
-	
+	}	
 	
 	// Fonction pour résoudre une attaque
 	//	TODO Fonction a retravailler

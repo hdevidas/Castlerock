@@ -216,6 +216,8 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	// troopsManager
 	protected void updateThis() 
 	{
+		super.updateThis();
+		
 		processInputs();
 		
 		this.money_up();

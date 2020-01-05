@@ -184,6 +184,8 @@ public class OrderManager extends GameObject
 						if (troopsToSend[troopType.ordinal()] <= 0)
 						{
 							priorityList.remove(troopType);
+							// Ideally this would need to be done via an iterator but as the 
+							// for loop is broken just after it is not necessary
 						}
 						troopSent = true;
 						break;

@@ -1,6 +1,7 @@
 package castleGame.gameObjects;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import castleGame.base.Inputs;
 import castleGame.base.Sprite;
@@ -20,6 +21,7 @@ public class Ost extends TroopsManager
 	boolean isComplete;
 	
 	ArrayList<Point2D> path;
+	ArrayList<Troop> troopsOnTarget;
 	
 	
 	
@@ -36,6 +38,8 @@ public class Ost extends TroopsManager
 		isComplete = false;
 		
 		makePathFinding();
+		
+		troopsOnTarget = new ArrayList<Troop>();
 		
 		this.map.addOst(this);
 	}
@@ -54,10 +58,9 @@ public class Ost extends TroopsManager
 	//gameObject :
 	protected void updateThis() 
 	{
-		if (isDead())
-		{
-			map.removeOst(this);
-		}
+		super.updateThis();
+		this.troopsOnTargetActions();
+		// specific ost updates can be put here
 	}
 	
 	protected void updateChilds()
@@ -88,12 +91,24 @@ public class Ost extends TroopsManager
 		return (isComplete && !has_got_troops());
 	}
 	
-	public void troopOnTarget(Troop troop) 
+	public void troopsOnTargetActions() 
 	{
 		//TODO make the troop attack or put it in this castle
 		//System.out.println("a troop has arrived at the target" + castleTarget.getCoord());
-		
-		troop.endJourneyTo(castleTarget);
+		Troop troop;
+		for (Iterator<Troop> iterator = troopsOnTarget.iterator(); iterator.hasNext();)
+		{
+			troop = iterator.next();
+			if (troop.isDead())
+			{
+				iterator.remove();
+			}
+			else
+			{
+				troop.endJourneyTo(castleTarget);
+				iterator.remove();
+			}
+		}
 	}
 	
 }

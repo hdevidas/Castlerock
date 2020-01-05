@@ -69,7 +69,7 @@ public class Troop extends GameObject implements SpriteRender
 			{
 				if (directionsLeft <= 0)
 				{
-					ost.troopOnTarget(this);
+					ost.troopsOnTarget.add(this);
 				}
 				else
 				{
@@ -88,15 +88,6 @@ public class Troop extends GameObject implements SpriteRender
 					onTarget = true;
 				}
 			}
-			this.updateUI();
-		}
-		if (isDead())
-		{
-			if (ost != null)
-			{
-				endJourney();
-			}
-			troopsManager.removeTroop(this);
 		}
 	}
 	
@@ -172,6 +163,7 @@ public class Troop extends GameObject implements SpriteRender
 			position = position.add(direction);
 			stepsLeft --;
 			//System.out.println(stepsLeft + " " + direction + " " + position);
+			this.updateUI();
 		}
 	}
 	
