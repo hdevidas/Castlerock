@@ -10,6 +10,7 @@ import castleGame.base.KeyboardInputsReceiver;
 import castleGame.base.Sprite;
 import castleGame.infoObjects.Owner;
 import castleGame.infoObjects.Settings;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
@@ -132,18 +133,19 @@ public class Map extends GameObject
 	{
 		for (int i = 0; i < Settings.NB_TRIES_TO_SPAWN; i++)
 		{
-			double x = rnd.nextDouble() * (Settings.SCENE_WIDTH - Owner.Player.castleImage.getWidth() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getWidth() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getWidth(); 
-			double y = rnd.nextDouble() * (Settings.SCENE_HEIGHT - Owner.Player.castleImage.getHeight() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getHeight() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getHeight(); 
+			Point2D pos = new Point2D(
+				/*x*/	rnd.nextDouble() * (Settings.SCENE_WIDTH - Owner.Player.castleImage.getWidth() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getWidth() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getWidth(),
+				/*y*/	rnd.nextDouble() * (Settings.SCENE_HEIGHT - Owner.Player.castleImage.getHeight() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getHeight() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getHeight() ); 
 			
-			if (checkLocation(new javafx.geometry.Point2D(x, y),Settings.CASTLE_SIZE*2))
+			if (checkLocation(pos, Settings.CASTLE_SIZE*2))
 			{
-				Sprite sprite = new Sprite(playfieldLayer, owner.castleImage, x, y);
+				Sprite sprite = new Sprite(playfieldLayer, owner.castleImage, pos); // TODO move inside castle constructor
 				
 				String name = owner == Owner.Player ? owner.getName() : generate_castle_name();
 				
-				Castle newCastle = new Castle(sprite, this, name, owner, money, level, Settings.ARMY_INIT, x, y);
+				Castle newCastle = new Castle(sprite, this, name, owner, money, level, Settings.ARMY_INIT, pos);
 				
-				listXY.add(new javafx.geometry.Point2D(x+Settings.CASTLE_SIZE/2, y+Settings.CASTLE_SIZE/2));
+				listXY.add(new javafx.geometry.Point2D(pos.getX()+Settings.CASTLE_SIZE/2, pos.getY()+Settings.CASTLE_SIZE/2));
 				
 				castles.get(owner.ordinal()).add(newCastle);
 	

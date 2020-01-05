@@ -18,8 +18,9 @@ public abstract class TroopsManager extends GameObject
 	
 	
 	// CONSTRUCTORS	
-	public TroopsManager(int troops[],double x, double y)
+	public TroopsManager(Owner owner, int troops[])
 	{
+		this.owner = owner;
 		for (TroopType troopType : TroopType.values())
 		{
 			this.troops.add(troopType.ordinal(), new ArrayList<Troop>());
@@ -27,9 +28,9 @@ public abstract class TroopsManager extends GameObject
 		setTroops(troops);
 	}
 	
-	public TroopsManager()
+	public TroopsManager(Owner owner)
 	{
-		this(new int [Settings.NB_TROOP_TYPES], 1, 1);
+		this(owner, new int [Settings.NB_TROOP_TYPES]);
 	}
 	
 	
@@ -46,6 +47,18 @@ public abstract class TroopsManager extends GameObject
 		}
 	}
 	
+	Troop getTroop(TroopType troopType)
+	{
+		return this.troops.get(troopType.ordinal()).get(0);
+	}
+	
+	public void setOwner(Owner owner) 
+	{
+		this.owner = owner;
+	}
+	
+	
+	
 	// INHERITED METHODS
 	
 	
@@ -53,8 +66,7 @@ public abstract class TroopsManager extends GameObject
 	// METHODS	
 	void addNewTroop(TroopType troopType)
 	{
-		this.troops.get(troopType.ordinal()).add(new Troop(troopType, 0, 0)); 
-		//TODO change X, Y coordinate needed in troops Constructor
+		this.troops.get(troopType.ordinal()).add(new Troop(this, troopType));
 	}
 	
 	void addNewTroops(TroopType troopType, int nbTroop)
@@ -95,6 +107,32 @@ public abstract class TroopsManager extends GameObject
 	{
 		if ( this.has_got_troops(troopType) ) {
 			this.troops.get(troopType.ordinal()).remove(0);
+		}
+	}
+	
+	void removeTroop(Troop troop)
+	{
+		troops.get(troop.getType().ordinal()).remove(troop);
+	}
+	
+	void giveTroopTo(TroopsManager troopsManager, Troop troopToGive)
+	{
+		troopsManager.addTroop(troopToGive);
+		troopToGive.setTroopsManager(troopsManager);
+		this.removeTroop(troopToGive);
+	}
+	
+	boolean giveTroopTo(TroopsManager troopsManager, TroopType troopType)
+	{
+		if (this.has_got_troops(troopType))
+		{
+			Troop troopToGive = this.getTroop(troopType);
+			this.giveTroopTo(troopsManager, troopToGive);
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 
@@ -149,7 +187,4 @@ public abstract class TroopsManager extends GameObject
 		}
 		return table;
 	}
-	
-	
-	//TODO : add missing methods...
 }

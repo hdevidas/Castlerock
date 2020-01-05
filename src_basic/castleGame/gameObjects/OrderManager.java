@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import castleGame.base.GameObject;
+import castleGame.infoObjects.Owner;
 import castleGame.infoObjects.Settings;
 import castleGame.infoObjects.TroopType;
 
@@ -15,7 +16,8 @@ public class OrderManager extends GameObject
 	Order currentOrder;
 	boolean launchingOst;
 	Ost ostToLaunch;
-	ArrayList<Troop> troopsToSend;
+	int[] troopsToSend;
+	ArrayList<TroopType> priorityList;
 	boolean waitToStart; // waiting for specific conditions to start the current order (more money for example)
 	boolean waitToFinish; // waiting for specific conditions to finish the current order (no example for this case (yet?))
 	
@@ -25,6 +27,7 @@ public class OrderManager extends GameObject
 	public OrderManager (Castle castle)
 	{
 		this.castle = castle; 
+		orderList = new ArrayList<Order>();
 	}
 	
 	
@@ -36,6 +39,11 @@ public class OrderManager extends GameObject
 	// GameObject
 	protected void updateThis() 
 	{
+		if (castle.owner != Owner.Player)
+		{
+			makeAIOrder();
+		}
+		
 		if (currentOrder != null) // if there's an order to do...
 		{
 			if (waitToStart) // if it hasn't started yet...
@@ -84,7 +92,8 @@ public class OrderManager extends GameObject
 
 	protected void updateChilds() 
 	{
-		//this.orderList.forEach(order -> order.update()); // Order is not a game object (but it could be if necessary), so this line won't work 
+		//this.orderList.forEach(order -> order.update()); 
+		// Order is not a game object (but it could be if necessary), so ^this line^ won't work 
 	}
 	
 	
@@ -108,7 +117,40 @@ public class OrderManager extends GameObject
 		}
  	}
 	
-	public boolean startLaunchingNewOst(Ost ost, ArrayList<Troop> troopsToSend)
+	void makeAIOrder()
+	{
+		//TODO Implement AI
+		if (currentOrder == null)
+		{
+			this.newLevelUpOrder();
+		}
+	}
+	
+	public ArrayList<TroopType> makeTroopPriorityList(int[] troopsToSend)
+	{
+		ArrayList<TroopType> troopPriorityList = new ArrayList<TroopType>();
+		
+		for (TroopType troopType : TroopType.values()) 
+		{
+			if (troopsToSend[troopType.ordinal()] != 0)
+			{
+				troopPriorityList.add(troopType);
+			}
+		}
+		
+		Comparator<TroopType> troopSpeedComparator = new Comparator<TroopType>() {
+			public int compare(TroopType troop1, TroopType troop2)
+			{
+				return troop1.getSpeed() - troop2.getSpeed();
+			}
+		};
+		
+		troopPriorityList.sort(troopSpeedComparator); // TODO test if this work as intended
+		
+		return troopPriorityList;
+	}
+	
+	public boolean startLaunchingNewOst(Ost ost, int[] troopsToSend)
 	{
 		if (this.launchingOst)
 		{
@@ -117,16 +159,10 @@ public class OrderManager extends GameObject
 		else
 		{
 			launchingOst = true;
+			ostToLaunch = ost;
 			this.troopsToSend = troopsToSend;
 			
-			Comparator<Troop> troopSpeedComparator = new Comparator<Troop>() {
-				public int compare(Troop troop1, Troop troop2)
-				{
-					return troop1.getSpeed() - troop2.getSpeed();
-				}
-			};
-			
-			this.troopsToSend.sort(troopSpeedComparator);;
+			this.priorityList = makeTroopPriorityList(troopsToSend);
 			
 			return true;
 		}
@@ -134,12 +170,33 @@ public class OrderManager extends GameObject
 	
 	private void continueLaunchingOst()
 	{
+		boolean troopSent;
 		for (int i = 0; i < Settings.CASTLE_DOOR_OUT_FLOW_LIMIT; i++)
 		{
-			if (troopsToSend.size() != 0)
+			troopSent = false;
+			if (priorityList.size() != 0)
 			{
-				this.ostToLaunch.addTroop(troopsToSend.get(0));
-				troopsToSend.remove(0);
+				for (TroopType troopType : priorityList)
+				{
+					if (castle.giveTroopTo(ostToLaunch, troopType))
+					{
+						this.troopsToSend[troopType.ordinal()] --;
+						if (troopsToSend[troopType.ordinal()] <= 0)
+						{
+							priorityList.remove(troopType);
+						}
+						troopSent = true;
+						break;
+					}
+					else
+					{
+						//there is a troop missing... faster troops will be sent for this turn
+					}
+				}
+				if (!troopSent)
+				{
+					break;
+				}
 			}
 			else
 			{

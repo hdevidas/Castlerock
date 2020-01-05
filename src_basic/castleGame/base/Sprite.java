@@ -1,5 +1,6 @@
 package castleGame.base;
 
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -41,10 +42,15 @@ public class Sprite {
         addToLayer();
 
     }
+    
+    public Sprite(Pane layer, Image image, Point2D pos) 
+    {
+    	this(layer, image, pos.getX(), pos.getY());
+	}
 
-    
-    
-    // GETTERS AND SETTERS
+
+
+	// GETTERS AND SETTERS
     public double getX() {
         return x;
     }

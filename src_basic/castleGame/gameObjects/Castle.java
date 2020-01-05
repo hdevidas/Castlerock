@@ -14,6 +14,7 @@ import castleGame.base.SpriteRender;
 import castleGame.infoObjects.Owner;
 import castleGame.infoObjects.Settings;
 import castleGame.infoObjects.TroopType;
+import javafx.geometry.Point2D;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -43,7 +44,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	private Map map;
 	private String name;
-	private OrderManager order;
+	private OrderManager orderManager;
 	private int level;
 	private int money;
 	private double x;
@@ -57,20 +58,25 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	private Text chevalierTxt = new Text();
 	private Text moneyTxt = new Text();
 	private Text levelTxt = new Text();
+	private Point2D coord;
 	
 	
 	// CONSTRUCTORS
-	public Castle(Sprite sprite, Map map, String name, Owner owner, int money, int level, int[] init_army, double x, double y) {
-		super(init_army, x,y);
-		//System.out.println(x);
+	public Castle(Sprite sprite, Map map, String name, Owner owner, int money, int level, int[] init_army, Point2D coord) {
+		super(owner, init_army);
+
 		this.map = map;
 		this.sprite = sprite;
 		this.money = money;
 		this.level = level;
 		this.name = name;
-		this.owner = owner;
-		this.x = x;
-		this.y = y;
+		this.coord = coord;
+		
+		this.orderManager = new OrderManager(this);
+		
+		//TODO replace x and y by coord.x and coord.y in the rest of this class and same for door coordinates
+		x = coord.getX();
+		y = coord.getY();
 		
 		// Dessin de la Porte
 		int gate = rnd.nextInt(4 - 1 + 1) + 1;
@@ -101,10 +107,6 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	public double getY() {
 		return y;
 	}
-	
-	public void setLevel(int level) {
-		this.level = level;
-	}
 
 	public int getMoney() {
 		return money;
@@ -125,35 +127,21 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	public Owner getOwner() {
 		return owner;
 	}
-
-	public void setOwner(Owner owner) {
-		this.owner = owner;
-	}
-
-	public Sprite getSprite() {
-		return sprite;
-	}
-	
-	public void setSprite(Sprite sprite) {
-		this.sprite = sprite;
-	}
-	
-	public int getGate() {
-		return gate;
-	}
 	
 	public void setGate(int gate) {
 		this.gate = gate;
 	}
 	
-	public double getGate_x() {
-		return gate_x;
+	public Point2D getCoord() 
+	{
+		Point2D newCoord = new Point2D(coord.getX(), coord.getY());
+		return newCoord;
 	}
 
-	public double getGate_y() {
-		return gate_y;
+	public Point2D getGateCoord() 
+	{
+		return new Point2D(gate_x, gate_y);
 	}
-
 	
 	
 	// INHERITED METHODS
@@ -165,11 +153,11 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		{
 			// monter d'un niveau
 			if (Main.inputs.isLevelUp()) {
-				level_up();
+				orderManager.newLevelUpOrder();
 			}
 			// construire un piquier
 			if (Main.inputs.isBuilding()) {
-				build_troop(TroopType.Piquier);
+				orderManager.newBuildTroopOrder(TroopType.Piquier);
 			}
 			// attaquer un chateau x
 			if (Main.inputs.isAttacks() && clicked != lastPlayerClicked && this == lastPlayerClicked) {
@@ -203,11 +191,11 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		for (TroopType troop : TroopType.values())
 		{
 			MenuItem troopItem = new MenuItem(troop.getName());
-			troopItem.setOnAction(evt -> this.build_troop(troop));
+			troopItem.setOnAction(evt -> this.orderManager.newBuildTroopOrder(troop));
 			newTroop.getItems().addAll(troopItem);
 		}
 		createOstFrom.setOnAction(evt -> this.launchOst());
-		levelUp.setOnAction(evt -> this.level_up());
+		levelUp.setOnAction(evt -> this.orderManager.newLevelUpOrder());
 		contextMenu.getItems().addAll(createOstFrom, levelUp, newTroop);
 		
 		if (this.owner == Owner.Player)
@@ -229,15 +217,16 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	protected void updateThis() 
 	{
 		processInputs();
+		
 		this.money_up();
-		if (this.owner != Owner.Player)
-		{
-			this.level_up();
-		}
+		
 		updateUI();		
 
+		orderManager.update();
+		
 		if (!this.has_got_troops()) {
 			//System.out.println("un de vos chateau n'a plus d'unités, il est vulnérable.");
+			// mis en commentaire pour l'instant parce que sinon ça flood la console...
 		}
 
 		if (!map.player_is_alive(Settings.PLAYER_NAME)){
@@ -261,6 +250,24 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	
 	// METHODS
+	public void level_up() { //MONTE D'UN NIVEAU LE CHATEAU
+		level ++;
+	}
+	
+	public void money_up() { //GENERATION FLORINS
+		setMoney(getMoney() + getLevel()*10);
+	}
+
+	public int getLevelUpTime() 
+	{
+		return ((this.getLevel() + 1) * 50) + 100;
+	}
+	
+	public int getLevelUpCost()
+	{
+		return ((this.getLevel() + 1) * 1000);
+	}
+	
 	private void launchOst() 
 	{	
 		launchingOstFrom = this;
@@ -273,25 +280,20 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		createOst(launchingOstFrom, this);
 		isLaunchingOst = false;
 	}
-
+	
 	private void createOst(Castle castleFrom, Castle castleTo) 
 	{
 		// TODO : modify to actually create an ost and not simulate a direct attack between castles
-		castleFrom.fakeAttackPlaceHolder(castleFrom, castleTo);
+		//castleFrom.fakeAttackPlaceHolder(castleFrom, castleTo);
 		
-		/*//test hugo
-		Ost ost = new Ost(castleFrom.getNbTroops(), castleFrom.getGate_x(), castleFrom.getGate_y(), castleTo);
-		castle_ost.add(ost);
-		castleFrom.removeAllTroops();
-		*/
+		Ost ost = new Ost(map, castleFrom, castleTo);
+		castleFrom.orderManager.startLaunchingNewOst(ost, castleFrom.getNbTroops());
 	}
 	
-	
-	
+	/*
 	private void fakeAttackPlaceHolder(Castle castleFrom, Castle castleTo)
 	{
 		//this only works if castleFrom has more troops than castleTo for every troopType... (good enough for a placeholder)
-		System.out.println("vous etes ici !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		for (TroopType troopType : TroopType.values()) 
 		{
 			while (castleFrom.has_got_troops(troopType) && castleTo.has_got_troops(troopType)) {
@@ -314,32 +316,15 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		{
 			System.out.println("Vous avez perdus cette attaque... reformez des troupes et relancez-vous!");
 		}
-	}
+	}*/
 	
 	void changeOwner(Owner newOwner) 
 	{
-		this.setOwner(Owner.Player);
-		Sprite sprite = new Sprite(Map.playfieldLayer, newOwner.castleImage, this.getX(), this.getY());
+		this.setOwner(newOwner);
+		sprite = new Sprite(Map.playfieldLayer, newOwner.castleImage, this.getX(), this.getY());
 		Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, gate_x, gate_y);
-		//this.setSprite(sprite);
-		//this.createDoor(gate);
+		this.createDoor(gate); // TODO is it really necessary?
 		setMouseEventResponse();
-	}
-
-	public void level_up() { //MONTE D'UN NIVEAU LE CHATEAU
-		setLevel(getLevel()+1);
-	}
-
-	public void build_troop(TroopType troopType) { //CONSTRUIS UNE TROUPE
-		if (money >= troopType.getProductionCost() ) {
-			money -= troopType.getProductionCost();
-			this.addNewTroop(troopType);
-		}
-	}
-
-	
-	public void money_up() { //GENERATION FLORINS
-		setMoney(getMoney() + getLevel());
 	}
 	
 	public boolean is_the_same_name(String name) {
@@ -448,15 +433,5 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 			Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, gate_x,gate_y);
 			//this.setSprite(doorSprite);
 		}
-	}
-
-	public int getLevelUpTime() 
-	{
-		return ((this.getLevel() + 1) * 50) + 100;
-	}
-	
-	public int getLevelUpCost()
-	{
-		return ((this.getLevel() + 1) * 1000);
 	}
 }
