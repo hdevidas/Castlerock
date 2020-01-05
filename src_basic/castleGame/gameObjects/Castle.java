@@ -3,6 +3,7 @@ package castleGame.gameObjects;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
+import java.util.Optional;
 
 import castleGame.Main;
 import castleGame.base.Inputs;
@@ -15,6 +16,9 @@ import castleGame.infoObjects.Owner;
 import castleGame.infoObjects.Settings;
 import castleGame.infoObjects.TroopType;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -38,6 +42,17 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	static public Castle lastPlayerClicked;
 	static public Castle launchingOstFrom;
 	static public Boolean isLaunchingOst = false;
+	
+	static public int nbPiquierOst = 0;
+	static public int nbKnightOst = 0;
+	static public int nbOnagerOst = 0;
+	static public ButtonType zero = new ButtonType("0");
+	static public ButtonType one = new ButtonType("1");
+    static public ButtonType two = new ButtonType("2");
+    static public ButtonType five = new ButtonType("5");
+    static public ButtonType ten = new ButtonType("10");
+    static public ButtonType all = new ButtonType("ALL");
+	
 	
 	public List<Ost> castle_ost = new ArrayList<>();
 	
@@ -161,7 +176,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 			}
 			// attaquer un chateau x
 			if (Main.inputs.isAttacks() && clicked != lastPlayerClicked && this == lastPlayerClicked) {
-				this.createOst(lastPlayerClicked, clicked);
+				this.createOst(lastPlayerClicked, clicked, nbPiquierOst, nbKnightOst, nbOnagerOst);
 			}
 		}
 		
@@ -184,19 +199,33 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		});
 		
 		// creating the context menu
-		ContextMenu contextMenu = new ContextMenu();
-		MenuItem createOstFrom = new MenuItem("Launch ost");
-		MenuItem levelUp = new MenuItem("Level up");
-		Menu newTroop = new Menu("Create new Troop");
-		for (TroopType troop : TroopType.values())
-		{
-			MenuItem troopItem = new MenuItem(troop.getName());
-			troopItem.setOnAction(evt -> this.orderManager.newBuildTroopOrder(troop));
-			newTroop.getItems().addAll(troopItem);
-		}
-		createOstFrom.setOnAction(evt -> this.launchOst());
-		levelUp.setOnAction(evt -> this.orderManager.newLevelUpOrder());
-		contextMenu.getItems().addAll(createOstFrom, levelUp, newTroop);
+				ContextMenu contextMenu = new ContextMenu();
+				
+				//Level up
+				MenuItem levelUp = new MenuItem("Level up");
+				levelUp.setOnAction(evt -> this.orderManager.newLevelUpOrder());
+				
+				//Send an Ost
+				Menu createOstFrom = new Menu("Launch ost");
+				MenuItem troopItemOstAll = new MenuItem("All");
+				troopItemOstAll.setOnAction(evt -> this.launchOst());
+				createOstFrom.getItems().addAll(troopItemOstAll);
+				MenuItem troopItemOstCustom = new MenuItem("Custom");
+				
+				troopItemOstCustom.setOnAction(evt -> this.popupPiquierChoice());
+				//troopItemOstCustom.setOnAction(evt -> this.launchOst(1,1,1));
+				createOstFrom.getItems().addAll(troopItemOstCustom);
+				
+				//Add troops
+				Menu newTroop = new Menu("Create new Troop");
+				for (TroopType troop : TroopType.values())
+				{
+					MenuItem troopItem = new MenuItem(troop.getName());
+					troopItem.setOnAction(evt -> this.orderManager.newBuildTroopOrder(troop));
+					newTroop.getItems().addAll(troopItem);
+				}
+			
+				contextMenu.getItems().addAll(levelUp, createOstFrom, newTroop);
 		
 		if (this.owner == Owner.Player)
 		{
@@ -272,6 +301,19 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	private void launchOst() 
 	{	
+		nbPiquierOst = this.getNbTroop(TroopType.Piquier);
+		nbKnightOst = this.getNbTroop(TroopType.Knight);
+		nbOnagerOst = this.getNbTroop(TroopType.Onager);
+		launchingOstFrom = this;
+		isLaunchingOst = true;
+		//Display : "Click on the castle to launch the ost to..."
+	}
+	
+	private void launchOst(int p, int k, int o) 
+	{	
+		nbPiquierOst = p;
+		nbKnightOst = k;
+		nbOnagerOst = o;
 		launchingOstFrom = this;
 		isLaunchingOst = true;
 		//Display : "Click on the castle to launch the ost to..."
@@ -279,17 +321,17 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 
 	private void receiveOst() 
 	{
-		createOst(launchingOstFrom, this);
+		createOst(launchingOstFrom, this, nbPiquierOst, nbKnightOst, nbOnagerOst);
 		isLaunchingOst = false;
 	}
 	
-	private void createOst(Castle castleFrom, Castle castleTo) 
+	private void createOst(Castle castleFrom, Castle castleTo, int p, int k, int o) 
 	{
 		// TODO : modify to actually create an ost and not simulate a direct attack between castles
 		//castleFrom.fakeAttackPlaceHolder(castleFrom, castleTo);
-		
 		Ost ost = new Ost(map, castleFrom, castleTo);
-		castleFrom.orderManager.startLaunchingNewOst(ost, castleFrom.getNbTroops());
+		int tab[]= {p,k,o};
+		castleFrom.orderManager.startLaunchingNewOst(ost, tab);
 	}
 	
 	/*
@@ -407,6 +449,135 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	private void update_level_bar() {
 		levelTxt.setText("Niveau: "+Integer.toString(this.getLevel()));                 
+	}
+	
+	void popupPiquierChoice() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		int piquierNb = this.getNbTroop(TroopType.Piquier);
+        alert.setTitle("Select");
+        alert.setHeaderText("You got "+piquierNb+" piquier(s), how many do you want to send ?");
+        
+        // Remove default ButtonTypes
+        alert.getButtonTypes().clear();
+         
+        if (piquierNb > 10) {
+        	alert.getButtonTypes().addAll(zero,one,two,five,ten,all,all);
+        } else if (piquierNb >= 10) {
+        	alert.getButtonTypes().addAll(zero,one,two,five,ten,all);
+        } else if (piquierNb >= 5) {
+        	alert.getButtonTypes().addAll(zero,one,two,five,all);
+        } else if (piquierNb >= 2) {
+        	alert.getButtonTypes().addAll(zero,one,two,all);
+        } else if (piquierNb >= 1) {
+        	alert.getButtonTypes().addAll(zero,one);
+        } else {
+        	alert.getButtonTypes().addAll(zero);
+        }
+ 
+        // option != null.
+        Optional<ButtonType> option = alert.showAndWait();
+ 
+        if (option.get() == zero) {
+        	this.popupKnightChoice(0);
+        } else if (option.get() == one) {
+        	this.popupKnightChoice(1);
+        } else if (option.get() == two) {
+        	this.popupKnightChoice(2);
+        } else if (option.get() == five) {
+        	this.popupKnightChoice(5);
+        } else if (option.get() == ten) {
+        	this.popupKnightChoice(10);
+        } else if (option.get() == all) {
+        	this.popupKnightChoice(this.getNbTroop(TroopType.Piquier));
+        } else {
+            System.out.println("erreur");
+        }        
+	}
+	
+	void popupKnightChoice(int p) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		int knightNb = this.getNbTroop(TroopType.Knight);
+        alert.setTitle("Select");
+        alert.setHeaderText("You got "+knightNb+" knight(s), how many do you want to send ?");
+        
+        // Remove default ButtonTypes
+        alert.getButtonTypes().clear();
+
+        if (knightNb > 10) {
+        	alert.getButtonTypes().addAll(zero,one,two,five,ten,all);
+        } else if (knightNb >= 10) {
+        	alert.getButtonTypes().addAll(zero,one,two,five,ten,all);
+        } else if (knightNb >= 5) {
+        	alert.getButtonTypes().addAll(zero,one,two,five,all);
+        } else if (knightNb >= 2) {
+        	alert.getButtonTypes().addAll(zero,one,two,all);
+        } else if (knightNb >= 1) {
+        	alert.getButtonTypes().addAll(zero,one);
+        } else {
+        	alert.getButtonTypes().addAll(zero);
+        }
+ 
+        // option != null.
+        Optional<ButtonType> option = alert.showAndWait();
+ 
+        if (option.get() == zero) {
+        	this.popupOnagerChoice(p,0);
+        } else if (option.get() == one) {
+        	this.popupOnagerChoice(p,1);
+        } else if (option.get() == two) {
+        	this.popupOnagerChoice(p,2);
+        } else if (option.get() == five) {
+        	this.popupOnagerChoice(p,5);
+        } else if (option.get() == ten) {
+        	this.popupOnagerChoice(p,10);
+        } else if (option.get() == all) {
+        	this.popupOnagerChoice(p,this.getNbTroop(TroopType.Piquier));
+        } else {
+            System.out.println("erreur");
+        }        
+	}
+	
+	void popupOnagerChoice(int p, int k) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		int onagerNb = this.getNbTroop(TroopType.Onager);
+        alert.setTitle("Select");
+        alert.setHeaderText("You got "+onagerNb+" onager(s), how many do you want to send ?");
+        
+        // Remove default ButtonTypes
+        alert.getButtonTypes().clear();
+ 
+        if (onagerNb > 10) {
+        	alert.getButtonTypes().addAll(zero,one,two,five,ten,all);
+        } else if (onagerNb >= 10) {
+        	alert.getButtonTypes().addAll(zero,one,two,five,ten,all);
+        } else if (onagerNb >= 5) {
+        	alert.getButtonTypes().addAll(zero,one,two,five,all);
+        } else if (onagerNb >= 2) {
+        	alert.getButtonTypes().addAll(zero,one,two,all);
+        } else if (onagerNb >= 1) {
+        	alert.getButtonTypes().addAll(zero,one);
+        } else {
+        	alert.getButtonTypes().addAll(zero);
+        }
+ 
+        // option != null.
+        Optional<ButtonType> option = alert.showAndWait();
+ 
+        if (option.get() == zero) {
+        	this.launchOst(p,k,0);
+        } else if (option.get() == one) {
+        	this.launchOst(p,k,1);
+        } else if (option.get() == two) {
+        	this.launchOst(p,k,2);
+        } else if (option.get() == five) {
+        	this.launchOst(p,k,5);
+        } else if (option.get() == ten) {
+        	this.launchOst(p,k,10);
+        } else if (option.get() == all) {
+        	this.launchOst(p,k,(this.getNbTroop(TroopType.Onager)));
+        } else {
+            System.out.println("erreur");
+        }        
 	}
 	
 	
