@@ -1,0 +1,21 @@
+.statusBar {
+    -fx-background-color: #efefef;
+    -fx-border-color: black;
+    -fx-border-style: solid;
+	-fx-font-weight: bold;
+	-fx-font-size: 20px;
+}
+
+.message {
+	-fx-alignment: center;
+	-fx-font-weight: bold;
+	-fx-font-size: 64px;	
+	-fx-fill: red;
+	-fx-stroke: black;
+}
+
+#pane{
+   -fx-background-image: url('image/grass.png');
+   -fx-background-repeat: stretch;   
+   -fx-background-position: center center;
+}
