@@ -21,6 +21,8 @@ public class OrderManager extends GameObject
 	boolean waitToStart; // waiting for specific conditions to start the current order (more money for example)
 	boolean waitToFinish; // waiting for specific conditions to finish the current order (no example for this case (yet?))
 	
+	String info;
+	
 	
 	
 	// CONSTRUCTORS
@@ -220,5 +222,28 @@ public class OrderManager extends GameObject
 		{
 			return false;
 		}
+	}
+	
+	public String currentOrderInfo()
+	{
+		info = "";
+		if (currentOrder != null)
+		{
+			if (currentOrder.isBuildTroop)
+			{
+				info += "Building troop : " + currentOrder.troopToBuild.getName();
+			}
+			else
+			{
+				info += "Levelling Up";
+			}
+			info += " (" + currentOrder.turnLeftToComplete + ")";
+		}
+		else
+		{
+			info += "No Order";
+		}
+		
+		return info;
 	}
 }
