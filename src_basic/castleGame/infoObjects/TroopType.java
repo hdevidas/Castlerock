@@ -14,11 +14,11 @@ public enum TroopType
 	/**
 	 * The TroopType containing info about Knights
 	 */
-	Knight ("Chevalier", new Image("/images/knight.png", Settings.OST_SIZE, Settings.OST_SIZE, true, true), 500, 20, 6, 3, 5),
+	Knight ("Knight", new Image("/images/knight.png", Settings.OST_SIZE, Settings.OST_SIZE, true, true), 500, 20, 6, 3, 5),
 	/**
 	 * The TroopType containing info about Onagers
 	 */
-	Onager ("Onagre", new Image("/images/onager.png", Settings.OST_SIZE, Settings.OST_SIZE, true, true), 1000, 50, 1, 5, 10);
+	Onager ("Onager", new Image("/images/onager.png", Settings.OST_SIZE, Settings.OST_SIZE, true, true), 1000, 50, 1, 5, 10);
 	
 	// VARIABLES
 	/**

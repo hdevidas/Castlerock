@@ -1,67 +1,38 @@
-# Titre du projet
-_(juste en dessous des badges sympatiques à placer)_
+# Castlerock : a Dukes of the Realm Game
 
-[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)  [![forthebadge](http://forthebadge.com/images/badges/powered-by-electricity.svg)](http://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](https://forthebadge.com)   [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)  [![forthebadge](https://forthebadge.com/images/badges/made-with-java.svg)](https://forthebadge.com)
 
-Une petite description du projet
+Castlerock est un projet developpé dans le cadre de l'UE "Programmation Orientée Objet" de la Licence 3 Informatique de Bordeaux. Ce projet est un jeu de type "RTS" codé en Java en binôme.
+
 
 ## Pour commencer
 
-Entrez ici les instructions pour bien débuter avec votre projet...
-
-### Pré-requis
-
-Ce qu'il est requis pour commencer avec votre projet...
-
-- Programme 1
-- Programme 2
-- etc...
-
-### Installation
-
-Les étapes pour installer votre programme....
-
-Dites ce qu'il faut faire...
-
-_exemple_: Executez la commande ``telnet mapscii.me`` pour commencer ensuite [...]
+Vous pouvez vous lancer simplement dans une petite partie, les instructions vous seront données à l'execution du programme, vous les retrouverez également plus bas dans ce Readme.
 
 
-Ensuite vous pouvez montrer ce que vous obtenez au final...
+## Règles du jeu
+Vous devez anéantir tous les chateaux adverses pour devenir le digne héritier des terres de Castralrock.
 
-## Démarrage
+Pour cela vous démarrez la partie avec un chateau de niveau 1 qui génère des florins, la ressource indispensable a tout chateau. Grace à vos florins il vous est possible de monter de niveau votre chateau en payant des multiple de 1000 florins pour chaque niveau. Plus votre niveau sera élevé, plus vous produirez de florins.
 
-Dites comment faire pour lancer votre projet
+Les florins vous permettent également de construire à partir de votre chateau des unités militaires, qui ont toutes des statistiques differentes.
 
-## Fabriqué avec
+Quand vous disposez de suffisaments d'unités, vous pouvez les envoyer vers un chateau ennemi, vous infligerez alors des dégats au chateau adverse avec chacune de vos unités. Si arrivez a mettre le total d'unité du chateau adverse à 0, vous prenez possession de son chateau, et vous pouvez alors l'utiliser comme s'il vous appartenez.
 
-Entrez les programmes/logiciels/ressources que vous avez utilisé pour développer votre projet
 
-_exemples :_
-* [Materialize.css](http://materializecss.com) - Framework CSS (front-end)
-* [Atom](https://atom.io/) - Editeur de textes
+## Fonctions de la version minimal (/15) non implémentés
 
-## Contributing
+* Attaque des ost en contournant les chateaux
 
-Si vous souhaitez contribuer, lisez le fichier [CONTRIBUTING.md](https://example.org) pour savoir comment le faire.
 
-## Versions
-Listez les versions ici 
-_exemple :_
-**Dernière version stable :** 5.0
-**Dernière version :** 5.1
-Liste des versions : [Cliquer pour afficher](https://github.com/your/project-name/tags)
-_(pour le lien mettez simplement l'URL de votre projets suivi de ``/tags``)_
+## Bugs ou problèmes connus
++ Pour donner un ordre a un chateau, il faut cliquer sur les extrémités (les tours) et non pas au centre, car le clique est bloqué.
+
 
 ## Auteurs
-Listez le(s) auteur(s) du projet ici !
-* **Jhon doe** _alias_ [@outout14](https://github.com/outout14)
 
-Lisez la liste des [contributeurs](https://github.com/your/project/contributors) pour voir qui à aidé au projet !
+* **Hugo Devidas**
+* **Pamphile Saltel**
 
-_(pour le lien mettez simplement l'URL de votre projet suivi de ``/contirubors``)_
-
-## License
-
-Ce projet est sous licence ``exemple: WTFTPL`` - voir le fichier [LICENSE.md](LICENSE.md) pour plus d'informations
 
 
