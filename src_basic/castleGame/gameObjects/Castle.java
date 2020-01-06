@@ -110,6 +110,11 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	public int getLevel() {
 		return level;
 	}
+	
+	public void setLevel(int level)
+	{
+		this.level = level;
+	}
 
 	public double getX() {
 		return x;
@@ -179,18 +184,11 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 				orderManager.newBuildTroopOrder(TroopType.Onager);
 			}
 			
-			/* Ancien
-			 * // attaquer un chateau with all troops 
-			if (Main.inputs.isAttacksWithAll() && clicked != lastPlayerClicked && this == lastPlayerClicked) {
-				this.createOst(lastPlayerClicked, clicked, nbPiquierOst, nbKnightOst, nbOnagerOst);
-			}*/
-			
-			
 			// attacks a castle with all troops
 			if (Main.inputs.isAttacksWithAll()) {
 				this.launchOst(this.getNbTroops());
 			}
-			// attack a castel with custom troops
+			// attack a castle with custom troops
 			if (Main.inputs.isAttacksWithCustom()) {
 				this.launchOst(null);
 
@@ -221,9 +219,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		
 		//Level up
 		MenuItem levelUp = new MenuItem("Level up");
-		
 		levelUp.setAccelerator(KeyCombination.keyCombination("L"));
-		
 		levelUp.setOnAction(evt -> this.orderManager.newLevelUpOrder());
 		
 		//Send an Ost
@@ -249,10 +245,13 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 			troopItem.setAccelerator(KeyCombination.keyCombination(tab[i]));
 			newTroop.getItems().addAll(troopItem);
 			i=i+1;
-			
 		}
+		
+		//abort current order
+		MenuItem abortCurrentOrder = new MenuItem("Abort current order");
+		abortCurrentOrder.setOnAction(evt -> this.orderManager.abortCurrentOrder());
 	
-		contextMenu.getItems().addAll(levelUp, createOstFrom, newTroop);
+		contextMenu.getItems().addAll(abortCurrentOrder, levelUp, createOstFrom, newTroop);
 		
 		if (this.owner == Owner.Player)
 		{
@@ -275,8 +274,6 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		super.updateThis();
 		
 		processInputs();
-		
-		this.money_up();
 		
 		updateUI();		
 
@@ -305,25 +302,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 
 	
 	
-	// METHODS
-	public void level_up() { //level up with 1 level a castle
-		level ++;
-	}
-	
-	public void money_up() { //money generation
-		setMoney(getMoney() + getLevel()*10);
-	}
-
-	public int getLevelUpTime() 
-	{
-		return ((this.getLevel() + 1) * 50) + 100;
-	}
-	
-	public int getLevelUpCost()
-	{
-		return ((this.getLevel() + 1) * 1000);
-	}
-	
+	// METHODS	
 	private void launchOst(int[] troopsToSend) 
 	{	
 		playerTroopsToLaunch = troopsToSend;
@@ -486,6 +465,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		Sprite doorSprite = new Sprite(Map.playfieldLayer, doorImage, gate_x, gate_y);
 		this.createDoor(gate); // TODO is it really necessary?
 		setMouseEventResponse();
+		//TODO change its list in map.castles
 	}
 	
 	public boolean is_the_same_name(String name) {
@@ -594,4 +574,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 			//this.setSprite(doorSprite);
 		}
 	}
+
+
+
 }

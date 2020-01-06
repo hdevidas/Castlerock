@@ -49,7 +49,7 @@ public class Order
 		}
 		else
 		{
-			return myManager.castle.getLevelUpTime();
+			return myManager.getLevelUpTime();
 		}
 	}
 	
@@ -61,7 +61,7 @@ public class Order
 		}
 		else
 		{
-			return myManager.castle.getLevelUpCost();
+			return myManager.getLevelUpCost();
 		}
 	}
 
@@ -97,7 +97,7 @@ public class Order
 		}
 		else
 		{
-			myManager.castle.level_up();
+			myManager.level_up();
 		}
 		isBeingBuild = false;
 		return true;

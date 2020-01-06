@@ -62,7 +62,15 @@ public class Map extends GameObject
 	// GETTERS AND SETTERS
 	Castle getRandomCastle()
 	{
-		return getCastle(rnd.nextInt(Settings.NB_TOTAL_CASTLES));
+		if (Settings.NB_TOTAL_CASTLES > 0)
+		{
+			return getCastle(rnd.nextInt(Settings.NB_TOTAL_CASTLES));
+		}
+		else
+		{
+			System.out.println("error no castle found : Null castle returned by Map.getRandomCastle()");
+			return null;
+		}
 	}
 	
 	Castle getCastle(int castleID)
