@@ -172,12 +172,32 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 				orderManager.newLevelUpOrder();
 			}
 			// build piquier
-			if (Main.inputs.isBuilding()) {
+			if (Main.inputs.isBuildingPiquier()) {
 				orderManager.newBuildTroopOrder(TroopType.Piquier);
 			}
-			// attaquer un chateau x
-			if (Main.inputs.isAttacks() && clicked != lastPlayerClicked && this == lastPlayerClicked) {
+			// build knight
+			if (Main.inputs.isBuildingKnight()) {
+				orderManager.newBuildTroopOrder(TroopType.Knight);
+			}
+			// build onager
+			if (Main.inputs.isBuildingOnager()) {
+				orderManager.newBuildTroopOrder(TroopType.Onager);
+			}
+			
+			/* Ancien
+			 * // attaquer un chateau with all troops 
+			if (Main.inputs.isAttacksWithAll() && clicked != lastPlayerClicked && this == lastPlayerClicked) {
 				this.createOst(lastPlayerClicked, clicked, nbPiquierOst, nbKnightOst, nbOnagerOst);
+			}*/
+			
+			
+			// attacks a castle with all troops
+			if (Main.inputs.isAttacksWithAll()) {
+				this.launchOst();
+			}
+			// attack a castel with custom troops
+			if (Main.inputs.isAttacksWithCustom()) {
+				this.popupPiquierChoice();
 			}
 		}
 		
@@ -217,12 +237,9 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 				createOstFrom.getItems().addAll(troopItemOstAll);
 				MenuItem troopItemOstCustom = new MenuItem("Custom");
 				troopItemOstCustom.setAccelerator(KeyCombination.keyCombination("C"));
-				
 				troopItemOstCustom.setOnAction(evt -> this.popupPiquierChoice());
-				//troopItemOstCustom.setOnAction(evt -> this.launchOst(1,1,1));
+				
 				createOstFrom.getItems().addAll(troopItemOstCustom);
-				
-				
 				//Add troops
 				Menu newTroop = new Menu("Create new Troop");
 				String tab[]= {"P","K", "O"};
@@ -362,7 +379,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	}	
 	
 	public void create_piquier_bar() {
-		String nbPiquier = "Piquiers: " + Integer.toString(getNbTroop(TroopType.Piquier));
+		String nbPiquier = "P : " + Integer.toString(getNbTroop(TroopType.Piquier));
 		HBox piquierBar = new HBox();
 		piquierTxt.setText(nbPiquier);
 		piquierBar.getChildren().addAll(piquierTxt);
@@ -372,11 +389,11 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	}
 	
 	private void update_piquier_bar() {
-		piquierTxt.setText("Piquiers: "+Integer.toString(getNbTroop(TroopType.Piquier)));                 
+		piquierTxt.setText("P : "+Integer.toString(getNbTroop(TroopType.Piquier)));                 
 	}
 	
 	public void create_knight_bar() {
-		String nbKnight = "Knights: " + Integer.toString(getNbTroop(TroopType.Knight));
+		String nbKnight = "K : " + Integer.toString(getNbTroop(TroopType.Knight));
 		HBox knightBar = new HBox();
 		knightTxt.setText(nbKnight);
 		knightBar.getChildren().addAll(knightTxt);
@@ -386,11 +403,11 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	}
 	
 	private void update_chevalier_bar() {
-		knightTxt.setText("Knights: "+Integer.toString(getNbTroop(TroopType.Knight)));                 
+		knightTxt.setText("K : "+Integer.toString(getNbTroop(TroopType.Knight)));                 
 	}
 	
 	public void create_onager_bar() {
-		String nbOnager = "Onagers: " + Integer.toString(getNbTroop(TroopType.Onager));
+		String nbOnager = "O : " + Integer.toString(getNbTroop(TroopType.Onager));
 		HBox onagerBar = new HBox();
 		onagerTxt.setText(nbOnager);
 		onagerBar.getChildren().addAll(onagerTxt);
@@ -400,11 +417,11 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	}
 	
 	private void update_onagre_bar() {
-		onagerTxt.setText("Onagers: "+Integer.toString(getNbTroop(TroopType.Onager)));                 
+		onagerTxt.setText("O : "+Integer.toString(getNbTroop(TroopType.Onager)));                 
 	}
 	
 	public void create_money_bar() {
-		String nbMoney = "Florins: " + Integer.toString(this.getMoney());
+		String nbMoney = Integer.toString(this.getMoney())+" F";
 		HBox moneyBar = new HBox();
 		moneyTxt.setText(nbMoney);
 		moneyBar.getChildren().addAll(moneyTxt);
@@ -414,11 +431,11 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	}
 	
 	private void update_money_bar() {
-		moneyTxt.setText("Florins: "+Integer.toString(this.getMoney()));                 
+		moneyTxt.setText(Integer.toString(this.getMoney())+ " F");                 
 	}
 	
 	public void create_level_bar() {
-		String nbLevel = "Niveau: " + Integer.toString(this.getLevel());
+		String nbLevel = "Lvl: " + Integer.toString(this.getLevel());
 		HBox levelBar = new HBox();
 		levelTxt.setText(nbLevel);
 		levelBar.getChildren().addAll(levelTxt);
@@ -429,7 +446,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	}
 	
 	private void update_level_bar() {
-		levelTxt.setText("Level: "+Integer.toString(this.getLevel()));                 
+		levelTxt.setText("Lvl : "+Integer.toString(this.getLevel()));                 
 	}
 	
 	void popupPiquierChoice() {

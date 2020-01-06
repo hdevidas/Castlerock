@@ -19,6 +19,8 @@ Les florins vous permettent également de construire à partir de votre chateau 
 
 Quand vous disposez de suffisaments d'unités, vous pouvez les envoyer vers un chateau ennemi, vous infligerez alors des dégats au chateau adverse avec chacune de vos unités. Si arrivez a mettre le total d'unité du chateau adverse à 0, vous prenez possession de son chateau, et vous pouvez alors l'utiliser comme s'il vous appartenez.
 
+A tout moment vous pouvez appuyer sur ECHAP pour quitter la partie.
+
 
 ## Fonctions de la version minimal (/15) non implémentés
 
@@ -27,7 +29,7 @@ Quand vous disposez de suffisaments d'unités, vous pouvez les envoyer vers un c
 
 ## Bugs ou problèmes connus
 + Pour donner un ordre a un chateau, il faut cliquer sur les extrémités (les tours) et non pas au centre, car le clique est bloqué.
-
++ Raccourcis clavier "C" pour attaquer avec armée personalisable. Fonctionne correctement avec le clic souris.
 
 ## Auteurs
 

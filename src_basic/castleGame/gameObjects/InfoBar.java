@@ -55,11 +55,11 @@ public class InfoBar extends GameObject
 	// METHODS
 	private void displayCastleInfo(Castle castle)
 	{		
-		infoText.setText("Name :"+ castle.getName()+" ("+castle.getOwner()+")          Florins :" + castle.getMoney() + 
-				"          Level : " + castle.getLevel()+"          Piquiers : " + 
-				castle.getNbTroop(TroopType.Piquier)+"          "
-						+ "Knights : "+castle.getNbTroop(TroopType.Knight)+"          "
-								+ "Onagers : "+castle.getNbTroop(TroopType.Onager)+"          "
+		infoText.setText("Name : "+ castle.getName()+" ("+castle.getOwner()+")     Florins : " + castle.getMoney() + 
+				"     Level : " + castle.getLevel()+"     Piquiers : " + 
+				castle.getNbTroop(TroopType.Piquier)+"     "
+						+ "Knights : "+castle.getNbTroop(TroopType.Knight)+"     "
+								+ "Onagers : "+castle.getNbTroop(TroopType.Onager)+"     "
 										+ "Order : " + castle.orderManager.currentOrderInfo());                   
 	}
 	

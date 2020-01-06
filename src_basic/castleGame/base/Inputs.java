@@ -83,15 +83,24 @@ public class Inputs
 	public boolean isExit() { //Exit game detection with escape
 		return is(ESCAPE);
 	}
-	
 	public boolean isLevelUp() { 
-		return is(UP);
+		return is(L);
 	}
-	public boolean isAttacks() { 
-		return is(DOWN);
+	public boolean isAttacksWithAll() { 
+		return is(A);
 	}
-	public boolean isBuilding() { 
-		return is(RIGHT);
+	public boolean isAttacksWithCustom() { 
+		return is(C);
 	}
+	public boolean isBuildingPiquier() { 
+		return is(P);
+	}
+	public boolean isBuildingKnight() { 
+		return is(K);
+	}
+	public boolean isBuildingOnager() { 
+		return is(O);
+	}
+	
 	
 }
