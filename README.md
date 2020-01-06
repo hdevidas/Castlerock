@@ -2,7 +2,7 @@
 
 [![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](https://forthebadge.com)   [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)  [![forthebadge](https://forthebadge.com/images/badges/made-with-java.svg)](https://forthebadge.com)
 
-Castlerock est un projet developpé dans le cadre de l'UE "Programmation Orientée Objet" de la Licence 3 Informatique de Bordeaux. Ce projet est un jeu de type "RTS" codé en Java en binôme.
+Castlerock est un projet developpé dans le cadre de l'UE "Programmation Orientée Objet" de la Licence 3 Informatique de Bordeaux. Ce projet est un jeu de type "RTS" codé en Java et en binôme.
 
 
 ## Pour commencer
