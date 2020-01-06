@@ -417,7 +417,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	}
 	
 	private void update_level_bar() {
-		levelTxt.setText("Niveau: "+Integer.toString(this.getLevel()));                 
+		levelTxt.setText("Level: "+Integer.toString(this.getLevel()));                 
 	}
 	
 	void popupPiquierChoice() {

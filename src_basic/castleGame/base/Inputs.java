@@ -80,7 +80,7 @@ public class Inputs
 	// direction isn't handled.
 	// -------------------------------------------------
 
-	public boolean isExit() { //DETECTION SORTIE DE JEU SUR TOUCHE ECHAP
+	public boolean isExit() { //Exit game detection with escape
 		return is(ESCAPE);
 	}
 	

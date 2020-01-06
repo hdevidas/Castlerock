@@ -130,7 +130,7 @@ public class Main extends Application implements KeyboardInputsReceiver
 	 */
 	private void loadGame(Stage primaryStage) 
 	{ 
-		// Préparation of the scene
+		// Preparation of the scene
 		Image sandImage	= new Image("/images/sand.png", Settings.SCENE_WIDTH, Settings.SCENE_HEIGHT, true, true);
 		ImageView mv = new ImageView(sandImage);
 		mv.setFitWidth(Settings.SCENE_WIDTH); 
