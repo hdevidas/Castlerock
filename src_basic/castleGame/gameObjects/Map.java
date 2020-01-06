@@ -54,7 +54,37 @@ public class Map extends GameObject
 
 	
 	// GETTERS AND SETTERS
+	Castle getRandomCastle()
+	{
+		return getCastle(rnd.nextInt(Settings.NB_TOTAL_CASTLES));
+	}
 	
+	Castle getCastle(int castleID)
+	{
+		for (Owner owner : Owner.values())
+		{
+			if (castleID < castles.get(owner.ordinal()).size())
+			{
+				for (Castle castle : castles.get(owner.ordinal()))
+				{
+					if (castleID == 0)
+					{
+						return castle;
+					}
+					else
+					{
+						castleID --;
+					}
+				}
+			}
+			else
+			{
+				castleID -= castles.get(owner.ordinal()).size();
+			}
+		}
+		System.out.println("error castle not found : Null castle returned by Map.getCastle()");
+		return null;
+	}
 	
 	
 	// INHERITED METHODS

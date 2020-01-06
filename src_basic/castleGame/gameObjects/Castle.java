@@ -56,7 +56,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	public List<Ost> castle_ost = new ArrayList<>();
 	
 	
-	private Map map;
+	public Map map;
 	private String name;
 	public OrderManager orderManager;
 	private int level;
@@ -358,7 +358,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		isLaunchingOst = false;
 	}
 	
-	private void createOst(Castle castleFrom, Castle castleTo, int[] troopsToLaunch) 
+	public void createOst(Castle castleFrom, Castle castleTo, int[] troopsToLaunch) 
 	{
 		Ost ost = new Ost(map, castleFrom, castleTo);
 		castleFrom.orderManager.startLaunchingNewOst(ost, troopsToLaunch);
