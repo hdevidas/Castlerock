@@ -4,7 +4,7 @@ package castleGame.base;
  * Parent class of every gameObject
  * 
  *  <p>
- *  This class is used to ensure that every object that exteds it is updated at each turn and update its 
+ *  This class is used to ensure that every object that extends it is updated at each turn and update its 
  *  variable that are also gameObject
  * 
  */
