@@ -12,7 +12,7 @@ public enum Owner
 	/**
 	 * The player Owner
 	 */
-	Player(Main.playerName, new Image("/images/black.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true)),
+	Player(Settings.CASTLE_NAME, new Image("/images/black.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true)),
 	/**
 	 * The neutral Owner, this owner is not supposed to attack
 	 */

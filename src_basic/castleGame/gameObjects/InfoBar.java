@@ -1,6 +1,7 @@
 package castleGame.gameObjects;
 
 import castleGame.base.GameObject;
+import castleGame.gameObjects.Map;
 import castleGame.infoObjects.Settings;
 import castleGame.infoObjects.TroopType;
 import javafx.scene.Group;
@@ -35,7 +36,11 @@ public class InfoBar extends GameObject
 	// from GameObject :
 	protected void updateThis() 
 	{
-		if (Castle.isLaunchingOst)
+		if (Map.has_Winner == true)
+		{
+			displayCustomMessage("Le gagnant de la partie est "+Map.winner);
+		}
+		else if (Castle.isLaunchingOst)
 		{
 			displayCustomMessage("Click on the castle to launch the ost");
 		}

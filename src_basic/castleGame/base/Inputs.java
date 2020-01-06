@@ -74,14 +74,11 @@ public class Inputs
 		return keyboardBitSet.get(key.ordinal());
 	}
 
-	// -------------------------------------------------
-	// Evaluate bitset of pressed keys and return the player input.
-	// If direction and its opposite direction are pressed simultaneously, then the
-	// direction isn't handled.
-	// -------------------------------------------------
-
 	public boolean isExit() { //Exit game detection with escape
 		return is(ESCAPE);
+	}
+	public boolean isPause() { //Pause game detection with escape
+		return is(SPACE);
 	}
 	public boolean isLevelUp() { 
 		return is(L);

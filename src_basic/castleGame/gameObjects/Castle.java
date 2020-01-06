@@ -283,7 +283,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		if (!this.has_got_troops()) {
 		}
 
-		if (!map.player_is_alive(Main.playerName)){
+		if (!map.player_is_alive(Settings.CASTLE_NAME)){
 			System.out.println("You lost.");
 		}
 		
@@ -548,140 +548,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	private void update_level_bar() {
 		levelTxt.setText("Lvl : "+Integer.toString(this.getLevel()));                 
 	}
-	
-	/*
-	int popupPiquierChoice() {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		int piquierNb = this.getNbTroop(TroopType.Piquier);
-        alert.setTitle("Select");
-        alert.setHeaderText("You got "+piquierNb+" piquier(s), how many do you want to send ?");
-        
-        // Remove default ButtonTypes
-        alert.getButtonTypes().clear();
-         
-        if (piquierNb > 10) {
-        	alert.getButtonTypes().addAll(zero,one,two,five,ten,all);
-        } else if (piquierNb >= 10) {
-        	alert.getButtonTypes().addAll(zero,one,two,five,ten,all);
-        } else if (piquierNb >= 5) {
-        	alert.getButtonTypes().addAll(zero,one,two,five,all);
-        } else if (piquierNb >= 2) {
-        	alert.getButtonTypes().addAll(zero,one,two,all);
-        } else if (piquierNb >= 1) {
-        	alert.getButtonTypes().addAll(zero,one);
-        } else {
-        	alert.getButtonTypes().addAll(zero);
-        }
- 
-        // option != null.
-        Optional<ButtonType> option = alert.showAndWait();
- 
-        if (option.get() == zero) {
-        	return (0);
-        } else if (option.get() == one) {
-        	return (1);
-        } else if (option.get() == two) {
-        	return (2);
-        } else if (option.get() == five) {
-        	return (5);
-        } else if (option.get() == ten) {
-        	return (10);
-        } else if (option.get() == all) {
-        	return (this.getNbTroop(TroopType.Piquier));
-        } else {
-            System.out.println("erreur");
-            return 0;
-        }        
-	} 
-	
-	int popupKnightChoice() {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		int knightNb = this.getNbTroop(TroopType.Knight);
-        alert.setTitle("Select");
-        alert.setHeaderText("You got "+knightNb+" knight(s), how many do you want to send ?");
-        
-        // Remove default ButtonTypes
-        alert.getButtonTypes().clear();
 
-        if (knightNb > 10) {
-        	alert.getButtonTypes().addAll(zero,one,two,five,ten,all);
-        } else if (knightNb >= 10) {
-        	alert.getButtonTypes().addAll(zero,one,two,five,ten,all);
-        } else if (knightNb >= 5) {
-        	alert.getButtonTypes().addAll(zero,one,two,five,all);
-        } else if (knightNb >= 2) {
-        	alert.getButtonTypes().addAll(zero,one,two,all);
-        } else if (knightNb >= 1) {
-        	alert.getButtonTypes().addAll(zero,one);
-        } else {
-        	alert.getButtonTypes().addAll(zero);
-        }
- 
-        // option != null.
-        Optional<ButtonType> option = alert.showAndWait();
- 
-        if (option.get() == zero) {
-        	return (0);
-        } else if (option.get() == one) {
-        	return (1);
-        } else if (option.get() == two) {
-        	return (2);
-        } else if (option.get() == five) {
-        	return (5);
-        } else if (option.get() == ten) {
-        	return (10);
-        } else if (option.get() == all) {
-        	return (this.getNbTroop(TroopType.Piquier));
-        } else {
-            System.out.println("erreur");
-            return 0;
-        }        
-	}
-	
-	int popupOnagerChoice() {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		int onagerNb = this.getNbTroop(TroopType.Onager);
-        alert.setTitle("Select");
-        alert.setHeaderText("You got "+onagerNb+" onager(s), how many do you want to send ?");
-        
-        // Remove default ButtonTypes
-        alert.getButtonTypes().clear();
- 
-        if (onagerNb > 10) {
-        	alert.getButtonTypes().addAll(zero,one,two,five,ten,all);
-        } else if (onagerNb >= 10) {
-        	alert.getButtonTypes().addAll(zero,one,two,five,ten,all);
-        } else if (onagerNb >= 5) {
-        	alert.getButtonTypes().addAll(zero,one,two,five,all);
-        } else if (onagerNb >= 2) {
-        	alert.getButtonTypes().addAll(zero,one,two,all);
-        } else if (onagerNb >= 1) {
-        	alert.getButtonTypes().addAll(zero,one);
-        } else {
-        	alert.getButtonTypes().addAll(zero);
-        }
- 
-        // option != null.
-        Optional<ButtonType> option = alert.showAndWait();
- 
-        if (option.get() == zero) {
-        	return (0);
-        } else if (option.get() == one) {
-        	return (1);
-        } else if (option.get() == two) {
-        	return (2);
-        } else if (option.get() == five) {
-        	return (5);
-        } else if (option.get() == ten) {
-        	return (10);
-        } else if (option.get() == all) {
-        	return ((this.getNbTroop(TroopType.Onager)));
-        } else {
-            System.out.println("erreur");
-            return 0;
-        }        
-	}
-	*/
 	
 	void createDoor(int gate) {
 		if (gate == 1) {
