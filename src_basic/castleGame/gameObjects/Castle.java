@@ -23,6 +23,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -203,26 +204,37 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 				
 				//Level up
 				MenuItem levelUp = new MenuItem("Level up");
+				
+				levelUp.setAccelerator(KeyCombination.keyCombination("L"));
+				
 				levelUp.setOnAction(evt -> this.orderManager.newLevelUpOrder());
 				
 				//Send an Ost
 				Menu createOstFrom = new Menu("Launch ost");
 				MenuItem troopItemOstAll = new MenuItem("All");
+				troopItemOstAll.setAccelerator(KeyCombination.keyCombination("A"));
 				troopItemOstAll.setOnAction(evt -> this.launchOst());
 				createOstFrom.getItems().addAll(troopItemOstAll);
 				MenuItem troopItemOstCustom = new MenuItem("Custom");
+				troopItemOstCustom.setAccelerator(KeyCombination.keyCombination("C"));
 				
 				troopItemOstCustom.setOnAction(evt -> this.popupPiquierChoice());
 				//troopItemOstCustom.setOnAction(evt -> this.launchOst(1,1,1));
 				createOstFrom.getItems().addAll(troopItemOstCustom);
 				
+				
 				//Add troops
 				Menu newTroop = new Menu("Create new Troop");
+				String tab[]= {"P","K", "O"};
+				int i =0;
 				for (TroopType troop : TroopType.values())
 				{
 					MenuItem troopItem = new MenuItem(troop.getName());
 					troopItem.setOnAction(evt -> this.orderManager.newBuildTroopOrder(troop));
+					troopItem.setAccelerator(KeyCombination.keyCombination(tab[i]));
 					newTroop.getItems().addAll(troopItem);
+					i=i+1;
+					
 				}
 			
 				contextMenu.getItems().addAll(levelUp, createOstFrom, newTroop);
