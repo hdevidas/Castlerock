@@ -26,6 +26,9 @@ public class Settings
 	public static final int CASTLE_DOOR_OUT_FLOW_LIMIT = 3;
 	public static final int POSITION_DEVIATION = 10;
 	
+	public static final int MONEY_MULT = 10;
+	public static final int NEUTRAL_MONEY_MULT = MONEY_MULT / 10;
+	
 	public static final int ARMY_INIT[] = {50, 50, 50};
 	public static final String[] LIST_CASTLE_NAME = {"Aalongue", "Abbaud", "Abbon", "Abelène", "Abran", "Abzal", "Acelin", "Achaire", "Achard", "Acheric", "Adalard", "Adalbaud", "Adalbéron", "Adalbert", "Adalelme", "Adalgaire", "Adalgise", "Adalicaire", "Adalman", "Adalric", "Adebran", "Adélard", "Adelbert", "Adelin", "Adenet", "Adhémar", "Adier", "Adinot", "Adolbert", "Adon", "Adoul", "Adrier", "Adson", "Agambert", "Aganon", "Agebert", "Agelmar", "Agelric", "Agenulf", "Agerad", "Ageran", "Agilbert", "Agilmar", "Aglebert", "Agmer", "Agnebert", "Agrestin", "Agrève", "Aibert", "Aicard", "Aimbaud", "Aimin", "Aimoin", "Airard", "Airy", "Alard", "Albalde", "Albaud", "Albéron", "Alboin", "Albuson", "Alchaire", "Alchas", "Alcuin", "Alleaume", "Amanieu", "Amat", "Amblard", "Anaclet", "Ansbert", "Anselin", "Ansoald", "Archambaud", "Arembert", "Arnat", "Artaud", "Aubry", "Authaire", "Avold", "Ayoul"};
 		

@@ -48,6 +48,8 @@ public class OrderManager extends GameObject
 		{
 			makeAIOrder();
 		}
+
+		this.money_up();
 		
 		if (currentOrder != null) // if there's an order to do...
 		{
@@ -103,6 +105,32 @@ public class OrderManager extends GameObject
 	
 	
 	// METHODS
+	public void level_up() { //level up with 1 level a castle
+		castle.setLevel(castle.getLevel() + 1);
+	}
+	
+	public void money_up() //money generation
+	{ 
+		if (castle.owner == Owner.Neutral)
+		{
+			castle.setMoney(castle.getMoney() + castle.getLevel()* Settings.NEUTRAL_MONEY_MULT);
+		}
+		else
+		{
+			castle.setMoney(castle.getMoney() + castle.getLevel()* Settings.MONEY_MULT);
+		}
+	}
+
+	public int getLevelUpTime() 
+	{
+		return ((castle.getLevel() + 1) * 50) + 100;
+	}
+	
+	public int getLevelUpCost()
+	{
+		return ((castle.getLevel() + 1) * 1000);
+	}
+	
 	public void newBuildTroopOrder(TroopType troopType)
 	{
 		addNewOrder(new Order(this, troopType));
@@ -119,6 +147,7 @@ public class OrderManager extends GameObject
 		if (currentOrder == null)
 		{
 			currentOrder = order;
+			waitToStart = true;
 		}
  	}
 	
