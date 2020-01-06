@@ -121,8 +121,6 @@ public class Main extends Application implements KeyboardInputsReceiver
 		//result.ifPresent(name -> System.out.println("Your name: " + name));
 		result.ifPresent(name -> playerName = name);
 		
-		System.out.println(playerName);
-		
 		
 		
 		

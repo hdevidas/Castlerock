@@ -1,6 +1,7 @@
 package castleGame.gameObjects;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -45,13 +47,8 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	static public Boolean isLaunchingOst = false;
 	private static int[] playerTroopsToLaunch;
 	
-	static public ButtonType zero = new ButtonType("0");
-	static public ButtonType one = new ButtonType("1");
-    static public ButtonType two = new ButtonType("2");
-    static public ButtonType five = new ButtonType("5");
-    static public ButtonType ten = new ButtonType("10");
-    static public ButtonType all = new ButtonType("ALL");
-	
+	static public ButtonType yes = new ButtonType("Yes");
+	static public ButtonType no = new ButtonType("No");
 	
 	public List<Ost> castle_ost = new ArrayList<>();
 	
@@ -195,7 +192,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 			}
 			// attack a castel with custom troops
 			if (Main.inputs.isAttacksWithCustom()) {
-				this.popupPiquierChoice();
+				this.launchOst(null);
 
 			}
 		}
@@ -338,11 +335,129 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	private int[] popupTroopsChoice()
 	{
 		int tab[] = new int[Settings.NB_TROOP_TYPES];
+
+		//PIQUIER
+		List<String> choices = new ArrayList<>();
+		choices.add("0");
+		int piquierNb = this.getNbTroop(TroopType.Piquier);
+		if (piquierNb >=1 ) {
+			choices.add("1");
+        }
+		if (piquierNb > 2) {
+        	choices.add("2");
+        }
+		if (piquierNb > 5) {
+        	choices.add("5");
+        }
+		if (piquierNb > 10) {
+        	choices.add("10");
+        }
+		if (piquierNb > 20) {
+			choices.add("20");
+        }
+		if (piquierNb > 50) {
+			choices.add("50");
+        }
+		choices.add(Integer.toString(piquierNb));
+
+		ChoiceDialog<String> dialog = new ChoiceDialog<>("0", choices);
+		dialog.setTitle("Choice Dialog");
+		dialog.setHeaderText("You got "+piquierNb+" piquier(s).");
+		dialog.setContentText("How many do you want to send ?");
+
+		// Traditional way to get the response value.
+		Optional<String> result = dialog.showAndWait();
+
+		// The Java 8 way to get the response value (with lambda expression).
+		result.ifPresent(nb -> tab[0] = Integer.parseInt(nb));
 		
-		//TODO Factorise this code
-		tab[0] = this.popupPiquierChoice();
-		tab[1] = this.popupKnightChoice();
-		tab[2] = this.popupOnagerChoice();
+		//KNIGHT
+		List<String> choicesB = new ArrayList<>();
+		choicesB.add("0");
+		int knightNb = this.getNbTroop(TroopType.Knight);
+		if (knightNb >1 ) {
+			choicesB.add("1");
+        }
+		if (knightNb > 2) {
+        	choicesB.add("2");
+        }
+		if (knightNb > 5) {
+        	choicesB.add("5");
+        }
+		if (knightNb > 10) {
+        	choicesB.add("10");
+        }
+		if (knightNb > 20) {
+			choicesB.add("20");
+        }
+		if (knightNb > 50) {
+			choicesB.add("50");
+        }
+		choicesB.add(Integer.toString(knightNb));
+
+		ChoiceDialog<String> dialog2 = new ChoiceDialog<>("0", choices);
+		dialog2.setTitle("Choice Dialog");
+		dialog2.setHeaderText("You got "+knightNb+" knight(s).");
+		dialog2.setContentText("How many do you want to send ?");
+
+		// Traditional way to get the response value.
+		Optional<String> result2 = dialog2.showAndWait();
+
+		// The Java 8 way to get the response value (with lambda expression).
+		result2.ifPresent(nb -> tab[1] = Integer.parseInt(nb));
+		
+		//ONAGER
+		List<String> choicesC = new ArrayList<>();
+		choicesC.add("0");
+		int onagerNb = this.getNbTroop(TroopType.Onager);
+		if (onagerNb >1 ) {
+			choicesC.add("1");
+        }
+		if (onagerNb > 2) {
+        	choicesC.add("2");
+        }
+		if (onagerNb > 5) {
+        	choicesC.add("5");
+        }
+		if (onagerNb > 10) {
+        	choicesC.add("10");
+        }
+		if (onagerNb > 20) {
+			choicesC.add("20");
+        }
+		if (onagerNb > 50) {
+			choicesC.add("50");
+        }
+		choicesC.add(Integer.toString(onagerNb));
+
+		ChoiceDialog<String> dialog3 = new ChoiceDialog<>("0", choicesC);
+		dialog3.setTitle("Choice Dialog");
+		dialog3.setHeaderText("You got "+onagerNb+" onager(s).");
+		dialog3.setContentText("How many do you want to send ?");
+
+		// Traditional way to get the response value.
+		Optional<String> result3 = dialog3.showAndWait();
+
+		// The Java 8 way to get the response value (with lambda expression).
+		result3.ifPresent(nb -> tab[2] = Integer.parseInt(nb));
+	
+		
+		//CHOICE SPEED
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Select");
+        alert.setHeaderText("Do you want to send all your units at the same speed ?");
+        
+        // Remove default ButtonTypes
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().addAll(yes,no); 
+ 
+        // option != null.
+        Optional<ButtonType> option = alert.showAndWait();
+ 
+        if (option.get() == yes) {
+        	//
+        }
+		
 		
 		return tab;
 	}
@@ -452,6 +567,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		levelTxt.setText("Lvl : "+Integer.toString(this.getLevel()));                 
 	}
 	
+	/*
 	int popupPiquierChoice() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		int piquierNb = this.getNbTroop(TroopType.Piquier);
@@ -494,7 +610,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
             System.out.println("erreur");
             return 0;
         }        
-	}
+	} 
 	
 	int popupKnightChoice() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -583,7 +699,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
             return 0;
         }        
 	}
-	
+	*/
 	
 	void createDoor(int gate) {
 		if (gate == 1) {
