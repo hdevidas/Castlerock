@@ -1,6 +1,7 @@
 package castleGame.infoObjects;
 
 import javafx.scene.image.Image;
+import castleGame.Main;
 
 /**
  * An enum describing the different possible Owner of any troopType.
@@ -11,7 +12,7 @@ public enum Owner
 	/**
 	 * The player Owner
 	 */
-	Player(Settings.PLAYER_NAME, new Image("/images/black.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true)),
+	Player(Main.playerName, new Image("/images/black.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true)),
 	/**
 	 * The neutral Owner, this owner is not supposed to attack
 	 */

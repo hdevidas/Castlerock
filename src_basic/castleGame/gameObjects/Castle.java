@@ -258,7 +258,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		if (!this.has_got_troops()) {
 		}
 
-		if (!map.player_is_alive(Settings.PLAYER_NAME)){
+		if (!map.player_is_alive(Main.playerName)){
 			System.out.println("You lost.");
 		}
 		

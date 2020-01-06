@@ -1,5 +1,7 @@
 package castleGame;
 
+import java.util.Optional;
+
 import castleGame.base.Inputs;
 import castleGame.base.KeyboardInputsReceiver;
 import castleGame.gameObjects.InfoBar;
@@ -12,6 +14,9 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -28,6 +33,9 @@ import javafx.scene.layout.Pane;
 public class Main extends Application implements KeyboardInputsReceiver
 {
 	// VARIABLES
+	
+	static public String playerName =  "empty";
+	
 	/**
 	 * The Map on which the game take place
 	 */
@@ -89,6 +97,36 @@ public class Main extends Application implements KeyboardInputsReceiver
 	// from application
 	public void start(Stage primaryStage) {
 
+		/*Popup1 de présentation*/
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Castlerock");
+		alert.setHeaderText("Hello dear lord,\n" + 
+				"Welcome to the lands of Castelrock.\n" + 
+				"Castelrock is an \"RTS\" type game where you will have to develop your castle, build military units and destroy the castles of your opponents to assert your supremacy.");
+		alert.setContentText("We wish you a good day !");
+
+		alert.showAndWait();
+		
+		
+		//Popup2 de nom a entrer
+		TextInputDialog dialog = new TextInputDialog("King Arthur");
+		dialog.setTitle("Choix de nom de joueur");
+		dialog.setHeaderText("My lord, the whole country will know your name !");
+		dialog.setContentText("Please enter your name:");
+
+		// Traditional way to get the response value.
+		Optional<String> result = dialog.showAndWait();
+
+		// The Java 8 way to get the response value (with lambda expression).
+		//result.ifPresent(name -> System.out.println("Your name: " + name));
+		result.ifPresent(name -> playerName = name);
+		
+		System.out.println(playerName);
+		
+		
+		
+		
+		
 		loadGame(primaryStage);
 
 		// Start of the game
