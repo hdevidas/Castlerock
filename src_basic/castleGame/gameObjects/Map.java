@@ -25,6 +25,7 @@ public class Map extends GameObject
 {
 	// VARIABLES
 	public static Owner winner;
+	public static boolean has_Winner = false;
 	public static Pane playfieldLayer;
 	static Image oceanImage	= new Image("/images/water.png", Settings.SCENE_WIDTH/50, Settings.SCENE_WIDTH/50, true, true);
 
@@ -270,7 +271,9 @@ public class Map extends GameObject
 				return false;
 			}
 		}
+		has_Winner = true;
 		return true;
+		
 	}
 	
 	

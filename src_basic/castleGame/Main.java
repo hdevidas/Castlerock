@@ -129,6 +129,9 @@ public class Main extends Application implements KeyboardInputsReceiver
 				}
 				
 				
+				if (map.endGameTest()) {
+					
+				}
 				
 
 			}
