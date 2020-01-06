@@ -55,9 +55,11 @@ public class InfoBar extends GameObject
 	// METHODS
 	private void displayCastleInfo(Castle castle)
 	{
+		/*
 		String attaquer;
 		String levelup;
 		String fairetroupe;
+		
 		if (castle.is_player()) {
 			levelup = "   LEVEL UP (Up)";
 			fairetroupe = "   BUILD TROOP (Right)";
@@ -67,11 +69,14 @@ public class InfoBar extends GameObject
 			levelup = "";
 			fairetroupe = "";
 			attaquer = "   ATTACKS THIS CASTLE (Down)";
-		}
-		infoText.setText("Name :"+ castle.getName()+"          Florins :" + castle.getMoney() + 
-				"          Level : " + castle.getLevel()+"          Troops : " + 
-				castle.getNbTroop(TroopType.Piquier)+"/"+castle.getNbTroop(TroopType.Knight)+"/"+castle.getNbTroop(TroopType.Onager) +
-				"     |     "+levelup+fairetroupe+attaquer);                   
+		}*/
+		
+		infoText.setText("Name :"+ castle.getName()+" ("+castle.getOwner()+")          Florins :" + castle.getMoney() + 
+				"          Level : " + castle.getLevel()+"          Piquiers : " + 
+				castle.getNbTroop(TroopType.Piquier)+"          "
+						+ "Knights : "+castle.getNbTroop(TroopType.Knight)+"          "
+								+ "Onagers : "+castle.getNbTroop(TroopType.Onager)+"          "
+										+ "Order : " );                   
 	}
 	
 	private void displayCustomMessage(String message)

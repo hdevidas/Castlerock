@@ -59,7 +59,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	private Map map;
 	private String name;
-	private OrderManager orderManager;
+	public OrderManager orderManager;
 	private int level;
 	private int money;
 	private double x;
@@ -430,7 +430,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
         alert.getButtonTypes().clear();
          
         if (piquierNb > 10) {
-        	alert.getButtonTypes().addAll(zero,one,two,five,ten,all,all);
+        	alert.getButtonTypes().addAll(zero,one,two,five,ten,all);
         } else if (piquierNb >= 10) {
         	alert.getButtonTypes().addAll(zero,one,two,five,ten,all);
         } else if (piquierNb >= 5) {
