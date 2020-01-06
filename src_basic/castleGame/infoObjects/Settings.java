@@ -17,8 +17,9 @@ public class Settings
 	public static final double OST_SIZE = 10;
 	
 	public static final int IA_CASTLE_NUMBER = 3; //6 max
-	public static final double NEUTRAL_CASTLE_NUMBER = 6;
+	public static final int NEUTRAL_CASTLE_NUMBER = 6;
 	public static final int IA_NEUTRAL_CASTLE_MAX_LEVEL = 5;
+	public static final int NB_TOTAL_CASTLES = 1 + NEUTRAL_CASTLE_NUMBER + IA_CASTLE_NUMBER;
 	
 	public static final int NB_TRIES_TO_SPAWN = 1000;
 	

@@ -137,9 +137,21 @@ public class OrderManager extends GameObject
 				this.newLevelUpOrder();
 			}
 		}
-		if (castle.owner != Owner.Neutral && choice < 0.005)
+		if (castle.owner != Owner.Neutral && choice < 0.003)
 		{
-			//TODO create ost to a random castle
+			Castle castleTarget = castle.map.getRandomCastle();
+			int [] troopsToSend = new int [Settings.NB_TROOP_TYPES];
+			int nbTroop;
+			for (TroopType troopType : TroopType.values())
+			{
+				nbTroop = castle.getNbTroop(troopType);
+				troopsToSend[troopType.ordinal()] = (nbTroop > 0) ? (rnd.nextInt(nbTroop)) : 0;
+			}
+			
+			if (castle != castleTarget)
+			{
+				castle.createOst(castle, castleTarget, troopsToSend);
+			}
 		}
 	}
 	
