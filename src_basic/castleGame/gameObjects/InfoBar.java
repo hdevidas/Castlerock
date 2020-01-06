@@ -37,7 +37,7 @@ public class InfoBar extends GameObject
 	{
 		if (Castle.isLaunchingOst)
 		{
-			displayCustomMessage("Cliquez sur le chateau vers lequel lancer l'ost");
+			displayCustomMessage("Click on the castle to launch the ost");
 		}
 		else if (Castle.clicked != null)
 		{
@@ -59,17 +59,17 @@ public class InfoBar extends GameObject
 		String levelup;
 		String fairetroupe;
 		if (castle.is_player()) {
-			levelup = "   MONTER DE NIVEAU (Haut)";
-			fairetroupe = "   CONSTRUIRE TROUPE (Droite)";
+			levelup = "   LEVEL UP (Up)";
+			fairetroupe = "   BUILD TROOP (Right)";
 			attaquer = "";
 		}
 		else {
 			levelup = "";
 			fairetroupe = "";
-			attaquer = "   ATTAQUER CE CHATEAU (Bas)";
+			attaquer = "   ATTACKS THIS CASTLE (Down)";
 		}
-		infoText.setText("Nom :"+ castle.getName()+"          Florins :" + castle.getMoney() + 
-				"          Niveau : " + castle.getLevel()+"          Troupes : " + 
+		infoText.setText("Name :"+ castle.getName()+"          Florins :" + castle.getMoney() + 
+				"          Level : " + castle.getLevel()+"          Troops : " + 
 				castle.getNbTroop(TroopType.Piquier)+"/"+castle.getNbTroop(TroopType.Knight)+"/"+castle.getNbTroop(TroopType.Onager) +
 				"     |     "+levelup+fairetroupe+attaquer);                   
 	}

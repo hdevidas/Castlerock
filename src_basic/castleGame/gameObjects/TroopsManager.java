@@ -151,9 +151,7 @@ public abstract class TroopsManager extends GameObject
 		}
 	}
 	
-	//Fonction pour supprimer une unité d'un type précisé
-	// TODO a generaliser
-	//supprimer toutes les troupes d'une armée
+	//remove all troops from an army
 	void removeAllTroops(){
 			for (TroopType troopType : TroopType.values()) {
 				while (has_got_troops(troopType)) {
@@ -163,7 +161,7 @@ public abstract class TroopsManager extends GameObject
 
 	}
 	
-	//supprime une SEULE troupe d'un type d'armée
+	//remove an only troop from a chosen type
 	void removeTroop(TroopType troopType)
 	{
 		if ( this.has_got_troops(troopType) ) {
@@ -197,9 +195,7 @@ public abstract class TroopsManager extends GameObject
 		}
 	}	
 	
-	// Fonction pour résoudre une attaque
-	//	TODO Fonction a retravailler
-	//	TODO a generaliser avec tous les types de troupes
+	//	TODO to rework
 	void attack(TroopsManager foe)
 	{
 		

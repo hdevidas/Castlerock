@@ -11,12 +11,12 @@ public class Settings
 	public static final long NANOSECONDS_PER_TURN = (long) (1/TURNS_PER_SECOND * 1000000000);
 	
 	public static final double CASTLE_SIZE = 125;
-	public static final double OST_MIN_DISTANCE_FROM_CASTLE = 30; //utilisé egalement pour distance minimale entre eau et chateau
+	public static final double OST_MIN_DISTANCE_FROM_CASTLE = 30; 
 	
 	public static final double OST_MIN_DISTANCE = 10;
 	public static final double OST_SIZE = 10;
 	
-	public static final int IA_CASTLE_NUMBER = 3; //implémenté pour 6 maximum
+	public static final int IA_CASTLE_NUMBER = 3; //6 max
 	public static final double NEUTRAL_CASTLE_NUMBER = 6;
 	public static final int IA_NEUTRAL_CASTLE_MAX_LEVEL = 5;
 	

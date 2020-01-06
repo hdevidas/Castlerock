@@ -5,10 +5,9 @@ import javafx.scene.image.Image;
 
 public enum TroopType
 {
-	Piquier ("Piquier", new Image("/images/ost.png", Settings.OST_SIZE, Settings.OST_SIZE, true, true), 100, 5, 2, 1, 1),
-	//TODO change the following TroopTypes' images :
-	Knight ("Chevalier", new Image("/images/ost.png", Settings.OST_SIZE, Settings.OST_SIZE, true, true), 500, 20, 6, 3, 5),
-	Onager ("Onagre", new Image("/images/ost.png", Settings.OST_SIZE, Settings.OST_SIZE, true, true), 1000, 50, 1, 5, 10);
+	Piquier ("Piquier", new Image("/images/piquier.png", Settings.OST_SIZE, Settings.OST_SIZE, true, true), 100, 5, 2, 1, 1),
+	Knight ("Chevalier", new Image("/images/knight.png", Settings.OST_SIZE, Settings.OST_SIZE, true, true), 500, 20, 6, 3, 5),
+	Onager ("Onagre", new Image("/images/onager.png", Settings.OST_SIZE, Settings.OST_SIZE, true, true), 1000, 50, 1, 5, 10);
 	
 	// VARIABLES
 	private String name;

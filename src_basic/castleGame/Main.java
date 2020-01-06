@@ -91,7 +91,7 @@ public class Main extends Application implements KeyboardInputsReceiver
 
 		loadGame(primaryStage);
 
-		// Lancement du jeu
+		// Start of the game
 
 		gameLoop = new AnimationTimer() {
 			// MAIN LOOP
@@ -130,7 +130,7 @@ public class Main extends Application implements KeyboardInputsReceiver
 	 */
 	private void loadGame(Stage primaryStage) 
 	{ 
-		// Préparation de la scene
+		// Préparation of the scene
 		Image sandImage	= new Image("/images/sand.png", Settings.SCENE_WIDTH, Settings.SCENE_HEIGHT, true, true);
 		ImageView mv = new ImageView(sandImage);
 		mv.setFitWidth(Settings.SCENE_WIDTH); 

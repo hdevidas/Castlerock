@@ -34,7 +34,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	private Sprite sprite;
 	private Random rnd = new Random();
 	
-	// Sprites TODO peut-être pas leur place définitive...
+	// Sprites
 	static Image doorImage	= new Image("/images/door.png", Settings.CASTLE_SIZE/5, Settings.CASTLE_SIZE/5, true, true);
 	
 	// this object variable
@@ -69,8 +69,8 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	private double gate_y;
 	
 	private Text piquierTxt = new Text();
-	private Text onagreTxt = new Text();
-	private Text chevalierTxt = new Text();
+	private Text onagerTxt = new Text();
+	private Text knightTxt = new Text();
 	private Text moneyTxt = new Text();
 	private Text levelTxt = new Text();
 	private Point2D coord;
@@ -93,13 +93,13 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		x = coord.getX();
 		y = coord.getY();
 		
-		// Dessin de la Porte
+		// Door drawing
 		int gate = rnd.nextInt(4 - 1 + 1) + 1;
 		createDoor(gate);
 		
 		create_piquier_bar();
-		create_chevalier_bar();
-		create_onagre_bar();
+		create_knight_bar();
+		create_onager_bar();
 		create_money_bar();
 		create_level_bar();
 		
@@ -163,14 +163,14 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	// KeyboardInputsReceiver
 	public void processInputs()
 	{	
-		//actions possibles du joueur :
+		//Possible actions from player
 		if (owner == Owner.Player)
 		{
-			// monter d'un niveau
+			// Level up
 			if (Main.inputs.isLevelUp()) {
 				orderManager.newLevelUpOrder();
 			}
-			// construire un piquier
+			// build piquier
 			if (Main.inputs.isBuilding()) {
 				orderManager.newBuildTroopOrder(TroopType.Piquier);
 			}
@@ -256,12 +256,10 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		orderManager.update();
 		
 		if (!this.has_got_troops()) {
-			//System.out.println("un de vos chateau n'a plus d'unités, il est vulnérable.");
-			// mis en commentaire pour l'instant parce que sinon ça flood la console...
 		}
 
 		if (!map.player_is_alive(Settings.PLAYER_NAME)){
-			System.out.println("Vous avez perdus.");
+			System.out.println("You lost.");
 		}
 		
 		update_piquier_bar();
@@ -281,11 +279,11 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	
 	// METHODS
-	public void level_up() { //MONTE D'UN NIVEAU LE CHATEAU
+	public void level_up() { //level up with 1 level a castle
 		level ++;
 	}
 	
-	public void money_up() { //GENERATION FLORINS
+	public void money_up() { //money generation
 		setMoney(getMoney() + getLevel()*10);
 	}
 
@@ -334,34 +332,6 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		castleFrom.orderManager.startLaunchingNewOst(ost, tab);
 	}
 	
-	/*
-	private void fakeAttackPlaceHolder(Castle castleFrom, Castle castleTo)
-	{
-		//this only works if castleFrom has more troops than castleTo for every troopType... (good enough for a placeholder)
-		for (TroopType troopType : TroopType.values()) 
-		{
-			while (castleFrom.has_got_troops(troopType) && castleTo.has_got_troops(troopType)) {
-				castleFrom.removeTroop(troopType);
-				castleTo.removeTroop(troopType);
-			}
-		}
-		
-		// The attacking castle is always the winner if it has some troops left (good enough for a placeholder)
-		if (castleFrom.has_got_troops()) 
-		{
-			System.out.println("Vous avez détruis un chateau.");
-			
-			castleTo.changeOwner(castleFrom.owner);
-			
-			System.out.println("Ce chateau porte maintenant votre nom.");
-			System.out.println("Ce chateau peut maintenant être utilisé comme si c'était le votre.");
-		}
-		else
-		{
-			System.out.println("Vous avez perdus cette attaque... reformez des troupes et relancez-vous!");
-		}
-	}*/
-	
 	void changeOwner(Owner newOwner) 
 	{
 		this.setOwner(newOwner);
@@ -386,7 +356,6 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		piquierBar.getChildren().addAll(piquierTxt);
 		piquierBar.getStyleClass().add("piquier");
 		piquierBar.relocate(x+Settings.CASTLE_SIZE *2/7, y+Settings.CASTLE_SIZE *2/10);
-		//piquierBar.setPrefSize(Settings.SCENE_WIDTH, Settings.STATUS_BAR_HEIGHT); // inutile ?
 		Main.root.getChildren().add(piquierBar);
 	}
 	
@@ -394,32 +363,32 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		piquierTxt.setText("Piquiers: "+Integer.toString(getNbTroop(TroopType.Piquier)));                 
 	}
 	
-	public void create_chevalier_bar() {
-		String nbChevalier = "Chevaliers: " + Integer.toString(getNbTroop(TroopType.Knight));
-		HBox chevalierBar = new HBox();
-		chevalierTxt.setText(nbChevalier);
-		chevalierBar.getChildren().addAll(chevalierTxt);
-		chevalierBar.getStyleClass().add("chevalier");
-		chevalierBar.relocate(x+Settings.CASTLE_SIZE *2/7, y+Settings.CASTLE_SIZE *3/10);
-		Main.root.getChildren().add(chevalierBar);
+	public void create_knight_bar() {
+		String nbKnight = "Knights: " + Integer.toString(getNbTroop(TroopType.Knight));
+		HBox knightBar = new HBox();
+		knightTxt.setText(nbKnight);
+		knightBar.getChildren().addAll(knightTxt);
+		knightBar.getStyleClass().add("knight");
+		knightBar.relocate(x+Settings.CASTLE_SIZE *2/7, y+Settings.CASTLE_SIZE *3/10);
+		Main.root.getChildren().add(knightBar);
 	}
 	
 	private void update_chevalier_bar() {
-		chevalierTxt.setText("Chevaliers: "+Integer.toString(getNbTroop(TroopType.Knight)));                 
+		knightTxt.setText("Knights: "+Integer.toString(getNbTroop(TroopType.Knight)));                 
 	}
 	
-	public void create_onagre_bar() {
-		String nbOnagre = "Onagres: " + Integer.toString(getNbTroop(TroopType.Onager));
-		HBox onagreBar = new HBox();
-		onagreTxt.setText(nbOnagre);
-		onagreBar.getChildren().addAll(onagreTxt);
-		onagreBar.getStyleClass().add("onagre");
-		onagreBar.relocate(x+Settings.CASTLE_SIZE *2/7, y+Settings.CASTLE_SIZE *4/10);
-		Main.root.getChildren().add(onagreBar);
+	public void create_onager_bar() {
+		String nbOnager = "Onagers: " + Integer.toString(getNbTroop(TroopType.Onager));
+		HBox onagerBar = new HBox();
+		onagerTxt.setText(nbOnager);
+		onagerBar.getChildren().addAll(onagerTxt);
+		onagerBar.getStyleClass().add("onager");
+		onagerBar.relocate(x+Settings.CASTLE_SIZE *2/7, y+Settings.CASTLE_SIZE *4/10);
+		Main.root.getChildren().add(onagerBar);
 	}
 	
 	private void update_onagre_bar() {
-		onagreTxt.setText("Onagres: "+Integer.toString(getNbTroop(TroopType.Onager)));                 
+		onagerTxt.setText("Onagers: "+Integer.toString(getNbTroop(TroopType.Onager)));                 
 	}
 	
 	public void create_money_bar() {

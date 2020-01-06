@@ -22,7 +22,7 @@ public class Map extends GameObject
 	public static Pane playfieldLayer;
 	static Image oceanImage	= new Image("/images/water.png", Settings.SCENE_WIDTH/50, Settings.SCENE_WIDTH/50, true, true);
 
-	//Liste contenant les coordonnées des chateaux (coo au centre du chateau)
+	//List of castle coordinates
 	private List<javafx.geometry.Point2D> listXY = new ArrayList<javafx.geometry.Point2D>();
 	
 	private List<javafx.geometry.Point2D> listXY_ost_player = new ArrayList<javafx.geometry.Point2D>();
@@ -43,9 +43,9 @@ public class Map extends GameObject
 	{
 		this.playfieldLayer = playfieldLayer;
 		
-		// chargement de la map
+		// map loading
 		spawnOcean();
-		//Création des chateaux
+		//Castle creation
 		spawnCastles();
 		//spawnTroops();
 		
@@ -102,7 +102,7 @@ public class Map extends GameObject
 	// METHODS
 	private void spawnCastles() { // Création chateaux
 		
-		//creation des listes de Châteaux (player + neutral + IAs )
+		//creation of castle lists(player + neutral + IAs )
 		for (int i = 0; i < Settings.IA_CASTLE_NUMBER + 2; i++)
 		{
 			this.castles.add(i, new ArrayList<Castle>());
@@ -110,7 +110,7 @@ public class Map extends GameObject
 		
 		int errors = 0;
 		
-		//Création chateaux
+		//Castle creation
 		if (!createCastle(Owner.Player, 1, 100000))
 		{
 			errors ++;
@@ -164,7 +164,7 @@ public class Map extends GameObject
 		return false; // TODO Raise an error instead of just returning false.
 	}
 
-	//Selection d'un nom (different) dans une liste pour spawn chateaux
+	//Selection of a name on a castle list for spawning
 	private String generate_castle_name() {
 		String name;
 		while (true) {
@@ -178,7 +178,7 @@ public class Map extends GameObject
 		return name;
 	}
 	
-	//Fonction aidant la création des chateaux pour éviter spawn même coordonnées
+	//Auxiliary function to help castle creation
 	private boolean checkLocation(javafx.geometry.Point2D point2d, double minDistance) {
 		for (javafx.geometry.Point2D p : listXY) {
 			if (p.distance(point2d) < minDistance)
@@ -201,7 +201,7 @@ public class Map extends GameObject
 		int counter = 0;
 	    for(ArrayList<Castle> castleList : castles) {
 	    	for (Castle castle : castleList) {
-		    	if ((castle.getName() == name)/* && (castle.has_got_troops())*/){ // même si il n'as plus de troupe dans un chateau ce joueur posède encore ce chateua(et pourra refaire des troupes) et est donc vivant
+		    	if ((castle.getName() == name)/* && (castle.has_got_troops())*/){
 		    		counter ++;
 		    	}
 	    	}
