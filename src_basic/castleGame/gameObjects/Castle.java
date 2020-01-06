@@ -219,9 +219,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		
 		//Level up
 		MenuItem levelUp = new MenuItem("Level up");
-		
 		levelUp.setAccelerator(KeyCombination.keyCombination("L"));
-		
 		levelUp.setOnAction(evt -> this.orderManager.newLevelUpOrder());
 		
 		//Send an Ost
@@ -247,10 +245,13 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 			troopItem.setAccelerator(KeyCombination.keyCombination(tab[i]));
 			newTroop.getItems().addAll(troopItem);
 			i=i+1;
-			
 		}
+		
+		//abort current order
+		MenuItem abortCurrentOrder = new MenuItem("Abort current order");
+		abortCurrentOrder.setOnAction(evt -> this.orderManager.abortCurrentOrder());
 	
-		contextMenu.getItems().addAll(levelUp, createOstFrom, newTroop);
+		contextMenu.getItems().addAll(abortCurrentOrder, levelUp, createOstFrom, newTroop);
 		
 		if (this.owner == Owner.Player)
 		{

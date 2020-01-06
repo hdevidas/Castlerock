@@ -302,4 +302,22 @@ public class OrderManager extends GameObject
 		
 		return info;
 	}
+
+
+	public void abortCurrentOrder()
+	{
+		if (currentOrder != null)
+		{
+			this.orderList.remove(0);
+			if (orderList.size() > 0)
+			{
+				currentOrder = orderList.get(0);
+				this.waitToStart = true;
+			}
+			else
+			{
+				currentOrder = null;
+			}
+		}
+	}
 }
