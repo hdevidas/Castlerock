@@ -24,17 +24,20 @@ public class Ost extends TroopsManager
 	ArrayList<Point2D> path;
 	ArrayList<Troop> troopsOnTarget;
 	
+	int speedLimit;
+	
 	private static Random rnd = new Random();
 	
 	// CONSTRUCTORS
 	
-	public Ost(Map map, Castle castleFrom, Castle castleTarget) 
+	public Ost(Map map, Castle castleFrom, Castle castleTarget, int speedLimit) 
 	{
 		super(castleFrom.owner);
 		
 		this.map = map;
 		this.castleFrom = castleFrom;
 		this.castleTarget = castleTarget;
+		this.speedLimit = speedLimit;
 
 		isComplete = false;
 		
@@ -74,7 +77,7 @@ public class Ost extends TroopsManager
 	void addTroop(Troop troop)
 	{
 		super.addTroop(troop);
-		troop.initJourney(this, castleFrom.getGateCoord().add(randomPositionDeviation()), path.size() , -1);
+		troop.initJourney(this, castleFrom.getGateCoord().add(randomPositionDeviation()), path.size(), speedLimit);
 	}
 	
 	

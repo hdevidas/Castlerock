@@ -104,6 +104,7 @@ public class OrderManager extends GameObject
 	}
 	
 	
+	
 	// METHODS
 	public void level_up() { //level up with 1 level a castle
 		castle.setLevel(castle.getLevel() + 1);
@@ -179,7 +180,7 @@ public class OrderManager extends GameObject
 			
 			if (castle != castleTarget)
 			{
-				castle.createOst(castle, castleTarget, troopsToSend);
+				createOst(castle, castleTarget, troopsToSend, false);
 			}
 		}
 	}
@@ -208,6 +209,26 @@ public class OrderManager extends GameObject
 		return troopPriorityList;
 	}
 	
+	public void createOst(Castle castleFrom, Castle castleTo, int[] troopsToLaunch, boolean limitSpeed) 
+	{
+		Ost ost = new Ost(castle.map, castleFrom, castleTo, limitSpeed ? getLimitingSpeed(troopsToLaunch) : -1);
+		castleFrom.orderManager.startLaunchingNewOst(ost, troopsToLaunch);
+	}
+	
+	private int getLimitingSpeed(int[] troopsToLaunch)
+	{
+		int minSpeed = -1;
+		for (TroopType troopType : TroopType.values())
+		{
+			if (minSpeed == -1 || (minSpeed > troopType.getSpeed() && troopsToLaunch[troopType.ordinal()] > 0) )
+			{
+				minSpeed = troopType.getSpeed() ;
+			}
+		}
+		return minSpeed;
+	}
+
+
 	public boolean startLaunchingNewOst(Ost ost, int[] troopsToSend)
 	{
 		if (this.launchingOst)

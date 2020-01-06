@@ -46,6 +46,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	static public Castle launchingOstFrom;
 	static public Boolean isLaunchingOst = false;
 	private static int[] playerTroopsToLaunch;
+	private static boolean limitOstSpeed;
 	
 	static public ButtonType yes = new ButtonType("Yes");
 	static public ButtonType no = new ButtonType("No");
@@ -310,7 +311,22 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 		isLaunchingOst = true;
 		//Display : "Click on the castle to launch the ost to..."
 	}
+	
+	private void receiveOst() 
+	{
 
+		if (playerTroopsToLaunch == null)
+		{
+			playerTroopsToLaunch = launchingOstFrom.popupTroopsChoice();
+		}
+		else
+		{
+			limitOstSpeed = false;
+		}
+		orderManager.createOst(launchingOstFrom, this, playerTroopsToLaunch, limitOstSpeed);
+		isLaunchingOst = false;
+	}
+	
 	private int[] popupTroopsChoice()
 	{
 		int tab[] = new int[Settings.NB_TROOP_TYPES];
@@ -434,28 +450,14 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
         Optional<ButtonType> option = alert.showAndWait();
  
         if (option.get() == yes) {
-        	//
+        	limitOstSpeed = true;
+        }
+        else {
+        	limitOstSpeed = false;
         }
 		
 		
 		return tab;
-	}
-	
-	private void receiveOst() 
-	{
-
-		if (playerTroopsToLaunch == null)
-		{
-			playerTroopsToLaunch = launchingOstFrom.popupTroopsChoice();
-		}
-		createOst(launchingOstFrom, this, playerTroopsToLaunch);
-		isLaunchingOst = false;
-	}
-	
-	public void createOst(Castle castleFrom, Castle castleTo, int[] troopsToLaunch) 
-	{
-		Ost ost = new Ost(map, castleFrom, castleTo);
-		castleFrom.orderManager.startLaunchingNewOst(ost, troopsToLaunch);
 	}
 	
 	void changeOwner(Owner newOwner) 
