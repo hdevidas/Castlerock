@@ -1,6 +1,13 @@
 package castleGame.base;
 
-// this class is used to ensure that every game object is updated at each turn
+/**
+ * Parent class of every gameObject
+ * 
+ *  <p>
+ *  This class is used to ensure that every object that exteds it is updated at each turn and update its 
+ *  variable that are also gameObject
+ * 
+ */
 public abstract class GameObject 
 {	
 	// VARIABLES
@@ -8,7 +15,11 @@ public abstract class GameObject
 	
 	
 	// CONSTRUCTORS
-	// this method is called at each turn and call the methods to update this object and the game objects it contains.
+	/**
+	 * The method called at each turn
+	 * <p>
+	 * This method calls the two methods to update this object and the game objects it contains.
+	 */
 	public void update()
 	{
 		updateThis();
@@ -26,9 +37,17 @@ public abstract class GameObject
 	
 	
 	// METHODS
-	// this method is called at each turn must contain the the updates to do for this object.
+	/**
+	 * The method used to update this object variable
+	 * <p>
+	 * this method is called at each turn by the update() method, it must contain the updates to do for this object at each turn.
+	 */
 	protected abstract void updateThis();
 	
-	// this one is also called at each turn and is used to call the update function in the game objects contained in this object.
+	/**
+	 * The method used to call the update() method on this object's gameObjects
+	 * <p>
+	 * This methods is also called at each turn and must contain calls to this object's gameObjects' update function.
+	 */
 	protected abstract void updateChilds();
 }

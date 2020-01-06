@@ -27,6 +27,7 @@ public class Troop extends GameObject implements SpriteRender
 	int directionsLeft;
 	boolean onTarget;
 	Sprite sprite;
+	private boolean waitInstructions;
 	
 	
 	
@@ -52,6 +53,16 @@ public class Troop extends GameObject implements SpriteRender
 		return type;
 	}
 	
+	public int getAttack()
+	{
+		return attack;
+	}
+
+	public int getHealthPoints() 
+	{
+		return healthPoint;
+	}
+	
 	public void setTroopsManager(TroopsManager troopsManager)
 	{
 		this.troopsManager = troopsManager;
@@ -69,7 +80,11 @@ public class Troop extends GameObject implements SpriteRender
 			{
 				if (directionsLeft <= 0)
 				{
-					ost.troopsOnTarget.add(this);
+					if (!waitInstructions)
+					{
+						ost.troopsOnTarget.add(this);
+						waitInstructions = true;
+					}
 				}
 				else
 				{
@@ -122,6 +137,7 @@ public class Troop extends GameObject implements SpriteRender
 		}
 		
 		onTarget = true;
+		waitInstructions = false;
 		
 		if (sprite == null)
 		{
@@ -169,11 +185,34 @@ public class Troop extends GameObject implements SpriteRender
 	
 	void attack(Troop troop)
 	{
-		//TODO
+		if (troop != null)
+		{
+			troop.defend(1);
+		}
+	}
+	
+	void defend(int damages)
+	{
+		healthPoint -= damages;
 	}
 	
 	boolean isDead()
 	{
-		return (healthPoint <= 0);
+		if (healthPoint <= 0)
+		{
+			if (ost != null)
+			{
+				if (waitInstructions)
+				{
+					ost.troopsOnTarget.remove(this);
+				}
+				endJourney();
+			}
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

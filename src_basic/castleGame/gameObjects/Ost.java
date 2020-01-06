@@ -2,6 +2,7 @@ package castleGame.gameObjects;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 import castleGame.base.Inputs;
 import castleGame.base.Sprite;
@@ -23,7 +24,7 @@ public class Ost extends TroopsManager
 	ArrayList<Point2D> path;
 	ArrayList<Troop> troopsOnTarget;
 	
-	
+	private static Random rnd = new Random();
 	
 	// CONSTRUCTORS
 	
@@ -50,7 +51,7 @@ public class Ost extends TroopsManager
 	Point2D getNextPathDestination(int directionsLeft)
 	{
 		Point2D nextDestination = new Point2D ( path.get(directionsLeft).getX(),  path.get(directionsLeft).getY());
-		return nextDestination;
+		return nextDestination.add(randomPositionDeviation());
 	}
 	
 	
@@ -73,7 +74,7 @@ public class Ost extends TroopsManager
 	void addTroop(Troop troop)
 	{
 		super.addTroop(troop);
-		troop.initJourney(this, castleFrom.getGateCoord(), path.size() , -1);
+		troop.initJourney(this, castleFrom.getGateCoord().add(randomPositionDeviation()), path.size() , -1);
 	}
 	
 	
@@ -91,22 +92,44 @@ public class Ost extends TroopsManager
 		return (isComplete && !has_got_troops());
 	}
 	
+	Point2D randomPositionDeviation()
+	{
+		return new Point2D(rnd.nextDouble() * Settings.POSITION_DEVIATION, 
+						   rnd.nextDouble() * Settings.POSITION_DEVIATION );
+	}
+	
 	public void troopsOnTargetActions() 
 	{
 		//TODO make the troop attack or put it in this castle
 		//System.out.println("a troop has arrived at the target" + castleTarget.getCoord());
 		Troop troop;
+		TroopType troopType;
 		for (Iterator<Troop> iterator = troopsOnTarget.iterator(); iterator.hasNext();)
 		{
 			troop = iterator.next();
-			if (troop.isDead())
+			if (this.owner == castleTarget.owner)
 			{
+				troop.endJourneyTo(castleTarget);
 				iterator.remove();
 			}
 			else
 			{
-				troop.endJourneyTo(castleTarget);
-				iterator.remove();
+				if (castleTarget.has_got_troops())
+				{
+					for (int i = 0; i < troop.getAttack(); i++)
+					{
+						troopType = TroopType.values() [rnd.nextInt(Settings.NB_TROOP_TYPES)];
+						troop.attack(castleTarget.getRandomTroop(troopType));
+					}
+					troop.defend(troop.getHealthPoints());
+				}
+				else
+				{
+					castleTarget.changeOwner(this.owner);
+
+					troop.endJourneyTo(castleTarget);
+					iterator.remove();
+				}
 			}
 		}
 	}

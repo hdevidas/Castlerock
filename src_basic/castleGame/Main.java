@@ -1,59 +1,79 @@
 package castleGame;
 
-import java.awt.Insets;
-
-import com.sun.prism.paint.Color;
-
 import castleGame.base.Inputs;
 import castleGame.base.KeyboardInputsReceiver;
-import castleGame.gameObjects.Castle;
 import castleGame.gameObjects.InfoBar;
 import castleGame.gameObjects.Map;
-import castleGame.gameObjects.Ost;
 import castleGame.infoObjects.Settings;
-import castleGame.infoObjects.TroopType;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 
+/**
+ * Main class of the castleGame
+ * 
+ * <p>
+ * This class is the starting point of the application, it generates the base for the window, the bottom bar
+ * and the Map instance which will hold all the other gameObjects of the game. This class is also the one
+ * managing the inputs from the keyboard and the game loop in the AnimationTimer.
+ *
+ */
 public class Main extends Application implements KeyboardInputsReceiver
 {
 	// VARIABLES
+	/**
+	 * The Map on which the game take place
+	 */
 	private Map map;
 
+	/**
+	 * The Pane on which everything is drawn
+	 */
 	private Pane playfieldLayer;
-
 	
+	//TODO what is the purpose of this variable
 	private static Scene scene;
+	
+	/**
+	 * The inputs instance that will be used throughout the game to transmit the keyboard inputs 
+	 */
 	public static Inputs inputs;
+	
+	/**
+	 * The game loop used at each turn of the game
+	 */
 	private AnimationTimer gameLoop;
+	
+	/**
+	 * a variable used to compute the time since the last turn and control each turn duration
+	 */
 	private long lastTurnTime = 0;
 
-	//Bar d'info
+	/**
+	 * The object representing the bar at the bottom of the window
+	 */
 	InfoBar infoBar;
 	
+	//TODO what is the purpose of this variable
 	public static Group root;
 	
 	
 	
 	// CONSTRUCTORS
+	/**
+	 * The main method of the program
+	 * <p>
+	 * It is the starting point of the application and only call the JavaFX launch method.
+	 * 
+	 * @param args : The arguments the the program was called with
+	 */
 	public static void main(String[] args) 
 	{
 		launch(args);
@@ -66,17 +86,7 @@ public class Main extends Application implements KeyboardInputsReceiver
 	
 	
 	// INHERITED METHODS
-	// from KeyboardInputsReceiver :
-	public void processInputs() 
-	{
-		if (inputs.isExit()) {
-			Platform.exit();
-			System.exit(0);
-		}
-	}
-	
-	
-	// METHODS
+	// from application
 	public void start(Stage primaryStage) {
 
 		loadGame(primaryStage);
@@ -102,6 +112,22 @@ public class Main extends Application implements KeyboardInputsReceiver
 		gameLoop.start();
 	}
 	
+	// from KeyboardInputsReceiver :
+	public void processInputs() 
+	{
+		if (inputs.isExit()) {
+			Platform.exit();
+			System.exit(0);
+		}
+	}
+	
+	
+	// METHODS
+	/**
+	 * The method which load all the necessary variables before starting the game.
+	 * 
+	 * @param primaryStage : the primary stage on which to build  
+	 */
 	private void loadGame(Stage primaryStage) 
 	{ 
 		// Préparation de la scene

@@ -2,6 +2,7 @@ package castleGame.gameObjects;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 import castleGame.base.GameObject;
 import castleGame.infoObjects.Owner;
@@ -15,6 +16,7 @@ public abstract class TroopsManager extends GameObject
 	// VARIABLES
 	ArrayList<ArrayList<Troop>> troops = new ArrayList<ArrayList<Troop>>(Settings.NB_TROOP_TYPES);
 	protected Owner owner;
+	private static Random rnd = new Random();
 	
 	
 	
@@ -50,12 +52,47 @@ public abstract class TroopsManager extends GameObject
 	
 	Troop getTroop(TroopType troopType)
 	{
-		return this.troops.get(troopType.ordinal()).get(0);
+		if (this.has_got_troops(troopType))
+		{
+			return this.troops.get(troopType.ordinal()).get(0);
+		}
+		else 
+		{
+			return null;
+		}
+	}
+	
+	Troop getRandomTroop(TroopType troopType)
+	{
+		if (this.has_got_troops(troopType))
+		{
+			ArrayList<Troop> troopList = this.troops.get(troopType.ordinal());
+			return troopList.get(rnd.nextInt(troopList.size()));
+		}
+		else 
+		{
+			return null;
+		}
 	}
 	
 	public void setOwner(Owner owner) 
 	{
 		this.owner = owner;
+	}
+	
+	public int getNbTroop(TroopType troopType)
+	{
+		return troops.get(troopType.ordinal()).size();
+	}
+	
+	int[] getNbTroops()
+	{
+		int table[] = new int [Settings.NB_TROOP_TYPES];
+		for (TroopType troopType : TroopType.values())
+		{
+			table[troopType.ordinal()] = getNbTroop(troopType);
+		}
+		return table;
 	}
 	
 	
@@ -72,10 +109,6 @@ public abstract class TroopsManager extends GameObject
 				troop = iterator.next();
 				if (troop.isDead())
 				{
-					if (troop.ost != null)
-					{
-						troop.endJourney();
-					}
 					iterator.remove();
 				}
 			}
@@ -193,20 +226,5 @@ public abstract class TroopsManager extends GameObject
 	void heal (int healing)
 	{
 		
-	}
-	
-	public int getNbTroop(TroopType troopType)
-	{
-		return troops.get(troopType.ordinal()).size();
-	}
-	
-	int[] getNbTroops()
-	{
-		int table[] = new int [Settings.NB_TROOP_TYPES];
-		for (TroopType troopType : TroopType.values())
-		{
-			table[troopType.ordinal()] = getNbTroop(troopType);
-		}
-		return table;
 	}
 }

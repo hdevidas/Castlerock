@@ -1,5 +1,9 @@
 package castleGame.base;
 
+/**
+ * Interface to be implemented by the gameObjects that will need to react to keyboard inputs
+ *
+ */
 public interface KeyboardInputsReceiver
 {
 	// VARIABLES
@@ -19,5 +23,8 @@ public interface KeyboardInputsReceiver
 	
 	
 	// METHODS
+	/**
+	 * The method which precises how to react to which keyboard input.
+	 */
 	void processInputs();
 }
