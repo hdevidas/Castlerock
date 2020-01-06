@@ -2,6 +2,7 @@ package castleGame.gameObjects;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Random;
 
 import castleGame.base.GameObject;
 import castleGame.infoObjects.Owner;
@@ -20,6 +21,8 @@ public class OrderManager extends GameObject
 	ArrayList<TroopType> priorityList;
 	boolean waitToStart; // waiting for specific conditions to start the current order (more money for example)
 	boolean waitToFinish; // waiting for specific conditions to finish the current order (no example for this case (yet?))
+
+	private Random rnd = new Random();
 	
 	String info;
 	
@@ -121,10 +124,22 @@ public class OrderManager extends GameObject
 	
 	void makeAIOrder()
 	{
-		//TODO Implement AI
+		double choice = rnd.nextDouble();
 		if (currentOrder == null)
 		{
-			this.newLevelUpOrder();
+			if (choice < 0.80)
+			{
+				TroopType troopType = TroopType.values() [rnd.nextInt(Settings.NB_TROOP_TYPES)];
+				this.newBuildTroopOrder(troopType);
+			}
+			else
+			{
+				this.newLevelUpOrder();
+			}
+		}
+		if (castle.owner != Owner.Neutral && choice < 0.005)
+		{
+			//TODO create ost to a random castle
 		}
 	}
 	

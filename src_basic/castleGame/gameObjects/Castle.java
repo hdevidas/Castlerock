@@ -325,8 +325,6 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	private void createOst(Castle castleFrom, Castle castleTo, int p, int k, int o) 
 	{
-		// TODO : modify to actually create an ost and not simulate a direct attack between castles
-		//castleFrom.fakeAttackPlaceHolder(castleFrom, castleTo);
 		Ost ost = new Ost(map, castleFrom, castleTo);
 		int tab[]= {p,k,o};
 		castleFrom.orderManager.startLaunchingNewOst(ost, tab);
