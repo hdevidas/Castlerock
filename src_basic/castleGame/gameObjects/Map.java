@@ -193,8 +193,8 @@ public class Map extends GameObject
 		for (int i = 0; i < Settings.NB_TRIES_TO_SPAWN; i++)
 		{
 			Point2D pos = new Point2D(
-				/*x*/	rnd.nextDouble() * (Settings.SCENE_WIDTH - Owner.Player.castleImage.getWidth() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getWidth() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getWidth(),
-				/*y*/	rnd.nextDouble() * (Settings.SCENE_HEIGHT - Owner.Player.castleImage.getHeight() -Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getHeight() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getHeight() ); 
+				/*x*/	rnd.nextDouble() * (Settings.SCENE_WIDTH  - Owner.Player.castleImage.getWidth()  - Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getWidth()  ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getWidth(),
+				/*y*/	rnd.nextDouble() * (Settings.SCENE_HEIGHT - Owner.Player.castleImage.getHeight() - Settings.OST_MIN_DISTANCE_FROM_CASTLE - (Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getHeight() ) + 1) + Settings.OST_MIN_DISTANCE_FROM_CASTLE + Owner.Player.castleImage.getHeight() ); 
 			
 			if (checkLocation(pos, Settings.CASTLE_SIZE*2))
 			{
@@ -251,7 +251,7 @@ public class Map extends GameObject
 		int counter = 0;
 	    for(ArrayList<Castle> castleList : castles) {
 	    	for (Castle castle : castleList) {
-		    	if ((castle.getName() == name)/* && (castle.has_got_troops())*/){
+		    	if ((castle.getName() == name)){
 		    		counter ++;
 		    	}
 	    	}

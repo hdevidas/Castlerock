@@ -73,30 +73,48 @@ public class Inputs
 	private boolean is(KeyCode key) {
 		return keyboardBitSet.get(key.ordinal());
 	}
+	
+	/**
+	 * Same result as the is() method but a second call to this event in a short timeframe will return false
+	 * @param key : the key to verify
+	 * @return whether this key has just been pressed or not
+	 */
+	private boolean isOnce(KeyCode key)
+	{
+		if (is(key))
+		{
+			keyboardBitSet.set(key.ordinal(), false);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 	public boolean isExit() { //Exit game detection with escape
-		return is(ESCAPE);
+		return isOnce(ESCAPE);
 	}
 	public boolean isPause() { //Pause game detection with escape
-		return is(SPACE);
+		return isOnce(SPACE);
 	}
 	public boolean isLevelUp() { 
-		return is(L);
+		return isOnce(L);
 	}
 	public boolean isAttacksWithAll() { 
-		return is(A);
+		return isOnce(A);
 	}
 	public boolean isAttacksWithCustom() { 
-		return is(C);
+		return isOnce(C);
 	}
 	public boolean isBuildingPiquier() { 
-		return is(P);
+		return isOnce(P);
 	}
 	public boolean isBuildingKnight() { 
-		return is(K);
+		return isOnce(K);
 	}
 	public boolean isBuildingOnager() { 
-		return is(O);
+		return isOnce(O);
 	}
 	
 	

@@ -157,7 +157,7 @@ public class OrderManager extends GameObject
 		double choice = rnd.nextDouble();
 		if (currentOrder == null)
 		{
-			if (choice < 0.80)
+			if (choice < 0.95)
 			{
 				TroopType troopType = TroopType.values() [rnd.nextInt(Settings.NB_TROOP_TYPES)];
 				this.newBuildTroopOrder(troopType);
@@ -339,6 +339,14 @@ public class OrderManager extends GameObject
 			{
 				currentOrder = null;
 			}
+		}
+	}
+	
+	public void abortAllOrders()
+	{
+		while (currentOrder != null)
+		{
+			abortCurrentOrder();
 		}
 	}
 }

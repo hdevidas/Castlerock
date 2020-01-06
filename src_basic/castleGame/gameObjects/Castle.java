@@ -329,6 +329,7 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
 	
 	private int[] popupTroopsChoice()
 	{
+		Main.pause = true;
 		int tab[] = new int[Settings.NB_TROOP_TYPES];
 
 		//PIQUIER
@@ -456,7 +457,8 @@ public class Castle extends TroopsManager implements MouseEventReceiver, Keyboar
         	limitOstSpeed = false;
         }
 		
-		
+
+		Main.pause = false;
 		return tab;
 	}
 	

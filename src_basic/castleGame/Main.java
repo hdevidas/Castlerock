@@ -71,6 +71,11 @@ public class Main extends Application implements KeyboardInputsReceiver
 	//TODO what is the purpose of this variable
 	public static Group root;
 	
+	/**
+	 * Is the game paused or not
+	 */
+	public static boolean pause = false;
+	
 	
 	
 	// CONSTRUCTORS
@@ -121,22 +126,18 @@ public class Main extends Application implements KeyboardInputsReceiver
 
 				processInputs();
 				
-				if (lastTurnTime + Settings.NANOSECONDS_PER_TURN <= now)
+				if (!pause)
 				{
-					lastTurnTime = now;
-					map.update();
-					infoBar.update();
+					if (lastTurnTime + Settings.NANOSECONDS_PER_TURN <= now)
+					{
+						lastTurnTime = now;
+						map.update();
+						infoBar.update();
+					}
 				}
-				
-				
-				if (map.endGameTest()) {
-					
-				}
-				
-
 			}
-
 		};
+		
 		gameLoop.start();
 	}
 	
@@ -146,6 +147,11 @@ public class Main extends Application implements KeyboardInputsReceiver
 		if (inputs.isExit()) {
 			Platform.exit();
 			System.exit(0);
+		}
+		
+		if (inputs.isPause())
+		{
+			pause = !pause;
 		}
 	}
 	
