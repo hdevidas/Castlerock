@@ -14,7 +14,7 @@ public enum Owner
 	 */
 	Player(Main.playerName, new Image("/images/black.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true)),
 	/**
-	 * a neutral Owner, this owner is not supposed to attack
+	 * The neutral Owner, this owner is not supposed to attack
 	 */
 	Neutral("Neutral", new Image("/images/white.png", Settings.CASTLE_SIZE, Settings.CASTLE_SIZE, true, true)),
 	/**
@@ -60,7 +60,7 @@ public enum Owner
 	 * The constructor for an Owner
 	 * 
 	 * @param name : the name this Owner should have
-	 * @param castleImage : the Image the castle of this owner should display
+	 * @param castleImage : the Image the castles of this owner should display
 	 */
 	private Owner(String name, Image castleImage)
 	{
@@ -80,6 +80,11 @@ public enum Owner
 	
 	
 	// METHODS
+	/**
+	 * Get this Owner name
+	 * 
+	 * @return This Owner name
+	 */
 	public String getName()
 	{
 		return name;

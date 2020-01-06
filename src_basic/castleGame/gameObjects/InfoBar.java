@@ -60,7 +60,7 @@ public class InfoBar extends GameObject
 				castle.getNbTroop(TroopType.Piquier)+"          "
 						+ "Knights : "+castle.getNbTroop(TroopType.Knight)+"          "
 								+ "Onagers : "+castle.getNbTroop(TroopType.Onager)+"          "
-										+ "Order : " );                   
+										+ "Order : " + castle.orderManager.currentOrderInfo());                   
 	}
 	
 	private void displayCustomMessage(String message)

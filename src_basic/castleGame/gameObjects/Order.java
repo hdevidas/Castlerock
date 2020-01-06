@@ -102,7 +102,4 @@ public class Order
 		isBeingBuild = false;
 		return true;
 	}
-	
-	
-	
 }
