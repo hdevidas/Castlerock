@@ -3,6 +3,7 @@ package castleGame.gameObjects;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import castleGame.base.GameObject;
@@ -11,7 +12,11 @@ import castleGame.base.KeyboardInputsReceiver;
 import castleGame.base.Sprite;
 import castleGame.infoObjects.Owner;
 import castleGame.infoObjects.Settings;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
@@ -19,6 +24,7 @@ import javafx.scene.layout.Pane;
 public class Map extends GameObject
 {
 	// VARIABLES
+	public static Owner winner;
 	public static Pane playfieldLayer;
 	static Image oceanImage	= new Image("/images/water.png", Settings.SCENE_WIDTH/50, Settings.SCENE_WIDTH/50, true, true);
 
@@ -99,6 +105,11 @@ public class Map extends GameObject
 				iterator.remove();
 			}
 		}
+		
+		
+		
+		
+		
 	}
 	
 	protected void updateChilds()
@@ -241,5 +252,18 @@ public class Map extends GameObject
 	    }
 	    return true;
 	}
+	
+	public boolean endGameTest() {
+		
+		winner = this.getCastle(0).getOwner();
+		
+		for (int i = 1; i<Settings.NB_TOTAL_CASTLES; i++){
+			if (winner != this.getCastle(i).getOwner()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	
 }

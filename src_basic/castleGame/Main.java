@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import castleGame.base.Inputs;
 import castleGame.base.KeyboardInputsReceiver;
+import castleGame.gameObjects.Castle;
 import castleGame.gameObjects.InfoBar;
 import castleGame.gameObjects.Map;
 import castleGame.infoObjects.Settings;
@@ -15,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
@@ -33,9 +35,6 @@ import javafx.scene.layout.Pane;
 public class Main extends Application implements KeyboardInputsReceiver
 {
 	// VARIABLES
-	
-	static public String playerName =  "empty";
-	
 	/**
 	 * The Map on which the game take place
 	 */
@@ -106,20 +105,7 @@ public class Main extends Application implements KeyboardInputsReceiver
 		alert.setContentText("We wish you a good day !");
 
 		alert.showAndWait();
-		
-		
-		//Popup2 de nom a entrer
-		TextInputDialog dialog = new TextInputDialog("King Arthur");
-		dialog.setTitle("Choix de nom de joueur");
-		dialog.setHeaderText("My lord, the whole country will know your name !");
-		dialog.setContentText("Please enter your name:");
 
-		// Traditional way to get the response value.
-		Optional<String> result = dialog.showAndWait();
-
-		// The Java 8 way to get the response value (with lambda expression).
-		//result.ifPresent(name -> System.out.println("Your name: " + name));
-		result.ifPresent(name -> playerName = name);
 		
 		
 		
@@ -138,10 +124,13 @@ public class Main extends Application implements KeyboardInputsReceiver
 				if (lastTurnTime + Settings.NANOSECONDS_PER_TURN <= now)
 				{
 					lastTurnTime = now;
-					
 					map.update();
 					infoBar.update();
 				}
+				
+				
+				
+
 			}
 
 		};
